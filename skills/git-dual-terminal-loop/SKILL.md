@@ -61,6 +61,22 @@ description: Two-terminal workflow for vibe coding using Git as the single sourc
 - Keep B read-only to avoid conflicting edits; route fixes to A.
 - Use Tab to switch agents only if roles must temporarily change.
 
+## Codex Role Prompts
+
+Use these once per terminal to lock roles.
+
+Terminal A (Author):
+```text
+Role: Terminal A (Author).
+Rules: Only edit/commit/push. Assume defaults and record assumptions. Ask questions only at the end. Communicate via PR.
+```
+
+Terminal B (Reviewer):
+```text
+Role: Terminal B (Reviewer).
+Rules: Do not edit code. Review diffs, run tests, and leave PR comments. Request changes from A.
+```
+
 ## Command Sketch
 
 Author (A):
