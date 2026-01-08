@@ -8,6 +8,7 @@ AI-first skills for vibe coding. Adapted from the official Claude skills set, tu
 - People who prefer "tell AI the goal, review the result"
 - Teams that want a clean author/reviewer loop with Git as the source of truth
 - Non-technical users who want AI to choose and run the right skill
+- Me, on any PC, with zero setup pain
 
 ## Quick Start
 
@@ -17,11 +18,33 @@ AI-first skills for vibe coding. Adapted from the official Claude skills set, tu
      ```bash
      cp -R skills ~/.codex/skills
      ```
+   - Or use the install script (recommended):
+     ```bash
+     bash scripts/install-skills.sh
+     ```
 2. Invoke a skill by name in chat:
    - `use vibe-phase-loop`
    - `$git-dual-terminal-loop`
    - `use vibe-router: <goal>`
 3. Let the AI run; give feedback after the first pass.
+
+## Install on another PC
+
+Mac/Linux:
+```bash
+git clone https://github.com/kks0488/vibe-skills.git
+cd vibe-skills
+bash scripts/install-skills.sh
+```
+
+Windows (PowerShell):
+```powershell
+git clone https://github.com/kks0488/vibe-skills.git
+cd vibe-skills
+.\scripts\install-skills.ps1
+```
+
+The installer copies all skills into `~/.codex/skills` (or `$CODEX_HOME/skills`) and keeps a timestamped backup if a skill already exists.
 
 ## Recommended skills (vibe-first)
 
