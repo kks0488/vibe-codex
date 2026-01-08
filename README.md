@@ -60,6 +60,8 @@ vibe finish build a login page
 vibe sync devbox
 ```
 
+These commands only print a chat line for Codex. Paste the printed line into your Codex chat.
+
 `vibe sync devbox` updates local and remote at once (SSH required).
 Replace the request text and host name with your own.
 

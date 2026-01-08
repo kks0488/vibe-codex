@@ -19,12 +19,13 @@ switch ($Command.ToLower()) {
   }
   { $_ -in @("go", "finish") } {
     if (-not $Args -or $Args.Length -eq 0) {
-      Write-Error "Usage: vibe go <goal>  (or vibe finish <goal>)"
-      Write-Error "Example: vibe go 로그인페이지 만들어줘"
+      Write-Error ("Usage: vibe " + $Command.ToLower() + " <goal>")
+      Write-Error ("Example: vibe " + $Command.ToLower() + " build a login page")
       exit 1
     }
     $goal = $Args -join " "
-    Write-Output ("끝까지: " + $goal)
+    Write-Error "Copy/paste into Codex chat:"
+    Write-Output ("vibe " + $Command.ToLower() + " " + $goal)
   }
   "sync" {
     if (-not $Args -or $Args.Length -eq 0) {
