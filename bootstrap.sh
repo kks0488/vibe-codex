@@ -16,3 +16,25 @@ else
 fi
 
 sh "$dest/scripts/install-skills.sh"
+
+bin_dir="${XDG_BIN_DIR:-}"
+if [ -z "$bin_dir" ]; then
+  if [ -d "$HOME/.local/bin" ] || mkdir -p "$HOME/.local/bin"; then
+    bin_dir="$HOME/.local/bin"
+  elif [ -d "$HOME/bin" ] || mkdir -p "$HOME/bin"; then
+    bin_dir="$HOME/bin"
+  fi
+fi
+
+if [ -n "${bin_dir:-}" ]; then
+  wrapper="$bin_dir/vibe"
+  printf '#!/usr/bin/env sh\nexec sh "%s/scripts/vibe.sh" "$@"\n' "$dest" > "$wrapper"
+  chmod +x "$wrapper"
+  echo "Command installed: vibe"
+  case ":$PATH:" in
+    *":$bin_dir:"*) ;;
+    *) echo "Tip: add $bin_dir to PATH if 'vibe' is not found." ;;
+  esac
+else
+  echo "Tip: run 'bash $dest/scripts/vibe.sh <command>' for shortcuts."
+fi

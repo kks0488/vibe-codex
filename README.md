@@ -37,6 +37,15 @@ or
 아무것도 모르겠다. <goal> 끝까지 해줘
 ```
 
+Shortcut commands (after bootstrap):
+```bash
+vibe install
+vibe update
+vibe doctor
+vibe list
+vibe prompts
+```
+
 Notes:
 - One-liner uses a local clone at `~/.vibe-skills` by default.
 - Set `VIBE_SKILLS_HOME` if you want a custom location.

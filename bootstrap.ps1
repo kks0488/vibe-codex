@@ -13,3 +13,17 @@ if (Get-Command git -ErrorAction SilentlyContinue) {
 }
 
 & (Join-Path $Dest "scripts/install-skills.ps1")
+
+$BinDir = Join-Path $Dest "bin"
+New-Item -ItemType Directory -Force -Path $BinDir | Out-Null
+$Wrapper = Join-Path $BinDir "vibe.ps1"
+@"
+param(
+  [string]`$Command = "help",
+  [string]`$Arg = ""
+)
+& `"$Dest\\scripts\\vibe.ps1`" `$Command `$Arg
+"@ | Set-Content -Path $Wrapper -Encoding UTF8
+
+Write-Output "Command installed: $Wrapper"
+Write-Output "Tip: run `"$Wrapper install`" if 'vibe' is not in PATH."
