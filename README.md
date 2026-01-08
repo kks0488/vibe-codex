@@ -1,6 +1,6 @@
 # vibe-skills
 
-Version: v0.3.2
+Version: v0.3.3
 
 AI-first skills for vibe coding. Adapted from the official Claude skills set, tuned for fast autonomous loops in Codex and OpenCode. This repo is for my own day-to-day use (even if I am not a coder), not just for GitHub. Humans can skim; the AI does the reading and deciding.
 
@@ -59,6 +59,8 @@ vibe update
 vibe doctor
 vibe list
 vibe scope  # creates .vibe-scope in the current directory
+vibe scope add apps services/api
+vibe scope show
 vibe prompts
 vibe go build a login page  # prints "use vg: ..."
 vibe finish build a login page  # prints "use vf: ..."
@@ -89,6 +91,14 @@ services/api
 Quick start:
 ```
 vibe scope
+```
+Add paths:
+```
+vibe scope add apps services/api
+```
+Show current scope:
+```
+vibe scope show
 ```
 
 ## Maintenance (optional)

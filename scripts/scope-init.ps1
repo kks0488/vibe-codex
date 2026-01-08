@@ -5,19 +5,84 @@ param(
 
 $ScopeFile = Join-Path (Get-Location) ".vibe-scope"
 
-if (Test-Path $ScopeFile) {
-  Write-Output "Already exists: $ScopeFile"
-  exit 0
+function Get-RemainingArgs {
+  param([string[]]$Args)
+  if (-not $Args -or $Args.Length -le 1) { return @() }
+  return $Args[1..($Args.Length - 1)]
 }
 
-if (-not $Paths -or $Paths.Length -eq 0) {
-  $Paths = @(".")
+function Write-Header {
+  param([string]$Path)
+  @(
+    "# Vibe scope roots"
+    "# One path per line (relative to this file unless absolute)"
+  ) | Set-Content -Path $Path -Encoding utf8
 }
 
-$Content = @(
-  "# Vibe scope roots"
-  "# One path per line (relative to this file unless absolute)"
-) + $Paths
+$cmd = "init"
+if ($Paths -and $Paths.Length -gt 0) {
+  $cmd = $Paths[0].ToLower()
+}
 
-Set-Content -Path $ScopeFile -Value $Content -Encoding utf8
-Write-Output "Created $ScopeFile"
+switch ($cmd) {
+  "add" {
+    $rest = Get-RemainingArgs $Paths
+    if (-not $rest -or $rest.Length -eq 0) {
+      Write-Error "Usage: vibe scope add <path> [path...]"
+      exit 1
+    }
+    if (-not (Test-Path $ScopeFile)) {
+      Write-Header $ScopeFile
+    }
+    $existing = @()
+    if (Test-Path $ScopeFile) {
+      $existing = Get-Content $ScopeFile
+    }
+    foreach ($p in $rest) {
+      if ($p -and ($existing -notcontains $p)) {
+        Add-Content -Path $ScopeFile -Value $p -Encoding utf8
+      }
+    }
+    Write-Output "Updated $ScopeFile"
+  }
+  "show" {
+    if (-not (Test-Path $ScopeFile)) {
+      Write-Error "Not found: $ScopeFile"
+      exit 1
+    }
+    Get-Content $ScopeFile
+  }
+  "init" {
+    $rest = Get-RemainingArgs $Paths
+    if (Test-Path $ScopeFile) {
+      Write-Output "Already exists: $ScopeFile"
+      exit 0
+    }
+    if (-not $rest -or $rest.Length -eq 0) {
+      $rest = @(".")
+    }
+    Write-Header $ScopeFile
+    foreach ($p in $rest) {
+      if ($p) {
+        Add-Content -Path $ScopeFile -Value $p -Encoding utf8
+      }
+    }
+    Write-Output "Created $ScopeFile"
+  }
+  default {
+    if (Test-Path $ScopeFile) {
+      Write-Output "Already exists: $ScopeFile"
+      exit 0
+    }
+    if (-not $Paths -or $Paths.Length -eq 0) {
+      $Paths = @(".")
+    }
+    Write-Header $ScopeFile
+    foreach ($p in $Paths) {
+      if ($p) {
+        Add-Content -Path $ScopeFile -Value $p -Encoding utf8
+      }
+    }
+    Write-Output "Created $ScopeFile"
+  }
+}
