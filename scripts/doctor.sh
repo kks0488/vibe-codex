@@ -35,4 +35,5 @@ else
 fi
 
 echo "Next: copy/paste into Codex chat:"
-echo "vibe finish build a login page"
+echo "vibe go build a login page"
+echo "Tip: use \"vibe finish ...\" for end-to-end (plan/execute/test)."

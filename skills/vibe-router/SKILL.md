@@ -1,6 +1,6 @@
 ---
 name: vibe-router
-description: Select and apply the right skill automatically. Use when the user does not know which skill to use, says "just do it", says "vibe go" or "vibe finish", or wants the AI to decide the best skill and execute it with minimal questions.
+description: Select and apply the right skill automatically. Use when the user does not know which skill to use, says "just do it", says "vibe go" (router) or "vibe finish" (end-to-end), or wants the AI to decide the best skill and execute it with minimal questions.
 ---
 
 # Vibe Router
@@ -29,8 +29,8 @@ description: Select and apply the right skill automatically. Use when the user d
 - `그냥해줘: <goal>`
 - `걍해줘: <goal>`
 - `ㄱㄱ: <goal>`
-- `vibe go <goal>`
-- `vibe finish <goal>`
+- `vibe go <goal>` (router)
+- `vibe finish <goal>` (force end-to-end)
 - `마무리까지 해줘: <goal>`
 
 ## Vibe Finish
@@ -43,7 +43,6 @@ If the user says any of the following, route to `vibe-phase-loop` and finish end
 - "걍해줘"
 - "ㄱㄱ"
 - "마무리까지"
-- "vibe go"
 - "vibe finish"
 - "finish it"
 - "take it to the end"
@@ -51,6 +50,8 @@ If the user says any of the following, route to `vibe-phase-loop` and finish end
 ## Routing Rules
 
 - Finish-to-end requests: `vibe-phase-loop`
+- `vibe go`: pick the best-fit skill and execute with minimal questions
+- `vibe finish`: force `vibe-phase-loop` end-to-end
 - Planning/execution loops: `vibe-phase-loop`
 - Two-terminal Git workflow: `git-dual-terminal-loop`
 - Frontend UI build: `frontend-design`

@@ -47,8 +47,8 @@ vibe commands:
   list       list installed skills
   uninstall  remove skills (backup)
   prompts    print author/reviewer prompts
-  go         print a short finish-to-end prompt
-  finish     alias for go
+  go         router mode (pick best skill)
+  finish     end-to-end mode (plan/execute/test)
   sync       update local + remote host(s)
 "@ | Write-Output
   }

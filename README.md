@@ -41,6 +41,10 @@ or
 vibe finish build a login page
 ```
 
+Difference:
+- `vibe go` = router mode (pick the best skill, minimal questions)
+- `vibe finish` = force end-to-end plan/execute/test with no mid-stream questions
+
 Korean shortcuts (optional):
 ```
 끝까지: 로그인페이지 만들어줘
