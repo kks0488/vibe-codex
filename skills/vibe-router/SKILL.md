@@ -25,6 +25,8 @@ description: Select and apply the right skill automatically. Use when the user d
 - `use vibe-router: <goal>`
 - `just do this: <goal>`
 - `아무것도 모르겠다. <goal> 끝까지 해줘`
+- `끝까지: <goal>`
+- `그냥해줘: <goal>`
 - `마무리까지 해줘: <goal>`
 
 ## Vibe Finish
@@ -32,6 +34,8 @@ description: Select and apply the right skill automatically. Use when the user d
 If the user says any of the following, route to `vibe-phase-loop` and finish end-to-end:
 - "아무것도 모르겠다"
 - "끝까지 해줘"
+- "끝까지"
+- "그냥해줘"
 - "마무리까지"
 - "finish it"
 - "take it to the end"

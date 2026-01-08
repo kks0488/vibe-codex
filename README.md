@@ -34,7 +34,11 @@ use vibe-router: <goal>
 ```
 or
 ```
-아무것도 모르겠다. <goal> 끝까지 해줘
+끝까지: <goal>
+```
+or
+```
+그냥해줘: <goal>
 ```
 
 Shortcut commands (after bootstrap):
