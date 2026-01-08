@@ -40,6 +40,7 @@ or
 Notes:
 - One-liner uses a local clone at `~/.vibe-skills` by default.
 - Set `VIBE_SKILLS_HOME` if you want a custom location.
+- In Codex, you only need to say the line above; no extra setup.
 
 ## Who this is for
 

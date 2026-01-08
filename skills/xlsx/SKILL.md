@@ -25,6 +25,11 @@ license: Proprietary. LICENSE.txt has complete terms
 - `use xlsx: build a spreadsheet for <model>`
 - `use xlsx: edit <file> with <changes>`
 
+## Vibe Finish
+
+- If user says "아무것도 모르겠다" or "끝까지 해줘", proceed end-to-end with safe defaults.
+- Avoid mid-stream questions; ask for confirmations only at the end.
+
 
 ## All Excel files
 

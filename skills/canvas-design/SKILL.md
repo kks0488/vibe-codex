@@ -22,6 +22,11 @@ license: Complete terms in LICENSE.txt
 - `use canvas-design: poster for <theme>`
 - `make a single-page PNG from <idea>`
 
+## Vibe Finish
+
+- If user says "아무것도 모르겠다" or "끝까지 해줘", proceed end-to-end with safe defaults.
+- Avoid mid-stream questions; ask for confirmations only at the end.
+
 
 These are instructions for creating design philosophies - aesthetic movements that are then EXPRESSED VISUALLY. Output only .md files, .pdf files, and .png files.
 

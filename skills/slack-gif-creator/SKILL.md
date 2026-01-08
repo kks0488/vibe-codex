@@ -25,6 +25,11 @@ license: Complete terms in LICENSE.txt
 - `use slack-gif-creator: make a 128x128 GIF of <thing>`
 - `animate this idea for Slack`
 
+## Vibe Finish
+
+- If user says "아무것도 모르겠다" or "끝까지 해줘", proceed end-to-end with safe defaults.
+- Avoid mid-stream questions; ask for confirmations only at the end.
+
 
 A toolkit providing utilities and knowledge for creating animated GIFs optimized for Slack.
 

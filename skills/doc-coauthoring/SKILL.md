@@ -24,6 +24,11 @@ description: Guide users through a structured workflow for co-authoring document
 - `use doc-coauthoring: draft a <doc type> about <topic>`
 - `write a spec for <feature>`
 
+## Vibe Finish
+
+- If user says "아무것도 모르겠다" or "끝까지 해줘", proceed end-to-end with safe defaults.
+- Avoid mid-stream questions; ask for confirmations only at the end.
+
 
 This skill provides a structured workflow for guiding users through collaborative document creation. Act as an active guide, walking users through three stages: Context Gathering, Refinement & Structure, and Reader Testing.
 

@@ -22,6 +22,11 @@ license: Complete terms in LICENSE.txt
 - `use internal-comms: draft a weekly update for <team>`
 - `write a 3P update for <project>`
 
+## Vibe Finish
+
+- If user says "아무것도 모르겠다" or "끝까지 해줘", proceed end-to-end with safe defaults.
+- Avoid mid-stream questions; ask for confirmations only at the end.
+
 
 ## When to use this skill
 To write internal communications, use this skill for:

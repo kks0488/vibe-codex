@@ -25,6 +25,11 @@ license: Complete terms in LICENSE.txt
 - `use skill-creator: create a skill for <task>`
 - `update the <skill-name> skill`
 
+## Vibe Finish
+
+- If user says "아무것도 모르겠다" or "끝까지 해줘", proceed end-to-end with safe defaults.
+- Avoid mid-stream questions; ask for confirmations only at the end.
+
 
 This skill provides guidance for creating effective skills.
 

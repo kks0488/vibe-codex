@@ -25,6 +25,11 @@ license: Complete terms in LICENSE.txt
 - `use web-artifacts-builder: build a multi-file React artifact for <goal>`
 - `create a shadcn UI artifact for <app>`
 
+## Vibe Finish
+
+- If user says "아무것도 모르겠다" or "끝까지 해줘", proceed end-to-end with safe defaults.
+- Avoid mid-stream questions; ask for confirmations only at the end.
+
 
 To build powerful frontend claude.ai artifacts, follow these steps:
 1. Initialize the frontend repo using `scripts/init-artifact.sh`

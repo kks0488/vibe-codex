@@ -22,6 +22,11 @@ license: Complete terms in LICENSE.txt
 - `use algorithmic-art: generative art about <theme>`
 - `make a p5.js sketch with seed and 3 params`
 
+## Vibe Finish
+
+- If user says "아무것도 모르겠다" or "끝까지 해줘", proceed end-to-end with safe defaults.
+- Avoid mid-stream questions; ask for confirmations only at the end.
+
 
 Algorithmic philosophies are computational aesthetic movements that are then expressed through code. Output .md files (philosophy), .html files (interactive viewer), and .js files (generative algorithms).
 

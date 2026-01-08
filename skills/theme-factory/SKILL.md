@@ -26,6 +26,11 @@ license: Complete terms in LICENSE.txt
 - `use theme-factory: apply a theme to <artifact>`
 - `pick a theme for <topic> and apply`
 
+## Vibe Finish
+
+- If user says "아무것도 모르겠다" or "끝까지 해줘", proceed end-to-end with safe defaults.
+- Avoid mid-stream questions; ask for confirmations only at the end.
+
 
 This skill provides a curated collection of professional font and color themes themes, each with carefully selected color palettes and font pairings. Once a theme is chosen, it can be applied to any artifact.
 

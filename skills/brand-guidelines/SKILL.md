@@ -25,6 +25,11 @@ license: Complete terms in LICENSE.txt
 - `use brand-guidelines: apply brand styling to <artifact>`
 - `restyle this deck using Anthropic branding`
 
+## Vibe Finish
+
+- If user says "아무것도 모르겠다" or "끝까지 해줘", proceed end-to-end with safe defaults.
+- Avoid mid-stream questions; ask for confirmations only at the end.
+
 
 ## Overview
 
