@@ -17,9 +17,9 @@ switch ($Command.ToLower()) {
     $promptArg = if ($Args -and $Args.Length -gt 0) { $Args[0] } else { "all" }
     & (Join-Path $RepoRoot "scripts/role-prompts.ps1") $promptArg
   }
-  "go" {
+  { $_ -in @("go", "finish") } {
     if (-not $Args -or $Args.Length -eq 0) {
-      Write-Error "Usage: vibe go <goal>"
+      Write-Error "Usage: vibe go <goal>  (or vibe finish <goal>)"
       exit 1
     }
     $goal = $Args -join " "
@@ -46,6 +46,7 @@ vibe commands:
   uninstall  remove skills (backup)
   prompts    print author/reviewer prompts
   go         print a short finish-to-end prompt
+  finish     alias for go
   sync       update local + remote host(s)
 "@ | Write-Output
   }

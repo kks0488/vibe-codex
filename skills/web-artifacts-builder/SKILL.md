@@ -27,18 +27,7 @@ license: Complete terms in LICENSE.txt
 
 ## Vibe Finish
 
-- If user says "아무것도 모르겠다" or "끝까지 해줘", proceed end-to-end with safe defaults.
-- Avoid mid-stream questions; ask for confirmations only at the end.
-
-
-To build powerful frontend claude.ai artifacts, follow these steps:
-1. Initialize the frontend repo using `scripts/init-artifact.sh`
-2. Develop your artifact by editing the generated code
-3. Bundle all code into a single HTML file using `scripts/bundle-artifact.sh`
-4. Display artifact to user
-5. (Optional) Test the artifact
-
-**Stack**: React 18 + TypeScript + Vite + Parcel (bundling) + Tailwind CSS + shadcn/ui
+Use this when the user says "아무것도 모르겠다", "끝까지 해줘", "끝까지", "그냥해줘", "걍해줘", "ㄱㄱ", "마무리까지 해줘", "vibe go", or "vibe finish". Proceed end-to-end with safe defaults and avoid mid-stream questions; ask for confirmations only at the end.
 
 ## Design & Style Guidelines
 

@@ -1,6 +1,6 @@
 ---
 name: vibe-router
-description: Select and apply the right skill automatically. Use when the user does not know which skill to use, says "just do it", or wants the AI to decide the best skill and execute it with minimal questions.
+description: Select and apply the right skill automatically. Use when the user does not know which skill to use, says "just do it", says "vibe go" or "vibe finish", or wants the AI to decide the best skill and execute it with minimal questions.
 ---
 
 # Vibe Router
@@ -29,6 +29,8 @@ description: Select and apply the right skill automatically. Use when the user d
 - `그냥해줘: <goal>`
 - `걍해줘: <goal>`
 - `ㄱㄱ: <goal>`
+- `vibe go <goal>`
+- `vibe finish <goal>`
 - `마무리까지 해줘: <goal>`
 
 ## Vibe Finish
@@ -41,6 +43,8 @@ If the user says any of the following, route to `vibe-phase-loop` and finish end
 - "걍해줘"
 - "ㄱㄱ"
 - "마무리까지"
+- "vibe go"
+- "vibe finish"
 - "finish it"
 - "take it to the end"
 

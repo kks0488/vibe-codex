@@ -34,6 +34,14 @@ use vibe-router: <goal>
 ```
 or
 ```
+vibe go <goal>
+```
+or
+```
+vibe finish <goal>
+```
+or
+```
 끝까지: <goal>
 ```
 or
@@ -53,6 +61,7 @@ vibe doctor
 vibe list
 vibe prompts
 vibe go <goal>
+vibe finish <goal>
 vibe sync <host>
 ```
 
@@ -127,6 +136,10 @@ The AI will pick the right skill and run it with minimal questions.
 
 If you want the AI to finish end-to-end without explaining, say:
 
+```
+vibe finish <goal>
+```
+or
 ```
 아무것도 모르겠다. <goal> 끝까지 해줘
 ```

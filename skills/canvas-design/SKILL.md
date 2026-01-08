@@ -24,17 +24,7 @@ license: Complete terms in LICENSE.txt
 
 ## Vibe Finish
 
-- If user says "아무것도 모르겠다" or "끝까지 해줘", proceed end-to-end with safe defaults.
-- Avoid mid-stream questions; ask for confirmations only at the end.
-
-
-These are instructions for creating design philosophies - aesthetic movements that are then EXPRESSED VISUALLY. Output only .md files, .pdf files, and .png files.
-
-Complete this in two steps:
-1. Design Philosophy Creation (.md file)
-2. Express by creating it on a canvas (.pdf file or .png file)
-
-First, undertake this task:
+Use this when the user says "아무것도 모르겠다", "끝까지 해줘", "끝까지", "그냥해줘", "걍해줘", "ㄱㄱ", "마무리까지 해줘", "vibe go", or "vibe finish". Proceed end-to-end with safe defaults and avoid mid-stream questions; ask for confirmations only at the end.
 
 ## DESIGN PHILOSOPHY CREATION
 

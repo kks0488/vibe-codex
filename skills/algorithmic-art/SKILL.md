@@ -24,17 +24,7 @@ license: Complete terms in LICENSE.txt
 
 ## Vibe Finish
 
-- If user says "아무것도 모르겠다" or "끝까지 해줘", proceed end-to-end with safe defaults.
-- Avoid mid-stream questions; ask for confirmations only at the end.
-
-
-Algorithmic philosophies are computational aesthetic movements that are then expressed through code. Output .md files (philosophy), .html files (interactive viewer), and .js files (generative algorithms).
-
-This happens in two steps:
-1. Algorithmic Philosophy Creation (.md file)
-2. Express by creating p5.js generative art (.html + .js files)
-
-First, undertake this task:
+Use this when the user says "아무것도 모르겠다", "끝까지 해줘", "끝까지", "그냥해줘", "걍해줘", "ㄱㄱ", "마무리까지 해줘", "vibe go", or "vibe finish". Proceed end-to-end with safe defaults and avoid mid-stream questions; ask for confirmations only at the end.
 
 ## ALGORITHMIC PHILOSOPHY CREATION
 

@@ -27,16 +27,7 @@ license: Complete terms in LICENSE.txt
 
 ## Vibe Finish
 
-- If user says "아무것도 모르겠다" or "끝까지 해줘", proceed end-to-end with safe defaults.
-- Avoid mid-stream questions; ask for confirmations only at the end.
-
-
-To test local web applications, write native Python Playwright scripts.
-
-**Helper Scripts Available**:
-- `scripts/with_server.py` - Manages server lifecycle (supports multiple servers)
-
-**Always run scripts with `--help` first** to see usage. DO NOT read the source until you try running the script first and find that a customized solution is abslutely necessary. These scripts can be very large and thus pollute your context window. They exist to be called directly as black-box scripts rather than ingested into your context window.
+Use this when the user says "아무것도 모르겠다", "끝까지 해줘", "끝까지", "그냥해줘", "걍해줘", "ㄱㄱ", "마무리까지 해줘", "vibe go", or "vibe finish". Proceed end-to-end with safe defaults and avoid mid-stream questions; ask for confirmations only at the end.
 
 ## Decision Tree: Choosing Your Approach
 

@@ -24,13 +24,7 @@ license: Complete terms in LICENSE.txt
 
 ## Vibe Finish
 
-- If user says "아무것도 모르겠다" or "끝까지 해줘", proceed end-to-end with safe defaults.
-- Avoid mid-stream questions; ask for confirmations only at the end.
-
-
-This skill guides creation of distinctive, production-grade frontend interfaces that avoid generic "AI slop" aesthetics. Implement real working code with exceptional attention to aesthetic details and creative choices.
-
-The user provides frontend requirements: a component, page, application, or interface to build. They may include context about the purpose, audience, or technical constraints.
+Use this when the user says "아무것도 모르겠다", "끝까지 해줘", "끝까지", "그냥해줘", "걍해줘", "ㄱㄱ", "마무리까지 해줘", "vibe go", or "vibe finish". Proceed end-to-end with safe defaults and avoid mid-stream questions; ask for confirmations only at the end.
 
 ## Design Thinking
 
