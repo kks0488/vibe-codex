@@ -21,6 +21,7 @@ switch ($Command.ToLower()) {
     if (-not $Args -or $Args.Length -eq 0) {
       Write-Error ("Usage: vibe " + $Command.ToLower() + " <goal>")
       Write-Error ("Example: vibe " + $Command.ToLower() + " build a login page")
+      Write-Error "Tip: include a goal so Codex doesn't have to ask for one."
       exit 1
     }
     $goal = $Args -join " "

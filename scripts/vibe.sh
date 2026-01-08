@@ -30,6 +30,7 @@ case "$cmd" in
     if [ -z "${1:-}" ]; then
       echo "Usage: vibe $cmd <goal>" >&2
       echo "Example: vibe $cmd build a login page" >&2
+      echo "Tip: include a goal so Codex doesn't have to ask for one." >&2
       exit 1
     fi
     echo "Copy/paste into Codex chat:" >&2

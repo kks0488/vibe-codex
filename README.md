@@ -40,6 +40,7 @@ or
 ```
 vibe finish build a login page
 ```
+Note: If you say only `vibe go` or `vibe finish` with no goal, the assistant will ask for the goal first.
 
 Difference:
 - `vibe go` = router mode (pick the best skill, minimal questions)

@@ -71,3 +71,4 @@ If the user says any of the following, route to `vibe-phase-loop` and finish end
 - Keep the user flow simple: deliver a first pass, then ask for corrections.
 - If uncertain between two skills, pick the one with narrower scope.
 - For finish-to-end requests, avoid mid-stream questions; capture decisions at the end.
+- If the user says only `vibe go` or `vibe finish` with no goal, ask for the goal and stop; do not guess by scanning the filesystem.

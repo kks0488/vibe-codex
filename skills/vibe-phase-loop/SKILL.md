@@ -12,6 +12,7 @@ description: Phase-based planning and execution loop for vibe coding. Use when t
 - Ask questions only after delivering an initial result, unless the skill explicitly requires confirmation for safety/legal reasons.
 - Keep outputs concise, actionable, and easy to extend.
 - Assume the user is non-technical; avoid long explanations and provide copy/paste steps when actions are required.
+- If no explicit goal is provided, ask a single clarifying question before planning; do not infer by scanning the filesystem.
 
 ## Vibe Fast Path
 
