@@ -24,6 +24,10 @@ description: Phase-based planning and execution loop for vibe coding. Use when t
 - `use vibe-phase-loop: build <feature> end-to-end`
 - `plan and execute <task> with testing`
 
+## Vibe Finish
+
+Use this when the user says "아무것도 모르겠다", "끝까지 해줘", or "마무리까지 해줘". Proceed end-to-end with no mid-stream questions; log assumptions and ask for confirmations only at the end.
+
 
 ## Overview
 

@@ -23,6 +23,10 @@ description: Replace with description of the skill and when Claude should use it
 
 - `use <skill-name>: <goal>`
 
+## Vibe Finish
+
+- If user says "아무것도 모르겠다" or "끝까지 해줘", proceed end-to-end and ask questions only at the end.
+
 ## Instructions
 
 Replace this section with the skill's actual workflow and resources.

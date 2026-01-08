@@ -25,6 +25,10 @@ description: Two-terminal workflow for vibe coding using Git as the single sourc
 - `use git-dual-terminal-loop: start A/B workflow`
 - `set up author/reviewer loop for this repo`
 
+## Vibe Finish
+
+If the user says "아무것도 모르겠다" or "끝까지 해줘", auto-assign A/B roles, start the PR loop, and avoid mid-stream questions. Ask for approvals only after the first review pass.
+
 ## Principles
 
 - Use Git as the single source of truth for diffs, history, and attribution.

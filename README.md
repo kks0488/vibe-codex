@@ -38,6 +38,12 @@ use vibe-router: <goal>
 
 The AI will pick the right skill and run it with minimal questions.
 
+If you want the AI to finish end-to-end without explaining, say:
+
+```
+아무것도 모르겠다. <goal> 끝까지 해줘
+```
+
 ## Copy/paste role prompts
 
 Mac/Linux:
