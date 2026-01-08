@@ -19,5 +19,5 @@ Get-ChildItem $SrcDir -Directory | ForEach-Object {
 Write-Output "Installed skills to $DestDir"
 Write-Output "Backup suffix (if any): .bak-$timestamp"
 Write-Output "Next: copy/paste into Codex chat:"
-Write-Output "vibe go build a login page"
-Write-Output "Tip: use ""vibe finish ..."" for end-to-end (plan/execute/test)."
+Write-Output "use vg: build a login page"
+Write-Output "Tip: use ""use vf: ..."" for end-to-end (plan/execute/test)."

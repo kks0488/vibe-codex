@@ -24,5 +24,5 @@ done
 echo "Installed skills to $dest_dir"
 echo "Backup suffix (if any): .bak-$timestamp"
 echo "Next: copy/paste into Codex chat:"
-echo "vibe go build a login page"
-echo "Tip: use \"vibe finish ...\" for end-to-end (plan/execute/test)."
+echo "use vg: build a login page"
+echo "Tip: use \"use vf: ...\" for end-to-end (plan/execute/test)."

@@ -33,5 +33,5 @@ if (Test-Path (Join-Path $SkillsDir "vibe-router")) {
 }
 
 Write-Output "Next: copy/paste into Codex chat:"
-Write-Output "vibe go build a login page"
-Write-Output "Tip: use ""vibe finish ..."" for end-to-end (plan/execute/test)."
+Write-Output "use vg: build a login page"
+Write-Output "Tip: use ""use vf: ..."" for end-to-end (plan/execute/test)."

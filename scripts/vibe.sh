@@ -34,7 +34,11 @@ case "$cmd" in
       exit 1
     fi
     echo "Copy/paste into Codex chat:" >&2
-    echo "vibe $cmd $*"
+    if [ "$cmd" = "go" ]; then
+      echo "use vg: $*"
+    else
+      echo "use vf: $*"
+    fi
     ;;
   sync)
     if [ "$#" -lt 1 ]; then
@@ -56,8 +60,8 @@ vibe commands:
   list       list installed skills
   uninstall  remove skills (backup)
   prompts    print author/reviewer prompts
-  go         router mode (pick best skill)
-  finish     end-to-end mode (plan/execute/test)
+  go         router mode (prints "use vg: ...")
+  finish     end-to-end mode (prints "use vf: ...")
   sync       update local + remote host(s)
 EOF
     ;;

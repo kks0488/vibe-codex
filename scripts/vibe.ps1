@@ -26,7 +26,8 @@ switch ($Command.ToLower()) {
     }
     $goal = $Args -join " "
     Write-Error "Copy/paste into Codex chat:"
-    Write-Output ("vibe " + $Command.ToLower() + " " + $goal)
+    $prefix = if ($Command.ToLower() -eq "go") { "use vg: " } else { "use vf: " }
+    Write-Output ($prefix + $goal)
   }
   "sync" {
     if (-not $Args -or $Args.Length -eq 0) {
@@ -48,8 +49,8 @@ vibe commands:
   list       list installed skills
   uninstall  remove skills (backup)
   prompts    print author/reviewer prompts
-  go         router mode (pick best skill)
-  finish     end-to-end mode (plan/execute/test)
+  go         router mode (prints "use vg: ...")
+  finish     end-to-end mode (prints "use vf: ...")
   sync       update local + remote host(s)
 "@ | Write-Output
   }

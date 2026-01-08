@@ -28,11 +28,23 @@ Windows (PowerShell):
 git clone https://github.com/kks0488/vibe-skills.git; cd vibe-skills; .\scripts\install-skills.ps1
 ```
 
-Then in Codex chat (examples — replace the request text, no `<goal>` needed):
+Then in Codex chat (short + reliable — replace the request text, no `<goal>` needed):
+```
+use vg: build a login page
+```
+or
+```
+use vf: build a login page
+```
+Long form (same behavior):
 ```
 use vibe-router: build a login page
 ```
 or
+```
+use vibe-phase-loop: build a login page
+```
+Natural-language triggers (less reliable than `use ...:`):
 ```
 vibe go build a login page
 ```
@@ -40,12 +52,11 @@ or
 ```
 vibe finish build a login page
 ```
-Note: If you say only `vibe go` or `vibe finish` with no goal, the assistant will ask for the goal first.
 
 Difference:
-- `vibe go` = router mode (pick the best skill, minimal questions)
-- `vibe finish` = force end-to-end plan/execute/test with no mid-stream questions
-- Use `vibe finish` when you want the strongest, most hands-off loop.
+- `use vg:` = router mode (pick the best skill, minimal questions)
+- `use vf:` = force end-to-end plan/execute/test with no mid-stream questions
+- `vibe go/finish` = natural-language triggers; use only if you accept occasional misrouting
 
 Korean shortcuts (optional):
 ```
@@ -61,8 +72,8 @@ vibe update
 vibe doctor
 vibe list
 vibe prompts
-vibe go build a login page
-vibe finish build a login page
+vibe go build a login page  # prints "use vg: ..."
+vibe finish build a login page  # prints "use vf: ..."
 vibe sync devbox
 ```
 
@@ -123,6 +134,8 @@ bash scripts/uninstall-skills.sh
      bash scripts/install-skills.sh
      ```
 2. Invoke a skill by name in chat:
+   - `use vf: build a login page`
+   - `use vg: build a login page`
    - `use vibe-phase-loop`
    - `$git-dual-terminal-loop`
    - `use vibe-router: build a login page`
@@ -133,7 +146,7 @@ bash scripts/uninstall-skills.sh
 If you do not know which skill to use, just say:
 
 ```
-use vibe-router: build a login page
+use vg: build a login page
 ```
 
 The AI will pick the right skill and run it with minimal questions.
@@ -141,7 +154,7 @@ The AI will pick the right skill and run it with minimal questions.
 If you want the AI to finish end-to-end without explaining, say:
 
 ```
-vibe finish build a login page
+use vf: build a login page
 ```
 
 Korean shortcut (optional):
@@ -195,6 +208,7 @@ Windows (PowerShell):
 
 ## Recommended skills (vibe-first)
 
+- `vf` / `vg`: short, reliable aliases for finish/router
 - `vibe-phase-loop`: 10/20 phase plan -> execute -> test -> replan
 - `vibe-router`: auto-pick and run the right skill
 - `git-dual-terminal-loop`: 2-terminal author/reviewer PR workflow
