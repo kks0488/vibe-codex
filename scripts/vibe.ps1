@@ -12,6 +12,7 @@ switch ($Command.ToLower()) {
   "update" { & (Join-Path $RepoRoot "scripts/update-skills.ps1") }
   "doctor" { & (Join-Path $RepoRoot "scripts/doctor.ps1") }
   "list" { & (Join-Path $RepoRoot "scripts/list-skills.ps1") }
+  "scope" { & (Join-Path $RepoRoot "scripts/scope-init.ps1") @Args }
   "uninstall" { & (Join-Path $RepoRoot "scripts/uninstall-skills.ps1") }
   "prompts" {
     $promptArg = if ($Args -and $Args.Length -gt 0) { $Args[0] } else { "all" }
@@ -47,6 +48,7 @@ vibe commands:
   update     pull repo + reinstall skills
   doctor     check install status
   list       list installed skills
+  scope      create a .vibe-scope in the current directory
   uninstall  remove skills (backup)
   prompts    print author/reviewer prompts
   go         router mode (prints "use vg: ...")

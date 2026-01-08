@@ -20,6 +20,9 @@ case "$cmd" in
   list)
     sh "$repo_root/scripts/list-skills.sh"
     ;;
+  scope)
+    sh "$repo_root/scripts/scope-init.sh" "$@"
+    ;;
   uninstall)
     sh "$repo_root/scripts/uninstall-skills.sh"
     ;;
@@ -58,6 +61,7 @@ vibe commands:
   update     pull repo + reinstall skills
   doctor     check install status
   list       list installed skills
+  scope      create a .vibe-scope in the current directory
   uninstall  remove skills (backup)
   prompts    print author/reviewer prompts
   go         router mode (prints "use vg: ...")
