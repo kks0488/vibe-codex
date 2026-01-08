@@ -4,6 +4,20 @@ AI-first skills for vibe coding. Adapted from the official Claude skills set, tu
 
 ## Super simple (copy/paste)
 
+One-liner install/update (recommended):
+
+Mac/Linux:
+```bash
+curl -fsSL https://raw.githubusercontent.com/kks0488/vibe-skills/main/bootstrap.sh | bash
+```
+
+Windows (PowerShell):
+```powershell
+irm https://raw.githubusercontent.com/kks0488/vibe-skills/main/bootstrap.ps1 | iex
+```
+
+Manual (still easy):
+
 Mac/Linux:
 ```bash
 git clone https://github.com/kks0488/vibe-skills.git && cd vibe-skills && bash scripts/install-skills.sh
@@ -22,6 +36,10 @@ or
 ```
 아무것도 모르겠다. <goal> 끝까지 해줘
 ```
+
+Notes:
+- One-liner uses a local clone at `~/.vibe-skills` by default.
+- Set `VIBE_SKILLS_HOME` if you want a custom location.
 
 ## Who this is for
 
