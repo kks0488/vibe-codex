@@ -23,3 +23,4 @@ done
 
 echo "Installed skills to $dest_dir"
 echo "Backup suffix (if any): .bak-$timestamp"
+echo "Next: use vibe-router: <goal>  (or '아무것도 모르겠다. <goal> 끝까지 해줘')"

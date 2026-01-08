@@ -2,6 +2,27 @@
 
 AI-first skills for vibe coding. Adapted from the official Claude skills set, tuned for fast autonomous loops in Codex and OpenCode. This repo is for my own day-to-day use (even if I am not a coder), not just for GitHub. Humans can skim; the AI does the reading and deciding.
 
+## Super simple (copy/paste)
+
+Mac/Linux:
+```bash
+git clone https://github.com/kks0488/vibe-skills.git && cd vibe-skills && bash scripts/install-skills.sh
+```
+
+Windows (PowerShell):
+```powershell
+git clone https://github.com/kks0488/vibe-skills.git; cd vibe-skills; .\scripts\install-skills.ps1
+```
+
+Then in chat:
+```
+use vibe-router: <goal>
+```
+or
+```
+아무것도 모르겠다. <goal> 끝까지 해줘
+```
+
 ## Who this is for
 
 - Vibe coders who want outcomes fast
