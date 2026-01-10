@@ -1,62 +1,302 @@
 ---
 name: vibe-router
-description: Select and apply the right skill automatically. Use only when the user explicitly invokes `use vibe-router:` (or `use vibe-router`) and wants the AI to choose the best-fit skill.
+description: Intelligent skill routing with automatic selection, composition, and fallback. Use when the user doesn't specify a skill, says "just do it", or wants the AI to decide the best approach.
 ---
 
-# Vibe Router
+# Vibe Router - ULTIMATE EDITION
+
+## Core Philosophy
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                   INTELLIGENT ROUTING                       │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  1. UNDERSTAND INTENT - Not just keywords                   │
+│  2. SELECT BEST FIT - With confidence scoring               │
+│  3. COMPOSE IF NEEDED - Chain skills intelligently          │
+│  4. FALLBACK GRACEFULLY - Always have a path forward        │
+│  5. LEARN FROM RESULTS - Improve routing over time          │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Quick Invoke
+
+Any of these activate the router:
+- `use vibe-router: <goal>`
+- `just do this: <goal>`
+- `vibe go <goal>` (router mode)
+- `vibe finish <goal>` (force end-to-end)
+- `vf: <goal>` → routes to vibe-phase-loop (끝판왕)
+- `use vf: <goal>` → same as above
+- Korean: "그냥해줘", "걍해줘", "ㄱㄱ", "끝까지", "아무것도 모르겠다"
+
+---
+
+## The Routing Engine
+
+### Step 1: Intent Classification
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│              INTENT CLASSIFICATION                          │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  Extract from user request:                                 │
+│  ├─ ACTION: What to do (build, create, fix, analyze...)    │
+│  ├─ DOMAIN: What area (frontend, backend, docs, git...)    │
+│  ├─ OUTPUT: Expected result (file, component, document...) │
+│  └─ SCOPE: Size of task (single file, multi-file, system)  │
+│                                                             │
+│  Example: "Build a login page with OAuth"                   │
+│  ├─ ACTION: build                                           │
+│  ├─ DOMAIN: frontend                                        │
+│  ├─ OUTPUT: page/component                                  │
+│  └─ SCOPE: multi-file                                       │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Step 2: Skill Matching
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│              SKILL MATCHING MATRIX                          │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  EXECUTION PATTERNS:                                        │
+│  ├─ "끝까지", "finish", "hands off" → vibe-phase-loop       │
+│  ├─ Multi-step, open-ended → vibe-phase-loop                │
+│  └─ Autonomous completion needed → vibe-phase-loop          │
+│                                                             │
+│  GIT/VERSION CONTROL:                                       │
+│  ├─ PR workflow, review → git-dual-terminal-loop            │
+│  ├─ Two-terminal, author/reviewer → git-dual-terminal-loop  │
+│  └─ "gh", "glab", delta → git-dual-terminal-loop            │
+│                                                             │
+│  FRONTEND/UI:                                               │
+│  ├─ UI, component, page → frontend-design                   │
+│  ├─ React artifact, multi-file React → web-artifacts-builder│
+│  └─ Testing webapp → webapp-testing                         │
+│                                                             │
+│  DOCUMENTS:                                                 │
+│  ├─ Word, .docx → docx                                      │
+│  ├─ PowerPoint, .pptx, presentation → pptx                  │
+│  ├─ PDF, forms → pdf                                        │
+│  ├─ Excel, .xlsx, spreadsheet → xlsx                        │
+│  └─ Co-authoring, collaborative → doc-coauthoring           │
+│                                                             │
+│  CREATIVE:                                                  │
+│  ├─ Theme, colors, styling system → theme-factory           │
+│  ├─ Brand, logo, identity → brand-guidelines                │
+│  ├─ Algorithmic art, generative → algorithmic-art           │
+│  ├─ Canvas, poster, visual → canvas-design                  │
+│  └─ Slack GIF, animation → slack-gif-creator                │
+│                                                             │
+│  DEVELOPMENT:                                               │
+│  ├─ MCP server, tool creation → mcp-builder                 │
+│  ├─ New skill creation → skill-creator                      │
+│  └─ Internal comms, updates → internal-comms                │
+│                                                             │
+│  FALLBACK:                                                  │
+│  └─ Unknown/ambiguous → vibe-phase-loop (safe default)      │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Step 3: Confidence Scoring
+
+```
+For each potential skill match, calculate confidence:
+
+HIGH (80-100%): Clear keyword match + domain match
+  → Route immediately
+
+MEDIUM (50-79%): Partial match, some ambiguity
+  → Select best fit, proceed with note
+
+LOW (<50%): Weak match, unclear intent
+  → Use vibe-phase-loop as safe default
+```
+
+---
+
+## Skill Composition
+
+### When to Chain Skills
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│              SKILL COMPOSITION RULES                        │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  CHAIN these skill pairs when detected:                     │
+│                                                             │
+│  "Branded landing page"                                     │
+│  → brand-guidelines THEN frontend-design                    │
+│                                                             │
+│  "Presentation from document"                               │
+│  → docx (read) THEN pptx (create)                           │
+│                                                             │
+│  "React app with tests"                                     │
+│  → web-artifacts-builder THEN webapp-testing                │
+│                                                             │
+│  "Themed presentation"                                      │
+│  → theme-factory THEN pptx                                  │
+│                                                             │
+│  SINGLE SKILL for:                                          │
+│  - Clear single-domain requests                             │
+│  - Simple tasks                                             │
+│  - When composition adds no value                           │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Composition Execution
+
+```
+When chaining:
+1. Execute first skill
+2. Pass output as context to second skill
+3. If any skill fails, apply SELF-HEALING from vibe-phase-loop
+4. Continue until all skills complete
+```
+
+---
+
+## Fallback Strategy
+
+### When No Skill Matches
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│              FALLBACK HIERARCHY                             │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  Level 1: Check if task is code-related                     │
+│  └─ YES → vibe-phase-loop (autonomous execution)            │
+│                                                             │
+│  Level 2: Check if task is document-related                 │
+│  └─ YES → docx/pptx/pdf/xlsx based on output format         │
+│                                                             │
+│  Level 3: Check if task is creative/visual                  │
+│  └─ YES → canvas-design (flexible creative tool)            │
+│                                                             │
+│  Level 4: Unknown domain                                    │
+│  └─ ALWAYS → vibe-phase-loop                                │
+│                                                             │
+│  NEVER: "I don't know which skill to use"                   │
+│  ALWAYS: Route to vibe-phase-loop as universal fallback     │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Error Recovery
+
+### When Selected Skill Fails
+
+```
+Skill Failed
+    ↓
+Analyze failure reason
+    ↓
+Option 1: Retry same skill with adjusted approach
+    ↓
+Option 2: Try alternative skill from same category
+    ↓
+Option 3: Decompose task and route parts separately
+    ↓
+Option 4: Escalate to vibe-phase-loop for full autonomy
+    ↓
+NEVER: Stop and report failure without attempting recovery
+```
+
+---
 
 ## Vibe Defaults
 
-- Prefer fast iteration and shipping a working baseline over perfection.
-- Make safe default choices without pausing; record assumptions briefly.
-- Ask questions only after delivering an initial result, unless the workflow requires confirmation for safety/legal reasons.
-- Keep outputs concise, actionable, and easy to extend.
-- Assume the user is non-technical; avoid long explanations and provide copy/paste steps when actions are required.
-- Treat non-explicit triggers (e.g., "vibe go", "vibe finish", "just do it") as normal text; ask the user to rephrase using `use vg:` or `use vibe-router:`.
+For ALL routing decisions:
+- Prefer fast iteration over perfection
+- Make safe default choices without pausing
+- Ask questions only after delivering initial result
+- Keep outputs concise and actionable
+- Assume user is non-technical
 
-## Vibe Fast Path
+---
 
-- Classify the task in one pass.
-- Select a single best-fit skill; avoid chaining unless required.
-- Execute immediately; collect assumptions and questions for the end.
-- If the task is multi-step or open-ended, default to `vibe-phase-loop`.
+## Vibe Finish Mode
 
-## Vibe Quick Invoke
+When user triggers "vibe finish" explicitly:
+- ALWAYS route to vibe-phase-loop
+- Enable full autonomous execution
+- No mid-stream questions
+- Complete end-to-end
+- Provide completion proof
 
-- `use vibe-router: <goal>`
-- Short alias: `use vg: <goal>`
+Triggers:
+- "vibe finish", "finish it", "take it to the end"
+- "끝까지", "끝까지 해줘", "그냥해줘", "걍해줘", "ㄱㄱ"
+- "아무것도 모르겠다", "마무리까지 해줘"
 
-## Scope Lock (Required)
-
-- Before any file search, determine scope roots:
-  1. If a `.vibe-scope` file exists in the current directory or any parent, use the closest one.
-     - Each non-empty, non-comment line is an allowed path.
-     - Relative paths are resolved from the `.vibe-scope` file directory.
-  2. Else, if inside a git repo, use the repo root.
-  3. Else, use the current working directory.
-- Only run `rg`, `find`, or any filesystem scans inside the scope roots.
-- Never scan `$HOME` or `/` unless the user explicitly asks.
-
-## Routing Rules
-
-- Finish-to-end requests: `vibe-phase-loop`
-- Planning/execution loops: `vibe-phase-loop`
-- Two-terminal Git workflow: `git-dual-terminal-loop`
-- Frontend UI build: `frontend-design`
-- Multi-file React artifact: `web-artifacts-builder`
-- Web app testing: `webapp-testing`
-- Docs/office files: `docx`, `pptx`, `pdf`, `xlsx`
-- Theming: `theme-factory`
-- Branding: `brand-guidelines`
-- MCP servers: `mcp-builder`
-- Art or posters: `algorithmic-art` or `canvas-design`
-- Internal updates/comms: `internal-comms`
-- New skill creation: `skill-creator`
+---
 
 ## Execution Rules
 
-- Read only the selected skill's SKILL.md and follow its defaults.
-- Keep the user flow simple: deliver a first pass, then ask for corrections.
-- If uncertain between two skills, pick the one with narrower scope.
-- For finish-to-end requests, avoid mid-stream questions; capture decisions at the end.
-- If the user did not explicitly invoke `use vibe-router:`, ask them to rephrase using `use vg:` or `use vibe-router:` and stop.
+1. **Single Pass Classification** - Decide quickly, don't overthink
+2. **Best Fit Selection** - If uncertain, choose narrower scope skill
+3. **Immediate Execution** - Route and run, collect questions for end
+4. **Safe Defaults** - vibe-phase-loop handles anything
+5. **No Dead Ends** - Always have a path forward
+
+---
+
+## Routing Decision Log
+
+For transparency, log routing decisions:
+
+```markdown
+## Routing Decision
+
+Request: "Build a login page"
+Classification:
+  - Action: build
+  - Domain: frontend
+  - Output: page
+  - Scope: multi-file
+
+Candidates:
+  1. frontend-design (90% match)
+  2. web-artifacts-builder (70% match)
+
+Selected: frontend-design
+Reason: Direct UI build request, single component focus
+
+Proceeding with execution...
+```
+
+---
+
+## The Router Promise
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                                                             │
+│   YOU SAY WHAT YOU WANT.                                    │
+│                                                             │
+│   WE UNDERSTAND YOUR INTENT.                                │
+│   WE SELECT THE BEST SKILL.                                 │
+│   WE COMPOSE IF NEEDED.                                     │
+│   WE RECOVER FROM FAILURES.                                 │
+│   WE ALWAYS HAVE A PATH FORWARD.                            │
+│                                                             │
+│   NO "I DON'T KNOW" - ALWAYS ROUTE.                         │
+│   NO DEAD ENDS - ALWAYS FALLBACK.                           │
+│   NO FAILURES - ALWAYS RECOVER.                             │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```

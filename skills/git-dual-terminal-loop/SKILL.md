@@ -1,130 +1,345 @@
 ---
 name: git-dual-terminal-loop
-description: Two-terminal workflow for vibe coding using Git as the single source of truth. Use when the user wants parallel author and reviewer roles, PR-based communication, rapid review loops, or asks about gh/glab, delta, or two-terminal setup.
+description: Ultimate parallel author/reviewer workflow. Git as single source of truth with automatic PR management, instant feedback loops, and self-healing merges.
 ---
 
-# Dual Terminal Git Loop
+# Dual Terminal Git Loop - ULTIMATE EDITION
 
-## Vibe Defaults
+## Core Philosophy
 
-- Prefer fast iteration and shipping a working baseline over perfection.
-- Make safe default choices without pausing; record assumptions briefly.
-- Ask questions only after delivering an initial result, unless the workflow requires confirmation for safety/legal reasons.
-- Keep outputs concise, actionable, and easy to extend.
-- Assume the user is non-technical; avoid long explanations and provide copy/paste steps when actions are required.
+```
+┌─────────────────────────────────────────────────────────────┐
+│                   PARALLEL EXCELLENCE                       │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  1. GIT IS TRUTH - All changes via commits                  │
+│  2. PARALLEL IS POWER - A writes, B reviews simultaneously  │
+│  3. FEEDBACK IS INSTANT - PR comments, not meetings         │
+│  4. RECOVERY IS AUTOMATIC - Self-healing on conflicts       │
+│  5. COMPLETION IS PROVEN - Tests pass, review approved      │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
 
-## Vibe Fast Path
+---
 
-- Assign Terminal A as Author and Terminal B as Reviewer.
-- If using OpenCode, keep A on `build` and B on `plan`.
-- Create a feature branch and push small commits early.
-- Open a PR quickly; review and test on B; apply fixes on A; repeat.
-
-## Vibe Quick Invoke
+## Quick Invoke
 
 - `use git-dual-terminal-loop: start A/B workflow`
 - `set up author/reviewer loop for this repo`
+- "PR 워크플로우 시작", "터미널 두개로 작업"
 
-## Vibe Finish
+---
 
-Use this when the user says "아무것도 모르겠다", "끝까지 해줘", "끝까지", "그냥해줘", "걍해줘", "ㄱㄱ", "마무리까지 해줘", or "vibe finish". Proceed end-to-end with safe defaults and avoid mid-stream questions; ask for confirmations only at the end.
+## The Dual Loop Engine
 
-## Principles
+### Role Separation
 
-- Use Git as the single source of truth for diffs, history, and attribution.
-- Prefer review via PRs and line comments over out-of-band notes.
-- Keep authorship clear: only A edits code; B reviews and tests.
+```
+┌─────────────────────────────────────────────────────────────┐
+│              TERMINAL ROLES                                 │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  TERMINAL A (Author)                                        │
+│  ├─ Edits code                                              │
+│  ├─ Commits in small units (50-200 LOC)                     │
+│  ├─ Pushes to remote                                        │
+│  ├─ Creates/updates PR                                      │
+│  ├─ Resolves feedback                                       │
+│  └─ ONLY terminal that modifies files                       │
+│                                                             │
+│  TERMINAL B (Reviewer)                                      │
+│  ├─ Fetches and reviews diffs                               │
+│  ├─ Runs tests                                              │
+│  ├─ Leaves line comments                                    │
+│  ├─ Summarizes findings in PR                               │
+│  └─ NEVER modifies code (read-only)                         │
+│                                                             │
+│  RULE: Keep roles STRICT. Cross-contamination = chaos.      │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
 
-## Roles
+### The Rapid Feedback Loop
 
-- Terminal A (Author): edit files, commit in small units, push, update PR, resolve feedback.
-- Terminal B (Reviewer): fetch and review diffs, run tests, leave line comments, summarize findings.
+```
+┌─────────────────────────────────────────────────────────────┐
+│              RAPID ITERATION CYCLE                          │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  [A] Create branch → commit → push → open PR                │
+│       ↓                                                     │
+│  [B] Fetch → review diff → run tests → comment              │
+│       ↓                                                     │
+│  [A] Read feedback → fix → commit → push                    │
+│       ↓                                                     │
+│  [B] Re-review → approve OR request more changes            │
+│       ↓                                                     │
+│  [A] If approved → merge → delete branch                    │
+│       ↓                                                     │
+│  REPEAT until all features complete                         │
+│                                                             │
+│  TARGET: < 5 minutes per feedback cycle                     │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
 
-## Workflow
+---
 
-1. Create a feature branch on A.
-2. Implement in small, reviewable commits.
-3. Push and open a PR early.
-4. Review on B using PR diff or `git diff`; leave line comments.
-5. Run tests on B; record results in PR comments.
-6. Apply feedback on A with new commits and push.
-7. Repeat until approved; merge from A.
+## Self-Healing Protocols
+
+### Merge Conflict Resolution
+
+```
+Conflict Detected (on A)
+    ↓
+git fetch origin
+    ↓
+git rebase origin/main (or target branch)
+    ↓
+Resolve conflicts automatically where possible:
+  - Accept "ours" for style changes
+  - Accept "theirs" for newer dependencies
+  - Merge manually for logic conflicts
+    ↓
+Run tests to verify resolution
+    ↓
+Force push with lease (safe)
+    ↓
+Continue PR review
+```
+
+### Failed Test Recovery
+
+```
+Tests Fail (on B)
+    ↓
+Analyze failure output
+    ↓
+Create specific feedback in PR comment:
+  - Which test failed
+  - Expected vs actual
+  - Suggested fix (if obvious)
+    ↓
+[A] receives notification
+    ↓
+[A] fixes and pushes
+    ↓
+[B] re-runs tests
+    ↓
+LOOP until all tests pass
+```
+
+### PR Review Recovery
+
+```
+Review Rejected
+    ↓
+Read all comments
+    ↓
+Categorize:
+  - Blocking (must fix)
+  - Suggestions (consider)
+  - Questions (answer in comment)
+    ↓
+[A] Address blocking issues first
+    ↓
+[A] Push fixes
+    ↓
+[B] Re-review only changed lines
+    ↓
+LOOP until approved
+```
+
+---
+
+## Parallel Optimization
+
+### Maximize Throughput
+
+```
+RULE: While B reviews PR #1, A starts PR #2
+
+Timeline:
+  A: [PR1 code] [PR2 code] [PR1 fix] [PR3 code] [PR2 fix]
+  B: [------] [PR1 review] [------] [PR2 review] [PR1 re-review]
+
+NEVER: A waits idle for B to finish review
+ALWAYS: A starts next task while waiting
+```
+
+### Worktree Strategy
+
+```bash
+# Set up parallel worktrees
+git worktree add ../repo-author main     # Terminal A
+git worktree add ../repo-reviewer main    # Terminal B
+
+# Benefits:
+# - No branch switching needed
+# - Each terminal has clean state
+# - Can work on different branches simultaneously
+```
+
+---
+
+## Command Reference
+
+### Terminal A (Author)
+
+```bash
+# Start new feature
+git checkout -b feature/<name>
+
+# Make changes and commit
+git add -A
+git commit -m "feat: <description>"
+
+# Push and create PR
+git push -u origin feature/<name>
+gh pr create --fill
+
+# After feedback
+git add -A
+git commit -m "fix: address review feedback"
+git push
+
+# Merge when approved
+gh pr merge --squash --delete-branch
+```
+
+### Terminal B (Reviewer)
+
+```bash
+# Fetch latest
+git fetch origin
+
+# Review PR
+gh pr view <number>
+gh pr diff <number>
+
+# Run tests
+npm test  # or appropriate test command
+
+# Leave feedback
+gh pr comment <number> --body "Review feedback..."
+gh pr review <number> --comment --body "Detailed review..."
+
+# Approve
+gh pr review <number> --approve
+```
+
+---
+
+## Quality Gates
+
+### Before Merge (Required)
+
+```
+□ All tests pass (on B)
+□ Code review approved (by B)
+□ No merge conflicts
+□ PR description complete
+□ Related issues linked
+```
+
+### Commit Standards
+
+```
+Format: <type>: <description>
+
+Types:
+- feat: New feature
+- fix: Bug fix
+- refactor: Code change (no feature/fix)
+- test: Adding tests
+- docs: Documentation only
+- chore: Maintenance
+
+Examples:
+✓ feat: add user authentication
+✓ fix: resolve null pointer in login
+✗ updated stuff (too vague)
+✗ WIP (never commit WIP)
+```
+
+---
 
 ## Performance Tips
 
-- Keep A and B in separate worktrees to avoid branch churn.
-- Use small commits (50-200 LOC) with one logical change each.
-- Open PRs early to start review in parallel.
-- Run a fast smoke test first, then expand if needed.
-- Summarize findings in PR comments with actionable next steps.
+1. **Small Commits** - 50-200 LOC per commit
+2. **Early PRs** - Open draft PR as soon as first commit
+3. **Parallel Work** - A works on next while B reviews
+4. **Quick Tests** - Run fast smoke test first, full suite before merge
+5. **Clear Comments** - Actionable feedback, not vague suggestions
 
-## Tooling
-
-- GitHub: use `gh` for PR create/view/diff/comment.
-- GitLab: use `glab` with the same flow.
-- Diff readability: use `delta` if installed; otherwise use `git diff` and `git log`.
+---
 
 ## OpenCode Mapping
 
-- Terminal A: OpenCode `build` agent for edits, commits, and pushes.
-- Terminal B: OpenCode `plan` agent for read-only review, tests, and comments.
-- Keep B read-only to avoid conflicting edits; route fixes to A.
-- Use Tab to switch agents only if roles must temporarily change.
+```
+┌─────────────────────────────────────────────────────────────┐
+│              OPENCODE INTEGRATION                           │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  Terminal A = OpenCode "build" agent                        │
+│  ├─ Edits, commits, pushes                                  │
+│  └─ Full write access                                       │
+│                                                             │
+│  Terminal B = OpenCode "plan" agent                         │
+│  ├─ Read-only review, tests, comments                       │
+│  └─ No file modifications                                   │
+│                                                             │
+│  Switch roles with Tab only if absolutely necessary         │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
 
 ## Codex Role Prompts
 
-Use these once per terminal to lock roles.
+### Terminal A (Author)
 
-Terminal A (Author):
 ```text
 Role: Terminal A (Author).
-Rules: Only edit/commit/push. Assume defaults and record assumptions. Ask questions only at the end. Communicate via PR.
+Rules:
+- ONLY edit, commit, push
+- Make safe default choices, record assumptions
+- Ask questions only at the end
+- Communicate via PR, not chat
+- Small commits (50-200 LOC)
+- Never wait for B - start next task
 ```
 
-Terminal B (Reviewer):
+### Terminal B (Reviewer)
+
 ```text
 Role: Terminal B (Reviewer).
-Rules: Do not edit code. Review diffs, run tests, and leave PR comments. Request changes from A.
+Rules:
+- NEVER edit code
+- Review diffs, run tests, leave PR comments
+- Request changes from A, don't fix yourself
+- Be specific and actionable in feedback
+- Approve only when tests pass AND code is clean
 ```
 
-Script shortcut:
-- Mac/Linux: `bash scripts/role-prompts.sh author` and `bash scripts/role-prompts.sh reviewer`
-- Windows: `.\scripts\role-prompts.ps1 author` and `.\scripts\role-prompts.ps1 reviewer`
+---
 
-## Command Sketch
+## The Dual Loop Promise
 
-Author (A):
-```bash
-git checkout -b feature/<name>
-git add -A
-git commit -m "feat: <small change>"
-git push -u origin feature/<name>
-gh pr create
 ```
-
-Reviewer (B):
-```bash
-git fetch origin
-git checkout feature/<name>
-gh pr view
-gh pr diff
-# run tests, then comment in PR
-```
-
-Worktree setup (B):
-```bash
-git worktree add ../repo-review feature/<name>
-cd ../repo-review
-```
-
-Fallback if no gh/glab:
-- Use web UI to create and review PRs.
-- Use `git show`, `git diff`, and `git log` locally for review.
-
-Optional diff setup (delta):
-```bash
-git config --global pager.diff delta
-git config --global pager.show delta
-git config --global pager.log delta
-git config --global delta.side-by-side true
+┌─────────────────────────────────────────────────────────────┐
+│                                                             │
+│   TWO TERMINALS. ONE TRUTH.                                 │
+│                                                             │
+│   A WRITES. B REVIEWS.                                      │
+│   PARALLEL WORK. RAPID FEEDBACK.                            │
+│   CONFLICTS HEAL. TESTS MUST PASS.                          │
+│   PR IS THE RECORD. GIT IS THE LAW.                         │
+│                                                             │
+│   NO MEETINGS. NO SLACK. NO CONFUSION.                      │
+│   JUST CODE. REVIEW. MERGE. SHIP.                           │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
 ```

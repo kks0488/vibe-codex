@@ -1,8 +1,28 @@
 # vibe-skills
 
-Version: v0.3.3
+**ULTIMATE EDITION** - AI-first skills for vibe coding, now with infinite retry, self-healing, and completion proof.
 
-AI-first skills for vibe coding. Adapted from the official Claude skills set, tuned for fast autonomous loops in Codex and OpenCode. This repo is for my own day-to-day use (even if I am not a coder), not just for GitHub. Humans can skim; the AI does the reading and deciding.
+```
+┌─────────────────────────────────────────────────────────────┐
+│                                                             │
+│   SAY WHAT YOU WANT.                                        │
+│   WE PLAN IT. EXECUTE IT. FIX WHATEVER BREAKS.              │
+│   RETRY UNTIL SUCCESS. PROVE IT WORKS.                      │
+│                                                             │
+│   NO QUESTIONS. NO EXCUSES. NO STOPPING.                    │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+## What's New in ULTIMATE EDITION
+
+- **Infinite Retry Engine** - Never stops on failure, adapts and retries
+- **Self-Healing Protocol** - Auto-diagnoses and fixes errors
+- **Completion Proof** - Evidence-based verification, not just "looks done"
+- **Parallel Execution** - Independent tasks run simultaneously
+- **State Persistence** - Work documents track progress, can resume
+- **Skill Composition** - Chains skills intelligently when needed
+- **Smart Fallback** - Always has a path forward, no dead ends
 
 ## Super simple (copy/paste)
 
@@ -18,228 +38,169 @@ Windows (PowerShell):
 irm https://raw.githubusercontent.com/kks0488/vibe-skills/main/bootstrap.ps1 | iex
 ```
 
-Manual (still easy):
+## Usage
 
-Mac/Linux:
-```bash
-git clone https://github.com/kks0488/vibe-skills.git && cd vibe-skills && bash scripts/install-skills.sh
+### Maximum Power Mode (끝판왕)
+
+**The shortest, most powerful command:**
 ```
-
-Windows (PowerShell):
-```powershell
-git clone https://github.com/kks0488/vibe-skills.git; cd vibe-skills; .\scripts\install-skills.ps1
+vf: build a login page
 ```
 
-Then in Codex chat (short + reliable — replace the request text, no `<goal>` needed):
-```
-use vg: build a login page
-```
-or
+Or longer versions:
 ```
 use vf: build a login page
+vibe finish build a login page
 ```
-Long form (same behavior):
-```
-use vibe-router: build a login page
-```
-or
-```
-use vibe-phase-loop: build a login page
-```
-Natural-language triggers are intentionally disabled for reliability.
 
-Difference:
-- `use vg:` = router mode (pick the best skill, minimal questions)
-- `use vf:` = force end-to-end plan/execute/test with no mid-stream questions
+This triggers:
+1. Auto-creates work document for tracking
+2. Plans 10-20 phases
+3. Executes all phases (parallel where possible)
+4. Self-heals on any failure
+5. Runs tests
+6. Provides completion proof
 
-Shortcut commands (after bootstrap):
+### Router Mode (Auto-Select Skill)
+
+```
+vibe go build a login page
+```
+
+Router analyzes your request and picks the best skill automatically.
+
+### Korean Shortcuts
+
+```
+끝까지: 로그인페이지 만들어줘
+그냥해줘: 로그인페이지 만들어줘
+ㄱㄱ: 로그인페이지 만들어줘
+```
+
+## Core Skills (ULTIMATE EDITION)
+
+### vibe-phase-loop
+**The Ultimate Execution Engine**
+- 10/20 phase planning
+- Infinite retry on failure
+- Self-healing protocol
+- Completion proof required
+- No questions, no stopping
+
+### vibe-router
+**Intelligent Skill Selection**
+- Intent classification (action, domain, output, scope)
+- Confidence scoring
+- Skill composition when needed
+- Smart fallback (never "I don't know")
+
+### git-dual-terminal-loop
+**Parallel Author/Reviewer Workflow**
+- Terminal A writes, Terminal B reviews
+- Rapid feedback via PR comments
+- Self-healing merge conflicts
+- Never wait idle
+
+## The Iron Laws
+
+```
+1. NEVER STOP UNTIL PROVEN DONE
+2. NEVER ASK - DECIDE AND RECORD
+3. NEVER FAIL - ADAPT AND RETRY
+4. NEVER FORGET - TRACK EVERYTHING
+5. NEVER ASSUME DONE - VERIFY WITH EVIDENCE
+```
+
+## Shortcut Commands
+
 ```bash
-vibe install
-vibe update
-vibe doctor
-vibe list
-vibe scope  # creates .vibe-scope in the current directory
-vibe scope add apps services/api
-vibe scope show
-vibe prompts
-vibe go build a login page  # prints "use vg: ..."
-vibe finish build a login page  # prints "use vf: ..."
-vibe sync devbox
+vibe install       # Install skills
+vibe update        # Update skills
+vibe doctor        # Check installation
+vibe list          # List installed skills
+vibe go <task>     # Router mode (auto-select skill)
+vf: <task>         # Maximum power mode (끝판왕) ← RECOMMENDED
 ```
 
-These commands only print a chat line for Codex. Paste the printed line into your Codex chat.
+## Completion Proof Format
 
-`vibe sync devbox` updates local and remote at once (SSH required).
-Replace the request text and host name with your own.
+Every task ends with proof:
 
-Notes:
-- One-liner uses a local clone at `~/.vibe-skills` by default.
-- Set `VIBE_SKILLS_HOME` if you want a custom location.
-- In Codex, you only need to say the line above; no extra setup.
+```markdown
+## COMPLETION PROOF
 
-## Scope Lock (recommended)
+✓ Executed:
+  Command: npm run dev
+  Output: Server running on localhost:3000
 
-Create a `.vibe-scope` file in your project root to prevent accidental scans outside the project.
-Each non-empty, non-comment line is an allowed path (relative to the `.vibe-scope` location unless absolute).
+✓ Tests:
+  Command: npm test
+  Result: 47 passed, 0 failed
 
-Example:
-```
-.
-apps
-services/api
-```
-Quick start:
-```
-vibe scope
-```
-Add paths:
-```
-vibe scope add apps services/api
-```
-Show current scope:
-```
-vibe scope show
-```
+✓ Requirements Verified:
+  - [Login page]: src/pages/Login.tsx:1-89
+  - [OAuth integration]: src/lib/auth.ts:15-67
 
-## Maintenance (optional)
-
-Check install:
-```bash
-bash scripts/doctor.sh
-```
-```powershell
-.\scripts\doctor.ps1
-```
-
-List skills:
-```bash
-bash scripts/list-skills.sh
-```
-```powershell
-.\scripts\list-skills.ps1
-```
-
-Uninstall (safe backup):
-```bash
-bash scripts/uninstall-skills.sh
-```
-```powershell
-.\scripts\uninstall-skills.ps1
+✓ Quality Checks:
+  - Build: PASS
+  - Lint: PASS
+  - Types: PASS
 ```
 
 ## Who this is for
 
-- Vibe coders who want outcomes fast
+- Vibe coders who want outcomes, not explanations
 - People who prefer "tell AI the goal, review the result"
-- Teams that want a clean author/reviewer loop with Git as the source of truth
-- Non-technical users who want AI to choose and run the right skill
-- Me, on any PC, with zero setup pain
+- Teams that want Git as single source of truth
+- Anyone who wants AI to complete tasks, not stop at problems
+- Non-technical users who just want things done
 
-## Quick Start
+## Skills List
 
-1. Install skills into your agent's skills directory.
-   - Codex default: `~/.codex/skills`
-   - Example (copy this repo):
-     ```bash
-     cp -R skills ~/.codex/skills
-     ```
-   - Or use the install script (recommended):
-     ```bash
-     bash scripts/install-skills.sh
-     ```
-2. Invoke a skill by name in chat:
-   - `use vf: build a login page`
-   - `use vg: build a login page`
-   - `use vibe-phase-loop`
-   - `$git-dual-terminal-loop`
-   - `use vibe-router: build a login page`
-3. Let the AI run; give feedback after the first pass.
+| Skill | Purpose |
+|-------|---------|
+| `vibe-phase-loop` | Autonomous execution engine |
+| `vf` | Alias for vibe-phase-loop (vibe finish) |
+| `vibe-router` | Intelligent skill selection |
+| `git-dual-terminal-loop` | Parallel author/reviewer workflow |
+| `frontend-design` | Bold UI builds |
+| `web-artifacts-builder` | Multi-file React artifacts |
+| `webapp-testing` | Web application testing |
+| `docx` / `pptx` / `pdf` / `xlsx` | Document workflows |
+| `theme-factory` | Theme/styling systems |
+| `brand-guidelines` | Brand identity |
+| `algorithmic-art` | Generative art |
+| `canvas-design` | Posters and visuals |
+| `mcp-builder` | MCP server creation |
+| `skill-creator` | New skill creation |
 
-## Zero-reading mode
+## Installation
 
-If you do not know which skill to use, just say:
-
-```
-use vg: build a login page
-```
-
-The AI will pick the right skill and run it with minimal questions.
-
-If you want the AI to finish end-to-end without explaining, say:
-
-```
-use vf: build a login page
-```
-
-## Copy/paste role prompts
-
-Mac/Linux:
-```bash
-bash scripts/role-prompts.sh author
-bash scripts/role-prompts.sh reviewer
-```
-
-Windows (PowerShell):
-```powershell
-.\scripts\role-prompts.ps1 author
-.\scripts\role-prompts.ps1 reviewer
-```
-
-## Install on another PC
-
-Mac/Linux:
+Manual install:
 ```bash
 git clone https://github.com/kks0488/vibe-skills.git
 cd vibe-skills
 bash scripts/install-skills.sh
 ```
 
-Windows (PowerShell):
-```powershell
-git clone https://github.com/kks0488/vibe-skills.git
-cd vibe-skills
-.\scripts\install-skills.ps1
+The installer copies skills to `~/.codex/skills` with timestamped backups.
+
+## Philosophy
+
 ```
-
-The installer copies all skills into `~/.codex/skills` (or `$CODEX_HOME/skills`) and keeps a timestamped backup if a skill already exists.
-
-## Update on any PC
-
-Mac/Linux:
-```bash
-bash scripts/update-skills.sh
+┌─────────────────────────────────────────────────────────────┐
+│                                                             │
+│   THE VIBE PROMISE                                          │
+│                                                             │
+│   You say "끝까지"                                           │
+│                                                             │
+│   We throw agents at it.                                    │
+│   We throw retries at it.                                   │
+│   We throw self-healing at it.                              │
+│                                                             │
+│   Until it's done.                                          │
+│   Actually done.                                            │
+│   Proven done.                                              │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
 ```
-
-Windows (PowerShell):
-```powershell
-.\scripts\update-skills.ps1
-```
-
-## Recommended skills (vibe-first)
-
-- `vf` / `vg`: short, reliable aliases for finish/router
-- `vibe-phase-loop`: 10/20 phase plan -> execute -> test -> replan
-- `vibe-router`: auto-pick and run the right skill
-- `git-dual-terminal-loop`: 2-terminal author/reviewer PR workflow
-- `frontend-design`: bold UI builds without overthinking
-- `webapp-testing`: smoke test first, then deeper checks
-- `docx` / `pptx` / `pdf` / `xlsx`: document workflows
-
-## Two-terminal loop (fastest workflow)
-
-- Terminal A: Author (edits, commits, pushes)
-- Terminal B: Reviewer (diffs, tests, comments)
-- Use PRs for all feedback; keep edits on A only
-- OpenCode mapping: A=`build`, B=`plan`
-- Codex role prompts are in `skills/git-dual-terminal-loop/SKILL.md`
-
-## What is inside
-
-- `skills/`: the skills
-- `spec/`: agent skills spec (reference)
-- `template/`: skill template
-
-## Notes
-
-- These skills are adapted from the official Claude skills set and upgraded for vibe coding.
-- Each skill includes "Vibe Defaults" and "Vibe Fast Path" so the AI can act without waiting.

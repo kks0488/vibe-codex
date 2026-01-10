@@ -1,88 +1,361 @@
 ---
 name: vibe-phase-loop
-description: Phase-based planning and execution loop for vibe coding. Use only when the user explicitly invokes `use vibe-phase-loop:` (or `use vibe-phase-loop`) and wants a 10/20-step plan with testing and a post-test re-plan if needed.
+description: Ultimate autonomous execution engine. Plan → Execute → Test → Never Stop Until Done. Use when the user wants hands-off completion with no questions, automatic recovery from any failure, and proven results.
 ---
 
-# Vibe Phase Loop
+# Vibe Phase Loop - ULTIMATE EDITION
 
-## Vibe Defaults
+## Core Philosophy
 
-- Prefer fast iteration and shipping a working baseline over perfection.
-- Make safe default choices without pausing; record assumptions briefly.
-- Ask questions only after delivering an initial result, unless the skill explicitly requires confirmation for safety/legal reasons.
-- Keep outputs concise, actionable, and easy to extend.
-- Assume the user is non-technical; avoid long explanations and provide copy/paste steps when actions are required.
-- If no explicit goal is provided, ask a single clarifying question before planning; do not infer by scanning the filesystem.
-- Treat non-explicit triggers (e.g., "vibe finish", "끝까지") as normal text; ask the user to rephrase using `use vf:` or `use vibe-phase-loop:`.
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    THE IRON LAWS                            │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  1. NEVER STOP UNTIL PROVEN DONE                            │
+│  2. NEVER ASK - DECIDE AND RECORD                           │
+│  3. NEVER FAIL - ADAPT AND RETRY                            │
+│  4. NEVER FORGET - TRACK EVERYTHING                         │
+│  5. NEVER ASSUME DONE - VERIFY WITH EVIDENCE                │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
 
-## Vibe Fast Path
+---
 
-- Use this workflow by default when speed and autonomy are requested.
-- Keep phases short; batch small changes to maintain momentum.
-- Only raise decisions that risk data loss or major rework.
+## Step Zero: Work Document (MANDATORY)
 
-## Vibe Quick Invoke
+**BEFORE ANY WORK, create `.vibe/work-{timestamp}.md`:**
 
-- `use vibe-phase-loop: build <feature> end-to-end`
-- Short alias: `use vf: <goal>`
+```markdown
+# Task: {description}
+Started: {datetime}
+Status: in_progress
 
-## Scope Lock (Required)
+## Phases
+- [ ] Phase 1: {name}
+- [ ] Phase 2: {name}
+...
 
-- Before any file search, determine scope roots:
-  1. If a `.vibe-scope` file exists in the current directory or any parent, use the closest one.
-     - Each non-empty, non-comment line is an allowed path.
-     - Relative paths are resolved from the `.vibe-scope` file directory.
-  2. Else, if inside a git repo, use the repo root.
-  3. Else, use the current working directory.
-- Only run `rg`, `find`, or any filesystem scans inside the scope roots.
-- Never scan `$HOME` or `/` unless the user explicitly asks.
+## Assumptions Log
+| # | Decision | Rationale | Reversible |
+|---|----------|-----------|------------|
 
-## Overview
+## Error Log
+| # | Phase | Error | Attempted Fix | Result |
+|---|-------|-------|---------------|--------|
 
-Use a strict plan -> execute -> test -> re-plan loop with minimal interruptions.
+## Completion Evidence
+{filled when verified complete}
+```
 
-## Workflow
+**UPDATE THIS DOCUMENT AFTER EVERY ACTION.**
 
-1. Choose 10 phases by default; use 20 only for large scope or explicit request.
-2. Output the phase plan before execution; include goal, actions, and deliverables per phase.
-3. Execute all phases end-to-end without asking questions.
-4. Make sensible default decisions; record them in Assumptions with brief rationale.
-5. Collect only high-risk or irreversible choices in Decision Queue; ask once after all phases finish.
-6. Run tests; discover the best command and execute it.
-7. If tests fail or issues are found, produce a Retro & Fix Plan with a fresh 10/20-phase plan and stop.
+---
+
+## Vibe Triggers
+
+Activate with any of these:
+- `vf: <task>` - **SHORT AND POWERFUL** (recommended)
+- `use vf: <task>` - same as above
+- "vibe finish", "finish it", "take it to the end"
+- "끝까지 해줘", "끝까지", "그냥해줘", "걍해줘", "ㄱㄱ"
+- "아무것도 모르겠다", "마무리까지 해줘"
+- "plan and execute", "hands off"
+
+---
+
+## The Execution Engine
+
+### Phase Structure
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│              EXECUTION PIPELINE                             │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  STAGE 1: RECONNAISSANCE (Parallel if possible)             │
+│  ├─ Analyze requirements                                    │
+│  ├─ Find related code                                       │
+│  ├─ Identify risks                                          │
+│  └─ Duration: Until complete understanding                  │
+│                                                             │
+│  STAGE 2: PLANNING                                          │
+│  ├─ Create 10-phase plan (20 for large scope)               │
+│  ├─ Define success criteria per phase                       │
+│  ├─ Identify parallel opportunities                         │
+│  └─ Output: Phase list with checkboxes                      │
+│                                                             │
+│  STAGE 3: EXECUTION (Parallel where independent)            │
+│  ├─ Execute phases sequentially or in parallel              │
+│  ├─ On failure: SELF-HEAL (see below)                       │
+│  ├─ Record assumptions with rationale                       │
+│  └─ Update work document after each phase                   │
+│                                                             │
+│  STAGE 4: VERIFICATION                                      │
+│  ├─ Run ALL tests                                           │
+│  ├─ Verify each requirement with evidence                   │
+│  ├─ If fails: LOOP BACK (do not stop)                       │
+│  └─ Output: Completion proof                                │
+│                                                             │
+│  EXIT: ONLY when proven complete                            │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Infinite Retry Engine
+
+**ON ANY FAILURE:**
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│              SELF-HEALING PROTOCOL                          │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  Attempt 1: Standard approach                               │
+│      ↓ FAIL?                                                │
+│  Attempt 2: Alternative method                              │
+│      ↓ FAIL?                                                │
+│  Attempt 3: Decompose into smaller tasks                    │
+│      ↓ FAIL?                                                │
+│  Attempt 4: Deep root cause analysis                        │
+│      ↓ FAIL?                                                │
+│  Attempt 5: Try 3 different approaches in parallel          │
+│      ↓ FAIL?                                                │
+│  Attempt 6: Research external solutions                     │
+│      ↓ FAIL?                                                │
+│  Attempt 7: Create workaround                               │
+│      ↓ FAIL?                                                │
+│  Attempt 8+: Hybrid approach combining all learnings        │
+│      ↓ CONTINUE INDEFINITELY                                │
+│                                                             │
+│  ═══════════════════════════════════════════════════════    │
+│  THE LOOP NEVER ENDS UNTIL SUCCESS                          │
+│  ═══════════════════════════════════════════════════════    │
+│                                                             │
+│  On EVERY failure:                                          │
+│  1. Log error with full context                             │
+│  2. Diagnose root cause                                     │
+│  3. Select new strategy                                     │
+│  4. Execute immediately                                     │
+│  5. Record lesson learned                                   │
+│                                                             │
+│  NEVER: Stop and wait for user                              │
+│  NEVER: Give up                                             │
+│  NEVER: Report failure without attempting fix               │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
 
 ## Decision Policy
 
-1. Prefer safe, reversible defaults.
-2. Use least-change options when impact is unclear.
-3. Add to Decision Queue only when choices risk data loss, security, large cost, or multi-hour effort.
+### Automatic Decisions (No User Input)
 
-## Test Discovery
+Make these decisions automatically and record in Assumptions Log:
 
-1. Prefer repository-native test scripts and tooling.
-2. Detect common stacks and use the standard test command:
-   - JavaScript/TypeScript:
-     - Choose package manager by lockfile: pnpm/yarn/npm/bun
-     - If workspace markers exist, use the workspace test command
-     - Otherwise run the root `test` script
-   - go.mod: `go test ./...`
-   - pyproject.toml or pytest.ini: `pytest`
-   - Cargo.toml: `cargo test`
-   - Gemfile: `bundle exec rspec` or `bundle exec rake test`
-   - pom.xml: `mvn test`
-   - build.gradle or gradlew: `./gradlew test`
-   - *.sln or *.csproj: `dotnet test`
-3. If no tests are found, run the closest available quality check (build or lint) and report the gap.
+| Category | Default Choice | Record |
+|----------|----------------|--------|
+| Code style | Follow existing patterns | Brief note |
+| Library choice | Use what's already in project | Brief note |
+| File location | Match existing structure | Brief note |
+| Naming | Follow conventions found | Brief note |
+| Error handling | Add try-catch where sensible | Brief note |
+| Testing | Add tests matching existing patterns | Brief note |
+
+### Hard Stops (PAUSE AND ASK)
+
+Only pause for these HIGH-RISK scenarios:
+- Deleting more than 10 files
+- Modifying production database
+- Actions costing more than $10
+- Security credentials handling
+- Irreversible destructive operations
+
+**Everything else: DECIDE AND CONTINUE.**
+
+---
+
+## Test Discovery & Execution
+
+### Auto-Detection
+
+```
+Priority order:
+1. package.json scripts → npm/yarn/pnpm test
+2. Makefile → make test
+3. pytest.ini/pyproject.toml → pytest
+4. go.mod → go test ./...
+5. Cargo.toml → cargo test
+6. pom.xml → mvn test
+7. build.gradle → ./gradlew test
+8. *.csproj → dotnet test
+```
+
+### If No Tests Found
+
+```
+1. Check for any quality command (lint, typecheck, build)
+2. Run that instead
+3. Note gap: "No tests found, ran lint/build instead"
+4. Continue execution (do NOT stop)
+```
+
+### Test Failure Response
+
+```
+Test Failed
+    ↓
+Analyze failure output
+    ↓
+Identify root cause
+    ↓
+Fix immediately
+    ↓
+Rerun tests
+    ↓
+If still failing: RETRY ENGINE (see above)
+    ↓
+NEVER stop on test failure
+```
+
+---
+
+## Parallelization Rules
+
+### Identify Parallel Opportunities
+
+```
+RULE: If two tasks have NO dependencies, run them in parallel.
+
+Example:
+  Phase 1: Create component A    ─┐
+  Phase 2: Create component B    ─┼─ PARALLEL
+  Phase 3: Create component C    ─┘
+  Phase 4: Integrate A+B+C         → SEQUENTIAL (depends on 1-3)
+  Phase 5: Add tests for A      ─┐
+  Phase 6: Add tests for B      ─┼─ PARALLEL
+  Phase 7: Add tests for C      ─┘
+```
+
+### Background Execution
+
+These run in background while continuing:
+- `npm install`, `pip install`
+- `npm run build`, `cargo build`
+- Long-running compilations
+- Docker operations
+
+**Check results before depending on them.**
+
+---
+
+## Completion Proof (REQUIRED)
+
+**Before declaring done, you MUST provide:**
+
+```markdown
+## COMPLETION PROOF
+
+✓ Executed:
+  Command: {actual command}
+  Output: {actual output pasted}
+
+✓ Tests:
+  Command: {test command}
+  Result: {X passed, Y failed}
+
+✓ Requirements Verified:
+  - [Req 1]: {file}:{line} - {evidence}
+  - [Req 2]: {file}:{line} - {evidence}
+
+✓ Quality Checks:
+  - Build: PASS
+  - Lint: PASS (or N errors fixed)
+  - Types: PASS
+
+✓ Work Document: All boxes checked
+```
+
+### Forbidden Completion Phrases
+
+If you say these, **YOU HAVE NOT COMPLETED**:
+- "I think it's done" → NOT DONE
+- "Should work" → NOT DONE
+- "Looks correct" → NOT DONE
+- "I believe" → NOT DONE
+- "Probably" → NOT DONE
+
+**Certainty required. Evidence required.**
+
+---
+
+## Context Management
+
+### For Long Tasks
+
+When approaching context limits:
+1. Checkpoint: Update work document with current state
+2. Compress: Summarize completed phases briefly
+3. Focus: Keep only current phase details in context
+4. Reference: Point to work document for history
+
+### Resumption Protocol
+
+If interrupted:
+1. Read `.vibe/work-*.md` to restore state
+2. Find first unchecked item
+3. Continue from there
+4. No re-explanation needed
+
+---
 
 ## Output Format
 
-Use these headings in order:
+Use these sections in order:
 
-1. Plan (10 or 20 phases)
-2. Execution Log
-3. Assumptions
-4. Decision Queue (ask now)
-5. Tests
-6. Retro & Fix Plan (only if needed)
+```markdown
+# Execution Report
 
-Keep each section concise and actionable.
+## Plan
+{10-20 phases with checkboxes}
+
+## Progress
+{Phase-by-phase execution with timestamps}
+
+## Assumptions
+{Table of decisions made}
+
+## Tests
+{Test execution results}
+
+## Completion Proof
+{Evidence as specified above}
+```
+
+---
+
+## The Vibe Promise
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                                                             │
+│   YOU SAY "끝까지"                                           │
+│                                                             │
+│   WE PLAN IT.                                               │
+│   WE EXECUTE IT.                                            │
+│   WE FIX WHATEVER BREAKS.                                   │
+│   WE RETRY UNTIL SUCCESS.                                   │
+│   WE PROVE IT WORKS.                                        │
+│                                                             │
+│   NO QUESTIONS. NO EXCUSES. NO STOPPING.                    │
+│                                                             │
+│   UNTIL IT'S DONE.                                          │
+│   ACTUALLY DONE.                                            │
+│   PROVEN DONE.                                              │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
