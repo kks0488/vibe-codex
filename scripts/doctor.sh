@@ -42,7 +42,7 @@ else
 fi
 
 echo "Next: copy/paste into Codex chat:"
-legacy_skills=$(find "$skills_dir" -maxdepth 1 -mindepth 1 -type d \( -name "vibe-*" -o -name "vs-*" -o -name "vf" -o -name "vg" -o -name "vsf" -o -name "vsg" \) -printf "%f " | sed 's/ $//')
+legacy_skills=$(find "$skills_dir" -maxdepth 1 -mindepth 1 -type d \( -name "vibe-*" -o -name "vs-*" -o -name "vf" -o -name "vg" -o -name "vsf" -o -name "vsg" \) -exec basename {} \; | tr '\n' ' ' | sed 's/ $//')
 if [ -n "$legacy_skills" ]; then
   echo "Warning: legacy vibe/vs skills detected: $legacy_skills"
   echo "Tip: remove or rename legacy skills to avoid conflicts."

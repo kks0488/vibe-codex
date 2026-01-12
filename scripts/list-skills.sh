@@ -9,4 +9,4 @@ if [ ! -d "$skills_dir" ]; then
   exit 1
 fi
 
-find "$skills_dir" -maxdepth 1 -mindepth 1 -type d -printf "%f\n" | sort
+find "$skills_dir" -maxdepth 1 -mindepth 1 -type d -exec basename {} \; | sort
