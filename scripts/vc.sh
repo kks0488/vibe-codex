@@ -31,41 +31,41 @@ case "$cmd" in
     ;;
   go|finish)
     if [ -z "${1:-}" ]; then
-      echo "Usage: vs $cmd <goal>" >&2
-      echo "Example: vs $cmd build a login page" >&2
+      echo "Usage: vc $cmd <goal>" >&2
+      echo "Example: vc $cmd build a login page" >&2
       echo "Tip: include a goal so Codex doesn't have to ask for one." >&2
       exit 1
     fi
     echo "Copy/paste into Codex chat:" >&2
     if [ "$cmd" = "go" ]; then
-      echo "use vsg: $*"
+      echo "use vcg: $*"
     else
-      echo "use vsf: $*"
+      echo "use vcf: $*"
     fi
     ;;
   sync)
     if [ "$#" -lt 1 ]; then
-      echo "Usage: vs sync <host> [host...]" >&2
+      echo "Usage: vc sync <host> [host...]" >&2
       exit 1
     fi
     sh "$repo_root/scripts/update-skills.sh"
     for host in "$@"; do
       echo "Updating $host"
-      ssh "$host" 'curl -fsSL https://raw.githubusercontent.com/kks0488/vs-skills/main/bootstrap.sh | bash'
+      ssh "$host" 'curl -fsSL https://raw.githubusercontent.com/kks0488/vibe-codex/main/bootstrap.sh | bash'
     done
     ;;
   help|*)
     cat <<'EOF'
-vs commands:
+vc commands:
   install    install skills into ~/.codex/skills
   update     pull repo + reinstall skills
   doctor     check install status
   list       list installed skills
-  scope      manage .vs-scope (create/add/show)
+  scope      manage .vc-scope (create/add/show)
   uninstall  remove skills (backup)
   prompts    print author/reviewer prompts
-  go         router mode (prints "use vsg: ...")
-  finish     end-to-end mode (prints "use vsf: ...")
+  go         router mode (prints "use vcg: ...")
+  finish     end-to-end mode (prints "use vcf: ...")
   sync       update local + remote host(s)
 EOF
     ;;

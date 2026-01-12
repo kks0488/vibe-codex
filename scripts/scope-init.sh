@@ -1,11 +1,11 @@
 #!/usr/bin/env sh
 set -eu
 
-scope_file="$PWD/.vs-scope"
+scope_file="$PWD/.vc-scope"
 cmd="${1:-init}"
 
 write_header() {
-  echo "# VS scope roots"
+  echo "# VC scope roots"
   echo "# One path per line (relative to this file unless absolute)"
 }
 
@@ -30,7 +30,7 @@ init_scope() {
 
 add_scope() {
   if [ "$#" -eq 0 ]; then
-    echo "Usage: vs scope add <path> [path...]" >&2
+    echo "Usage: vc scope add <path> [path...]" >&2
     exit 1
   fi
   if [ ! -f "$scope_file" ]; then

@@ -1,9 +1,9 @@
 ---
-name: vs-router
+name: vc-router
 description: Intelligent skill routing with automatic selection, composition, and fallback. Use when the user doesn't specify a skill, says "just do it", or wants the AI to decide the best approach.
 ---
 
-# VS Router - ULTIMATE EDITION
+# VC Router - ULTIMATE EDITION
 
 ## Core Philosophy
 
@@ -26,12 +26,12 @@ description: Intelligent skill routing with automatic selection, composition, an
 ## Quick Invoke
 
 Any of these activate the router:
-- `use vs-router: <goal>`
+- `use vc-router: <goal>`
 - `just do this: <goal>`
-- `vs go <goal>` (router mode)
-- `vs finish <goal>` (force end-to-end)
-- `vsf: <goal>` → routes to vs-phase-loop (끝판왕)
-- `use vsf: <goal>` → same as above
+- `vc go <goal>` (router mode)
+- `vc finish <goal>` (force end-to-end)
+- `vcf: <goal>` → routes to vc-phase-loop (끝판왕)
+- `use vcf: <goal>` → same as above
 - Korean: "그냥해줘", "걍해줘", "ㄱㄱ", "끝까지", "아무것도 모르겠다"
 
 ---
@@ -68,9 +68,9 @@ Any of these activate the router:
 ├─────────────────────────────────────────────────────────────┤
 │                                                             │
 │  EXECUTION PATTERNS:                                        │
-│  ├─ "끝까지", "finish", "hands off" → vs-phase-loop       │
-│  ├─ Multi-step, open-ended → vs-phase-loop                │
-│  └─ Autonomous completion needed → vs-phase-loop          │
+│  ├─ "끝까지", "finish", "hands off" → vc-phase-loop       │
+│  ├─ Multi-step, open-ended → vc-phase-loop                │
+│  └─ Autonomous completion needed → vc-phase-loop          │
 │                                                             │
 │  GIT/VERSION CONTROL:                                       │
 │  ├─ PR workflow, review → git-dual-terminal-loop            │
@@ -102,7 +102,7 @@ Any of these activate the router:
 │  └─ Internal comms, updates → internal-comms                │
 │                                                             │
 │  FALLBACK:                                                  │
-│  └─ Unknown/ambiguous → vs-phase-loop (safe default)      │
+│  └─ Unknown/ambiguous → vc-phase-loop (safe default)      │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -119,7 +119,7 @@ MEDIUM (50-79%): Partial match, some ambiguity
   → Select best fit, proceed with note
 
 LOW (<50%): Weak match, unclear intent
-  → Use vs-phase-loop as safe default
+  → Use vc-phase-loop as safe default
 ```
 
 ---
@@ -161,7 +161,7 @@ LOW (<50%): Weak match, unclear intent
 When chaining:
 1. Execute first skill
 2. Pass output as context to second skill
-3. If any skill fails, apply SELF-HEALING from vs-phase-loop
+3. If any skill fails, apply SELF-HEALING from vc-phase-loop
 4. Continue until all skills complete
 ```
 
@@ -177,7 +177,7 @@ When chaining:
 ├─────────────────────────────────────────────────────────────┤
 │                                                             │
 │  Level 1: Check if task is code-related                     │
-│  └─ YES → vs-phase-loop (autonomous execution)            │
+│  └─ YES → vc-phase-loop (autonomous execution)            │
 │                                                             │
 │  Level 2: Check if task is document-related                 │
 │  └─ YES → docx/pptx/pdf/xlsx based on output format         │
@@ -186,10 +186,10 @@ When chaining:
 │  └─ YES → canvas-design (flexible creative tool)            │
 │                                                             │
 │  Level 4: Unknown domain                                    │
-│  └─ ALWAYS → vs-phase-loop                                │
+│  └─ ALWAYS → vc-phase-loop                                │
 │                                                             │
 │  NEVER: "I don't know which skill to use"                   │
-│  ALWAYS: Route to vs-phase-loop as universal fallback     │
+│  ALWAYS: Route to vc-phase-loop as universal fallback     │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -211,14 +211,14 @@ Option 2: Try alternative skill from same category
     ↓
 Option 3: Decompose task and route parts separately
     ↓
-Option 4: Escalate to vs-phase-loop for full autonomy
+Option 4: Escalate to vc-phase-loop for full autonomy
     ↓
 NEVER: Stop and report failure without attempting recovery
 ```
 
 ---
 
-## VS Defaults
+## VC Defaults
 
 For ALL routing decisions:
 - Prefer fast iteration over perfection
@@ -229,17 +229,17 @@ For ALL routing decisions:
 
 ---
 
-## VS Finish Mode
+## VC Finish Mode
 
-When user triggers "vs finish" explicitly:
-- ALWAYS route to vs-phase-loop
+When user triggers "vc finish" explicitly:
+- ALWAYS route to vc-phase-loop
 - Enable full autonomous execution
 - No mid-stream questions
 - Complete end-to-end
 - Provide completion proof
 
 Triggers:
-- "vs finish", "finish it", "take it to the end"
+- "vc finish", "finish it", "take it to the end"
 - "끝까지", "끝까지 해줘", "그냥해줘", "걍해줘", "ㄱㄱ"
 - "아무것도 모르겠다", "마무리까지 해줘"
 
@@ -250,7 +250,7 @@ Triggers:
 1. **Single Pass Classification** - Decide quickly, don't overthink
 2. **Best Fit Selection** - If uncertain, choose narrower scope skill
 3. **Immediate Execution** - Route and run, collect questions for end
-4. **Safe Defaults** - vs-phase-loop handles anything
+4. **Safe Defaults** - vc-phase-loop handles anything
 5. **No Dead Ends** - Always have a path forward
 
 ---

@@ -3,7 +3,7 @@ name: internal-comms
 description: A set of resources to help me write all kinds of internal communications, using the formats that my company likes to use. Claude should use this skill whenever asked to write some sort of internal communications (status reports, leadership updates, 3P updates, company newsletters, FAQs, incident reports, project updates, etc.).
 license: Complete terms in LICENSE.txt
 ---
-## VS Defaults
+## VC Defaults
 
 - Prefer fast iteration and shipping a working baseline over perfection.
 - Make safe default choices without pausing; record assumptions briefly.
@@ -11,20 +11,20 @@ license: Complete terms in LICENSE.txt
 - Keep outputs concise, actionable, and easy to extend.
 - Assume the user is non-technical; avoid long explanations and provide copy/paste steps when actions are required.
 
-## VS Fast Path
+## VC Fast Path
 
 - Choose the closest template automatically and draft immediately.
 - If audience is unclear, default to a general internal update.
 - Ask for missing facts after delivering the first draft.
 
-## VS Quick Invoke
+## VC Quick Invoke
 
 - `use internal-comms: draft a weekly update for <team>`
 - `write a 3P update for <project>`
 
-## VS Finish
+## VC Finish
 
-Use this when the user says "아무것도 모르겠다", "끝까지 해줘", "끝까지", "그냥해줘", "걍해줘", "ㄱㄱ", "마무리까지 해줘", or "vs finish". Proceed end-to-end with safe defaults and avoid mid-stream questions; ask for confirmations only at the end.
+Use this when the user says "아무것도 모르겠다", "끝까지 해줘", "끝까지", "그냥해줘", "걍해줘", "ㄱㄱ", "마무리까지 해줘", or "vc finish". Proceed end-to-end with safe defaults and avoid mid-stream questions; ask for confirmations only at the end.
 
 ## When to use this skill
 To write internal communications, use this skill for:

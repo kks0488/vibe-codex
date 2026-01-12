@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 set -eu
 
-echo "VS Skills Doctor"
+echo "VC Skills Doctor"
 
 script_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 repo_root=$(cd "$script_dir/.." && pwd)
@@ -30,22 +30,22 @@ if [ -d "$repo_root/.git" ]; then
     fi
   fi
 else
-  repo_dir="${VS_SKILLS_HOME:-${VIBE_SKILLS_HOME:-$HOME/.vs-skills}}"
+  repo_dir="${VC_SKILLS_HOME:-${VS_SKILLS_HOME:-${VIBE_SKILLS_HOME:-$HOME/.vc-skills}}}"
   echo "Repo not found at: $repo_dir"
-  echo "Tip: set VS_SKILLS_HOME (or legacy VIBE_SKILLS_HOME) or run the bootstrap one-liner."
+  echo "Tip: set VC_SKILLS_HOME (or legacy VS_SKILLS_HOME/VIBE_SKILLS_HOME) or run the bootstrap one-liner."
 fi
 
-if [ -d "$skills_dir/vs-router" ]; then
-  echo "Core skill present: vs-router"
+if [ -d "$skills_dir/vc-router" ]; then
+  echo "Core skill present: vc-router"
 else
-  echo "Core skill missing: vs-router"
+  echo "Core skill missing: vc-router"
 fi
 
 echo "Next: copy/paste into Codex chat:"
-legacy_skills=$(find "$skills_dir" -maxdepth 1 -mindepth 1 -type d \( -name "vibe-*" -o -name "vf" -o -name "vg" \) -printf "%f " | sed 's/ $//')
+legacy_skills=$(find "$skills_dir" -maxdepth 1 -mindepth 1 -type d \( -name "vibe-*" -o -name "vs-*" -o -name "vf" -o -name "vg" -o -name "vsf" -o -name "vsg" \) -printf "%f " | sed 's/ $//')
 if [ -n "$legacy_skills" ]; then
-  echo "Warning: legacy vibe skills detected: $legacy_skills"
+  echo "Warning: legacy vibe/vs skills detected: $legacy_skills"
   echo "Tip: remove or rename legacy skills to avoid conflicts."
 fi
-echo "use vsg: build a login page"
-echo "Tip: use \"use vsf: ...\" for end-to-end (plan/execute/test)."
+echo "use vcg: build a login page"
+echo "Tip: use \"use vcf: ...\" for end-to-end (plan/execute/test)."

@@ -6,7 +6,7 @@ license: Proprietary. LICENSE.txt has complete terms
 
 # Requirements for Outputs
 
-## VS Defaults
+## VC Defaults
 
 - Prefer fast iteration and shipping a working baseline over perfection.
 - Make safe default choices without pausing; record assumptions briefly.
@@ -14,20 +14,20 @@ license: Proprietary. LICENSE.txt has complete terms
 - Keep outputs concise, actionable, and easy to extend.
 - Assume the user is non-technical; avoid long explanations and provide copy/paste steps when actions are required.
 
-## VS Fast Path
+## VC Fast Path
 
 - Default to a simple, correct model over a perfect one.
 - Use formulas and minimal formatting first; add polish later.
 - Surface assumptions and missing inputs after delivering the file.
 
-## VS Quick Invoke
+## VC Quick Invoke
 
 - `use xlsx: build a spreadsheet for <model>`
 - `use xlsx: edit <file> with <changes>`
 
-## VS Finish
+## VC Finish
 
-Use this when the user says "아무것도 모르겠다", "끝까지 해줘", "끝까지", "그냥해줘", "걍해줘", "ㄱㄱ", "마무리까지 해줘", or "vs finish". Proceed end-to-end with safe defaults and avoid mid-stream questions; ask for confirmations only at the end.
+Use this when the user says "아무것도 모르겠다", "끝까지 해줘", "끝까지", "그냥해줘", "걍해줘", "ㄱㄱ", "마무리까지 해줘", or "vc finish". Proceed end-to-end with safe defaults and avoid mid-stream questions; ask for confirmations only at the end.
 
 ## All Excel files
 

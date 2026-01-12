@@ -1,6 +1,7 @@
-# vs-skills
+# vibe-codex
 
-**ULTIMATE EDITION** - AI-first skills for VS coding, now with infinite retry, self-healing, and completion proof.
+**ULTIMATE EDITION** - Codex-first skills for Vibe Codex, now with infinite retry, self-healing, and completion proof.
+Purpose-built for Codex CLI workflows and skill routing.
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -30,12 +31,12 @@ One-liner install/update (recommended):
 
 Mac/Linux:
 ```bash
-curl -fsSL https://raw.githubusercontent.com/kks0488/vs-skills/main/bootstrap.sh | bash
+curl -fsSL https://raw.githubusercontent.com/kks0488/vibe-codex/main/bootstrap.sh | bash
 ```
 
 Windows (PowerShell):
 ```powershell
-irm https://raw.githubusercontent.com/kks0488/vs-skills/main/bootstrap.ps1 | iex
+irm https://raw.githubusercontent.com/kks0488/vibe-codex/main/bootstrap.ps1 | iex
 ```
 
 ## Usage
@@ -44,13 +45,13 @@ irm https://raw.githubusercontent.com/kks0488/vs-skills/main/bootstrap.ps1 | iex
 
 **The shortest, most powerful command:**
 ```
-vsf: build a login page
+vcf: build a login page
 ```
 
 Or longer versions:
 ```
-use vsf: build a login page
-vs finish build a login page
+use vcf: build a login page
+vc finish build a login page
 ```
 
 This triggers:
@@ -64,7 +65,7 @@ This triggers:
 ### Router Mode (Auto-Select Skill)
 
 ```
-vs go build a login page
+vc go build a login page
 ```
 
 Router analyzes your request and picks the best skill automatically.
@@ -79,7 +80,7 @@ Router analyzes your request and picks the best skill automatically.
 
 ## Core Skills (ULTIMATE EDITION)
 
-### vs-phase-loop
+### vc-phase-loop
 **The Ultimate Execution Engine**
 - 10/20 phase planning
 - Infinite retry on failure
@@ -87,7 +88,7 @@ Router analyzes your request and picks the best skill automatically.
 - Completion proof required
 - No questions, no stopping
 
-### vs-router
+### vc-router
 **Intelligent Skill Selection**
 - Intent classification (action, domain, output, scope)
 - Confidence scoring
@@ -114,12 +115,12 @@ Router analyzes your request and picks the best skill automatically.
 ## Shortcut Commands
 
 ```bash
-vs install       # Install skills
-vs update        # Update skills
-vs doctor        # Check installation
-vs list          # List installed skills
-vs go <task>     # Router mode (auto-select skill)
-vsf: <task>      # Maximum power mode (끝판왕) ← RECOMMENDED
+vc install       # Install skills
+vc update        # Update skills
+vc doctor        # Check installation
+vc list          # List installed skills
+vc go <task>     # Router mode (auto-select skill)
+vcf: <task>      # Maximum power mode (끝판왕) ← RECOMMENDED
 ```
 
 ## Completion Proof Format
@@ -149,7 +150,7 @@ Every task ends with proof:
 
 ## Who this is for
 
-- VS coders who want outcomes, not explanations
+- Codex users who want outcomes, not explanations
 - People who prefer "tell AI the goal, review the result"
 - Teams that want Git as single source of truth
 - Anyone who wants AI to complete tasks, not stop at problems
@@ -159,9 +160,9 @@ Every task ends with proof:
 
 | Skill | Purpose |
 |-------|---------|
-| `vs-phase-loop` | Autonomous execution engine |
-| `vsf` | Alias for vs-phase-loop (vs finish) |
-| `vs-router` | Intelligent skill selection |
+| `vc-phase-loop` | Autonomous execution engine |
+| `vcf` | Alias for vc-phase-loop (vc finish) |
+| `vc-router` | Intelligent skill selection |
 | `git-dual-terminal-loop` | Parallel author/reviewer workflow |
 | `frontend-design` | Bold UI builds |
 | `web-artifacts-builder` | Multi-file React artifacts |
@@ -178,8 +179,8 @@ Every task ends with proof:
 
 Manual install:
 ```bash
-git clone https://github.com/kks0488/vs-skills.git
-cd vs-skills
+git clone https://github.com/kks0488/vibe-codex.git
+cd vibe-codex
 bash scripts/install-skills.sh
 ```
 
@@ -190,7 +191,7 @@ The installer copies skills to `~/.codex/skills` with timestamped backups.
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                                                             │
-│   THE VS PROMISE                                            │
+│   THE VIBE CODEX PROMISE                                    │
 │                                                             │
 │   You say "끝까지"                                           │
 │                                                             │

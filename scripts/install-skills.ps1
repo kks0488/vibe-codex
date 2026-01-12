@@ -20,12 +20,12 @@ Write-Output "Installed skills to $DestDir"
 Write-Output "Backup suffix (if any): .bak-$timestamp"
 Write-Output "Next: copy/paste into Codex chat:"
 $legacySkills = Get-ChildItem $DestDir -Directory -ErrorAction SilentlyContinue |
-  Where-Object { $_.Name -like "vibe-*" -or $_.Name -in @("vf", "vg") } |
+  Where-Object { $_.Name -like "vibe-*" -or $_.Name -like "vs-*" -or $_.Name -in @("vf", "vg", "vsf", "vsg") } |
   Select-Object -ExpandProperty Name
 if ($legacySkills) {
   $legacyList = $legacySkills -join ", "
-  Write-Output "Warning: legacy vibe skills detected: $legacyList"
+  Write-Output "Warning: legacy vibe/vs skills detected: $legacyList"
   Write-Output "Tip: remove or rename legacy skills to avoid conflicts."
 }
-Write-Output "use vsg: build a login page"
-Write-Output "Tip: use ""use vsf: ..."" for end-to-end (plan/execute/test)."
+Write-Output "use vcg: build a login page"
+Write-Output "Tip: use ""use vcf: ..."" for end-to-end (plan/execute/test)."

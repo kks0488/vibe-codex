@@ -4,7 +4,7 @@ $RepoRoot = Resolve-Path (Join-Path $ScriptDir "..")
 $DestRoot = if ($env:CODEX_HOME) { $env:CODEX_HOME } else { Join-Path $HOME ".codex" }
 $SkillsDir = Join-Path $DestRoot "skills"
 
-Write-Output "VS Skills Doctor"
+Write-Output "VC Skills Doctor"
 Write-Output "CODEX_HOME: $DestRoot"
 
 if (Test-Path $SkillsDir) {
@@ -28,25 +28,25 @@ if (Test-Path (Join-Path $RepoRoot ".git")) {
     }
   }
 } else {
-  $RepoDir = if ($env:VS_SKILLS_HOME) { $env:VS_SKILLS_HOME } elseif ($env:VIBE_SKILLS_HOME) { $env:VIBE_SKILLS_HOME } else { Join-Path $HOME ".vs-skills" }
+  $RepoDir = if ($env:VC_SKILLS_HOME) { $env:VC_SKILLS_HOME } elseif ($env:VS_SKILLS_HOME) { $env:VS_SKILLS_HOME } elseif ($env:VIBE_SKILLS_HOME) { $env:VIBE_SKILLS_HOME } else { Join-Path $HOME ".vc-skills" }
   Write-Output "Repo not found at: $RepoDir"
-  Write-Output "Tip: set VS_SKILLS_HOME (or legacy VIBE_SKILLS_HOME) or run the bootstrap one-liner."
+  Write-Output "Tip: set VC_SKILLS_HOME (or legacy VS_SKILLS_HOME/VIBE_SKILLS_HOME) or run the bootstrap one-liner."
 }
 
-if (Test-Path (Join-Path $SkillsDir "vs-router")) {
-  Write-Output "Core skill present: vs-router"
+if (Test-Path (Join-Path $SkillsDir "vc-router")) {
+  Write-Output "Core skill present: vc-router"
 } else {
-  Write-Output "Core skill missing: vs-router"
+  Write-Output "Core skill missing: vc-router"
 }
 
 Write-Output "Next: copy/paste into Codex chat:"
 $legacySkills = Get-ChildItem $SkillsDir -Directory -ErrorAction SilentlyContinue |
-  Where-Object { $_.Name -like "vibe-*" -or $_.Name -in @("vf", "vg") } |
+  Where-Object { $_.Name -like "vibe-*" -or $_.Name -like "vs-*" -or $_.Name -in @("vf", "vg", "vsf", "vsg") } |
   Select-Object -ExpandProperty Name
 if ($legacySkills) {
   $legacyList = $legacySkills -join ", "
-  Write-Output "Warning: legacy vibe skills detected: $legacyList"
+  Write-Output "Warning: legacy vibe/vs skills detected: $legacyList"
   Write-Output "Tip: remove or rename legacy skills to avoid conflicts."
 }
-Write-Output "use vsg: build a login page"
-Write-Output "Tip: use ""use vsf: ..."" for end-to-end (plan/execute/test)."
+Write-Output "use vcg: build a login page"
+Write-Output "Tip: use ""use vcf: ..."" for end-to-end (plan/execute/test)."
