@@ -24,5 +24,10 @@ done
 echo "Installed skills to $dest_dir"
 echo "Backup suffix (if any): .bak-$timestamp"
 echo "Next: copy/paste into Codex chat:"
-echo "use vg: build a login page"
-echo "Tip: use \"use vf: ...\" for end-to-end (plan/execute/test)."
+legacy_skills=$(find "$dest_dir" -maxdepth 1 -mindepth 1 -type d \( -name "vibe-*" -o -name "vf" -o -name "vg" \) -printf "%f " | sed 's/ $//')
+if [ -n "$legacy_skills" ]; then
+  echo "Warning: legacy vibe skills detected: $legacy_skills"
+  echo "Tip: remove or rename legacy skills to avoid conflicts."
+fi
+echo "use vsg: build a login page"
+echo "Tip: use \"use vsf: ...\" for end-to-end (plan/execute/test)."

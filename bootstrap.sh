@@ -1,8 +1,8 @@
 #!/usr/bin/env sh
 set -eu
 
-repo_url="https://github.com/kks0488/vibe-skills.git"
-dest="${VIBE_SKILLS_HOME:-$HOME/.vibe-skills}"
+repo_url="https://github.com/kks0488/vs-skills.git"
+dest="${VS_SKILLS_HOME:-${VIBE_SKILLS_HOME:-$HOME/.vs-skills}}"
 
 if command -v git >/dev/null 2>&1; then
   if [ -d "$dest/.git" ]; then
@@ -27,14 +27,14 @@ if [ -z "$bin_dir" ]; then
 fi
 
 if [ -n "${bin_dir:-}" ]; then
-  wrapper="$bin_dir/vibe"
-  printf '#!/usr/bin/env sh\nexec sh "%s/scripts/vibe.sh" "$@"\n' "$dest" > "$wrapper"
+  wrapper="$bin_dir/vs"
+  printf '#!/usr/bin/env sh\nexec sh "%s/scripts/vs.sh" "$@"\n' "$dest" > "$wrapper"
   chmod +x "$wrapper"
-  echo "Command installed: vibe"
+  echo "Command installed: vs"
   case ":$PATH:" in
     *":$bin_dir:"*) ;;
-    *) echo "Tip: add $bin_dir to PATH if 'vibe' is not found." ;;
+    *) echo "Tip: add $bin_dir to PATH if 'vs' is not found." ;;
   esac
 else
-  echo "Tip: run 'bash $dest/scripts/vibe.sh <command>' for shortcuts."
+  echo "Tip: run 'bash $dest/scripts/vs.sh <command>' for shortcuts."
 fi

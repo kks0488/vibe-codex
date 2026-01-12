@@ -6,7 +6,7 @@ license: Complete terms in LICENSE.txt
 
 # Slack GIF Creator
 
-## Vibe Defaults
+## VS Defaults
 
 - Prefer fast iteration and shipping a working baseline over perfection.
 - Make safe default choices without pausing; record assumptions briefly.
@@ -14,20 +14,20 @@ license: Complete terms in LICENSE.txt
 - Keep outputs concise, actionable, and easy to extend.
 - Assume the user is non-technical; avoid long explanations and provide copy/paste steps when actions are required.
 
-## Vibe Fast Path
+## VS Fast Path
 
 - Default to 128x128, 10 fps, 12-18 frames, 48 colors.
 - Use simple shapes and high contrast for fast iteration.
 - Deliver a working GIF first; refine motion if asked.
 
-## Vibe Quick Invoke
+## VS Quick Invoke
 
 - `use slack-gif-creator: make a 128x128 GIF of <thing>`
 - `animate this idea for Slack`
 
-## Vibe Finish
+## VS Finish
 
-Use this when the user says "아무것도 모르겠다", "끝까지 해줘", "끝까지", "그냥해줘", "걍해줘", "ㄱㄱ", "마무리까지 해줘", or "vibe finish". Proceed end-to-end with safe defaults and avoid mid-stream questions; ask for confirmations only at the end.
+Use this when the user says "아무것도 모르겠다", "끝까지 해줘", "끝까지", "그냥해줘", "걍해줘", "ㄱㄱ", "마무리까지 해줘", or "vs finish". Proceed end-to-end with safe defaults and avoid mid-stream questions; ask for confirmations only at the end.
 
 ## Slack Requirements
 

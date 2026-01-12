@@ -6,7 +6,7 @@ license: Proprietary. LICENSE.txt has complete terms
 
 # PDF Processing Guide
 
-## Vibe Defaults
+## VS Defaults
 
 - Prefer fast iteration and shipping a working baseline over perfection.
 - Make safe default choices without pausing; record assumptions briefly.
@@ -14,20 +14,20 @@ license: Proprietary. LICENSE.txt has complete terms
 - Keep outputs concise, actionable, and easy to extend.
 - Assume the user is non-technical; avoid long explanations and provide copy/paste steps when actions are required.
 
-## Vibe Fast Path
+## VS Fast Path
 
 - Default to text extraction or simple operations first.
 - Use pypdf/pdfplumber for quick wins; avoid heavy transformations unless needed.
 - Deliver outputs and note any limitations or assumptions.
 
-## Vibe Quick Invoke
+## VS Quick Invoke
 
 - `use pdf: extract tables from <file>`
 - `use pdf: fill this form <file>`
 
-## Vibe Finish
+## VS Finish
 
-Use this when the user says "아무것도 모르겠다", "끝까지 해줘", "끝까지", "그냥해줘", "걍해줘", "ㄱㄱ", "마무리까지 해줘", or "vibe finish". Proceed end-to-end with safe defaults and avoid mid-stream questions; ask for confirmations only at the end.
+Use this when the user says "아무것도 모르겠다", "끝까지 해줘", "끝까지", "그냥해줘", "걍해줘", "ㄱㄱ", "마무리까지 해줘", or "vs finish". Proceed end-to-end with safe defaults and avoid mid-stream questions; ask for confirmations only at the end.
 
 ## Overview
 

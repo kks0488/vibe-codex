@@ -1,5 +1,5 @@
-$RepoUrl = "https://github.com/kks0488/vibe-skills.git"
-$Dest = if ($env:VIBE_SKILLS_HOME) { $env:VIBE_SKILLS_HOME } else { Join-Path $HOME ".vibe-skills" }
+$RepoUrl = "https://github.com/kks0488/vs-skills.git"
+$Dest = if ($env:VS_SKILLS_HOME) { $env:VS_SKILLS_HOME } elseif ($env:VIBE_SKILLS_HOME) { $env:VIBE_SKILLS_HOME } else { Join-Path $HOME ".vs-skills" }
 
 if (Get-Command git -ErrorAction SilentlyContinue) {
   if (Test-Path (Join-Path $Dest ".git")) {
@@ -16,14 +16,14 @@ if (Get-Command git -ErrorAction SilentlyContinue) {
 
 $BinDir = Join-Path $Dest "bin"
 New-Item -ItemType Directory -Force -Path $BinDir | Out-Null
-$Wrapper = Join-Path $BinDir "vibe.ps1"
+$Wrapper = Join-Path $BinDir "vs.ps1"
 @"
 param(
   [string]`$Command = "help",
   [string]`$Arg = ""
 )
-& `"$Dest\\scripts\\vibe.ps1`" `$Command `$Arg
+& `"$Dest\\scripts\\vs.ps1`" `$Command `$Arg
 "@ | Set-Content -Path $Wrapper -Encoding UTF8
 
 Write-Output "Command installed: $Wrapper"
-Write-Output "Tip: run `"$Wrapper install`" if 'vibe' is not in PATH."
+Write-Output "Tip: run `"$Wrapper install`" if 'vs' is not in PATH."

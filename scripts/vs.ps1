@@ -20,39 +20,39 @@ switch ($Command.ToLower()) {
   }
   { $_ -in @("go", "finish") } {
     if (-not $Args -or $Args.Length -eq 0) {
-      Write-Error ("Usage: vibe " + $Command.ToLower() + " <goal>")
-      Write-Error ("Example: vibe " + $Command.ToLower() + " build a login page")
+      Write-Error ("Usage: vs " + $Command.ToLower() + " <goal>")
+      Write-Error ("Example: vs " + $Command.ToLower() + " build a login page")
       Write-Error "Tip: include a goal so Codex doesn't have to ask for one."
       exit 1
     }
     $goal = $Args -join " "
     Write-Error "Copy/paste into Codex chat:"
-    $prefix = if ($Command.ToLower() -eq "go") { "use vg: " } else { "use vf: " }
+    $prefix = if ($Command.ToLower() -eq "go") { "use vsg: " } else { "use vsf: " }
     Write-Output ($prefix + $goal)
   }
   "sync" {
     if (-not $Args -or $Args.Length -eq 0) {
-      Write-Error "Usage: vibe sync <host> [host...]"
+      Write-Error "Usage: vs sync <host> [host...]"
       exit 1
     }
     & (Join-Path $RepoRoot "scripts/update-skills.ps1")
     foreach ($host in $Args) {
       Write-Output "Updating $host"
-      ssh $host "curl -fsSL https://raw.githubusercontent.com/kks0488/vibe-skills/main/bootstrap.sh | bash"
+      ssh $host "curl -fsSL https://raw.githubusercontent.com/kks0488/vs-skills/main/bootstrap.sh | bash"
     }
   }
   default {
     @"
-vibe commands:
+vs commands:
   install    install skills into ~/.codex/skills
   update     pull repo + reinstall skills
   doctor     check install status
   list       list installed skills
-  scope      manage .vibe-scope (create/add/show)
+  scope      manage .vs-scope (create/add/show)
   uninstall  remove skills (backup)
   prompts    print author/reviewer prompts
-  go         router mode (prints "use vg: ...")
-  finish     end-to-end mode (prints "use vf: ...")
+  go         router mode (prints "use vsg: ...")
+  finish     end-to-end mode (prints "use vsf: ...")
   sync       update local + remote host(s)
 "@ | Write-Output
   }

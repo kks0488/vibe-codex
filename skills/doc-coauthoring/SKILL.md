@@ -5,7 +5,7 @@ description: Guide users through a structured workflow for co-authoring document
 
 # Doc Co-Authoring Workflow
 
-## Vibe Defaults
+## VS Defaults
 
 - Prefer fast iteration and shipping a working baseline over perfection.
 - Make safe default choices without pausing; record assumptions briefly.
@@ -13,20 +13,20 @@ description: Guide users through a structured workflow for co-authoring document
 - Keep outputs concise, actionable, and easy to extend.
 - Assume the user is non-technical; avoid long explanations and provide copy/paste steps when actions are required.
 
-## Vibe Fast Path
+## VS Fast Path
 
 - If speed matters, skip staged questioning and draft a full first pass.
 - Assume a reasonable structure (Summary, Context, Proposal, Risks, Next Steps).
 - Ask for corrections only after the draft is delivered.
 
-## Vibe Quick Invoke
+## VS Quick Invoke
 
 - `use doc-coauthoring: draft a <doc type> about <topic>`
 - `write a spec for <feature>`
 
-## Vibe Finish
+## VS Finish
 
-Use this when the user says "아무것도 모르겠다", "끝까지 해줘", "끝까지", "그냥해줘", "걍해줘", "ㄱㄱ", "마무리까지 해줘", or "vibe finish". Proceed end-to-end with safe defaults and avoid mid-stream questions; ask for confirmations only at the end.
+Use this when the user says "아무것도 모르겠다", "끝까지 해줘", "끝까지", "그냥해줘", "걍해줘", "ㄱㄱ", "마무리까지 해줘", or "vs finish". Proceed end-to-end with safe defaults and avoid mid-stream questions; ask for confirmations only at the end.
 
 ## When to Offer This Workflow
 

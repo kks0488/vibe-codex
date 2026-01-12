@@ -6,7 +6,7 @@ license: Complete terms in LICENSE.txt
 
 # Web Artifacts Builder
 
-## Vibe Defaults
+## VS Defaults
 
 - Prefer fast iteration and shipping a working baseline over perfection.
 - Make safe default choices without pausing; record assumptions briefly.
@@ -14,20 +14,20 @@ license: Complete terms in LICENSE.txt
 - Keep outputs concise, actionable, and easy to extend.
 - Assume the user is non-technical; avoid long explanations and provide copy/paste steps when actions are required.
 
-## Vibe Fast Path
+## VS Fast Path
 
 - Start with a minimal React scaffold and implement the core flow only.
 - Defer advanced state or routing unless explicitly required.
 - Bundle a working HTML artifact first, then iterate.
 
-## Vibe Quick Invoke
+## VS Quick Invoke
 
 - `use web-artifacts-builder: build a multi-file React artifact for <goal>`
 - `create a shadcn UI artifact for <app>`
 
-## Vibe Finish
+## VS Finish
 
-Use this when the user says "아무것도 모르겠다", "끝까지 해줘", "끝까지", "그냥해줘", "걍해줘", "ㄱㄱ", "마무리까지 해줘", or "vibe finish". Proceed end-to-end with safe defaults and avoid mid-stream questions; ask for confirmations only at the end.
+Use this when the user says "아무것도 모르겠다", "끝까지 해줘", "끝까지", "그냥해줘", "걍해줘", "ㄱㄱ", "마무리까지 해줘", or "vs finish". Proceed end-to-end with safe defaults and avoid mid-stream questions; ask for confirmations only at the end.
 
 ## Design & Style Guidelines
 

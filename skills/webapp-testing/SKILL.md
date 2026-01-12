@@ -6,7 +6,7 @@ license: Complete terms in LICENSE.txt
 
 # Web Application Testing
 
-## Vibe Defaults
+## VS Defaults
 
 - Prefer fast iteration and shipping a working baseline over perfection.
 - Make safe default choices without pausing; record assumptions briefly.
@@ -14,20 +14,20 @@ license: Complete terms in LICENSE.txt
 - Keep outputs concise, actionable, and easy to extend.
 - Assume the user is non-technical; avoid long explanations and provide copy/paste steps when actions are required.
 
-## Vibe Fast Path
+## VS Fast Path
 
 - Run a smoke test first (load, wait for networkidle, screenshot, console errors).
 - Assert only critical UI elements before deeper flows.
 - Summarize findings and propose next tests after the first run.
 
-## Vibe Quick Invoke
+## VS Quick Invoke
 
 - `use webapp-testing: smoke test <local app>`
 - `test the UI flow for <page>`
 
-## Vibe Finish
+## VS Finish
 
-Use this when the user says "아무것도 모르겠다", "끝까지 해줘", "끝까지", "그냥해줘", "걍해줘", "ㄱㄱ", "마무리까지 해줘", or "vibe finish". Proceed end-to-end with safe defaults and avoid mid-stream questions; ask for confirmations only at the end.
+Use this when the user says "아무것도 모르겠다", "끝까지 해줘", "끝까지", "그냥해줘", "걍해줘", "ㄱㄱ", "마무리까지 해줘", or "vs finish". Proceed end-to-end with safe defaults and avoid mid-stream questions; ask for confirmations only at the end.
 
 ## Decision Tree: Choosing Your Approach
 

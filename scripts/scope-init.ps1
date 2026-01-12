@@ -3,7 +3,7 @@ param(
   [string[]]$Paths
 )
 
-$ScopeFile = Join-Path (Get-Location) ".vibe-scope"
+$ScopeFile = Join-Path (Get-Location) ".vs-scope"
 
 function Get-RemainingArgs {
   param([string[]]$Args)
@@ -14,7 +14,7 @@ function Get-RemainingArgs {
 function Write-Header {
   param([string]$Path)
   @(
-    "# Vibe scope roots"
+    "# VS scope roots"
     "# One path per line (relative to this file unless absolute)"
   ) | Set-Content -Path $Path -Encoding utf8
 }
@@ -28,7 +28,7 @@ switch ($cmd) {
   "add" {
     $rest = Get-RemainingArgs $Paths
     if (-not $rest -or $rest.Length -eq 0) {
-      Write-Error "Usage: vibe scope add <path> [path...]"
+      Write-Error "Usage: vs scope add <path> [path...]"
       exit 1
     }
     if (-not (Test-Path $ScopeFile)) {

@@ -3,7 +3,7 @@ name: canvas-design
 description: Create beautiful visual art in .png and .pdf documents using design philosophy. You should use this skill when the user asks to create a poster, piece of art, design, or other static piece. Create original visual designs, never copying existing artists' work to avoid copyright violations.
 license: Complete terms in LICENSE.txt
 ---
-## Vibe Defaults
+## VS Defaults
 
 - Prefer fast iteration and shipping a working baseline over perfection.
 - Make safe default choices without pausing; record assumptions briefly.
@@ -11,20 +11,20 @@ license: Complete terms in LICENSE.txt
 - Keep outputs concise, actionable, and easy to extend.
 - Assume the user is non-technical; avoid long explanations and provide copy/paste steps when actions are required.
 
-## Vibe Fast Path
+## VS Fast Path
 
 - Default to a single-page PNG unless a PDF is explicitly requested.
 - Pick a bold visual direction quickly and produce one strong composition.
 - Deliver the first render, then note optional refinements.
 
-## Vibe Quick Invoke
+## VS Quick Invoke
 
 - `use canvas-design: poster for <theme>`
 - `make a single-page PNG from <idea>`
 
-## Vibe Finish
+## VS Finish
 
-Use this when the user says "아무것도 모르겠다", "끝까지 해줘", "끝까지", "그냥해줘", "걍해줘", "ㄱㄱ", "마무리까지 해줘", or "vibe finish". Proceed end-to-end with safe defaults and avoid mid-stream questions; ask for confirmations only at the end.
+Use this when the user says "아무것도 모르겠다", "끝까지 해줘", "끝까지", "그냥해줘", "걍해줘", "ㄱㄱ", "마무리까지 해줘", or "vs finish". Proceed end-to-end with safe defaults and avoid mid-stream questions; ask for confirmations only at the end.
 
 ## DESIGN PHILOSOPHY CREATION
 

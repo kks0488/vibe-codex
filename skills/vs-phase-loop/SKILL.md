@@ -1,9 +1,9 @@
 ---
-name: vibe-phase-loop
+name: vs-phase-loop
 description: Ultimate autonomous execution engine. Plan → Execute → Test → Never Stop Until Done. Use when the user wants hands-off completion with no questions, automatic recovery from any failure, and proven results.
 ---
 
-# Vibe Phase Loop - ULTIMATE EDITION
+# VS Phase Loop - ULTIMATE EDITION
 
 ## Core Philosophy
 
@@ -25,7 +25,7 @@ description: Ultimate autonomous execution engine. Plan → Execute → Test →
 
 ## Step Zero: Work Document (MANDATORY)
 
-**BEFORE ANY WORK, create `.vibe/work-{timestamp}.md`:**
+**BEFORE ANY WORK, create `.vs/work-{timestamp}.md`:**
 
 ```markdown
 # Task: {description}
@@ -53,12 +53,12 @@ Status: in_progress
 
 ---
 
-## Vibe Triggers
+## VS Triggers
 
 Activate with any of these:
-- `vf: <task>` - **SHORT AND POWERFUL** (recommended)
-- `use vf: <task>` - same as above
-- "vibe finish", "finish it", "take it to the end"
+- `vsf: <task>` - **SHORT AND POWERFUL** (recommended)
+- `use vsf: <task>` - same as above
+- "vs finish", "finish it", "take it to the end"
 - "끝까지 해줘", "끝까지", "그냥해줘", "걍해줘", "ㄱㄱ"
 - "아무것도 모르겠다", "마무리까지 해줘"
 - "plan and execute", "hands off"
@@ -306,7 +306,7 @@ When approaching context limits:
 ### Resumption Protocol
 
 If interrupted:
-1. Read `.vibe/work-*.md` to restore state
+1. Read `.vs/work-*.md` to restore state
 2. Find first unchecked item
 3. Continue from there
 4. No re-explanation needed
@@ -338,7 +338,7 @@ Use these sections in order:
 
 ---
 
-## The Vibe Promise
+## The VS Promise
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
