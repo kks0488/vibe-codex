@@ -3,5 +3,5 @@ $RepoRoot = Resolve-Path (Join-Path $ScriptDir "..")
 
 Set-Location $RepoRoot
 git pull --ff-only
-& (Join-Path $RepoRoot "scripts/install-skills.ps1")
+& (Join-Path $RepoRoot "scripts/install-skills.ps1") @Args
 Write-Output "Update complete."

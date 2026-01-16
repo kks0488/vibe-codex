@@ -8,8 +8,8 @@ $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $RepoRoot = Resolve-Path (Join-Path $ScriptDir "..")
 
 switch ($Command.ToLower()) {
-  "install" { & (Join-Path $RepoRoot "scripts/install-skills.ps1") }
-  "update" { & (Join-Path $RepoRoot "scripts/update-skills.ps1") }
+  "install" { & (Join-Path $RepoRoot "scripts/install-skills.ps1") @Args }
+  "update" { & (Join-Path $RepoRoot "scripts/update-skills.ps1") @Args }
   "doctor" { & (Join-Path $RepoRoot "scripts/doctor.ps1") }
   "list" { & (Join-Path $RepoRoot "scripts/list-skills.ps1") }
   "scope" { & (Join-Path $RepoRoot "scripts/scope-init.ps1") @Args }
@@ -44,8 +44,8 @@ switch ($Command.ToLower()) {
   default {
     @"
 vc commands:
-  install    install skills into ~/.codex/skills
-  update     pull repo + reinstall skills
+  install    install skills (use --repo for .codex/skills)
+  update     pull repo + reinstall skills (supports --repo)
   doctor     check install status
   list       list installed skills
   scope      manage .vc-scope (create/add/show)

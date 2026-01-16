@@ -9,10 +9,10 @@ shift 2>/dev/null || true
 
 case "$cmd" in
   install)
-    sh "$repo_root/scripts/install-skills.sh"
+    sh "$repo_root/scripts/install-skills.sh" "$@"
     ;;
   update)
-    sh "$repo_root/scripts/update-skills.sh"
+    sh "$repo_root/scripts/update-skills.sh" "$@"
     ;;
   doctor)
     sh "$repo_root/scripts/doctor.sh"
@@ -57,8 +57,8 @@ case "$cmd" in
   help|*)
     cat <<'EOF'
 vc commands:
-  install    install skills into ~/.codex/skills
-  update     pull repo + reinstall skills
+  install    install skills (use --repo for .codex/skills)
+  update     pull repo + reinstall skills (supports --repo)
   doctor     check install status
   list       list installed skills
   scope      manage .vc-scope (create/add/show)

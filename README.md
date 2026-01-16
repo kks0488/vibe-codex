@@ -78,6 +78,10 @@ Router analyzes your request and picks the best skill automatically.
 ㄱㄱ: 로그인페이지 만들어줘
 ```
 
+### Explicit Skill Invocation
+
+Use `/skills` or type `$` to pick a skill explicitly. This works in the CLI and IDE extension; web/iOS still rely on automatic selection.
+
 ## Core Skills (ULTIMATE EDITION)
 
 ### vc-phase-loop
@@ -115,8 +119,8 @@ Router analyzes your request and picks the best skill automatically.
 ## Shortcut Commands
 
 ```bash
-vc install       # Install skills
-vc update        # Update skills
+vc install [--repo]  # Install skills
+vc update [--repo]   # Update skills
 vc doctor        # Check installation
 vc list          # List installed skills
 vc go <task>     # Router mode (auto-select skill)
@@ -181,10 +185,11 @@ Manual install:
 ```bash
 git clone https://github.com/kks0488/vibe-codex.git
 cd vibe-codex
-bash scripts/install-skills.sh
+bash scripts/install-skills.sh          # User scope (~/.codex/skills)
+bash scripts/install-skills.sh --repo   # Repo scope (<repo>/.codex/skills)
 ```
 
-The installer copies skills to `~/.codex/skills` with timestamped backups.
+The installer copies skills to the selected scope with timestamped backups. Restart Codex to pick up new skills.
 
 ## Philosophy
 

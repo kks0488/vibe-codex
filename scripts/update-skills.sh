@@ -6,5 +6,5 @@ repo_root=$(cd "$script_dir/.." && pwd)
 
 cd "$repo_root"
 git pull --ff-only
-bash "$repo_root/scripts/install-skills.sh"
+bash "$repo_root/scripts/install-skills.sh" "$@"
 echo "Update complete."
