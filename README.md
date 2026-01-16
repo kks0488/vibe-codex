@@ -15,6 +15,13 @@ Purpose-built for Codex CLI workflows and skill routing.
 └─────────────────────────────────────────────────────────────┘
 ```
 
+## Want it simpler?
+
+If you want a fast, minimal plan -> code -> exec loop:
+https://github.com/kks0488/codex-triad
+
+If you want deeper, multi-skill automation and routers, stay with vibe-codex.
+
 ## What's New in ULTIMATE EDITION
 
 - **Infinite Retry Engine** - Never stops on failure, adapts and retries
