@@ -1,0 +1,7 @@
+# Core vibe-codex skills (installed by default)
+vc-phase-loop
+vc-router
+vcf
+vcg
+git-dual-terminal-loop
+

@@ -95,6 +95,7 @@ Use `/skills` or type `$` to pick a skill explicitly. This works in the CLI and 
 - Self-healing protocol
 - Completion proof required
 - No questions, no stopping
+Aliases: `vcf`
 
 ### vc-router
 **Intelligent Skill Selection**
@@ -102,6 +103,7 @@ Use `/skills` or type `$` to pick a skill explicitly. This works in the CLI and 
 - Confidence scoring
 - Skill composition when needed
 - Smart fallback (never "I don't know")
+Alias: `vcg`
 
 ### git-dual-terminal-loop
 **Parallel Author/Reviewer Workflow**
@@ -123,8 +125,8 @@ Use `/skills` or type `$` to pick a skill explicitly. This works in the CLI and 
 ## Shortcut Commands
 
 ```bash
-vc install [--repo]  # Install skills
-vc update [--repo]   # Update skills
+vc install [--repo] [--all]  # Install skills (core by default)
+vc update [--repo] [--all]   # Update repo + reinstall skills
 vc doctor        # Check installation
 vc list          # List installed skills
 vc go <task>     # Router mode (auto-select skill)
@@ -164,24 +166,17 @@ Every task ends with proof:
 - Anyone who wants AI to complete tasks, not stop at problems
 - Non-technical users who just want things done
 
-## Skills List
+## Skills
 
 | Skill | Purpose |
 |-------|---------|
-| `vc-phase-loop` | Autonomous execution engine |
-| `vcf` | Alias for vc-phase-loop (vc finish) |
-| `vc-router` | Intelligent skill selection |
+| `vc-phase-loop` | End-to-end execution engine (sub-agent aware) |
+| `vc-router` | Intelligent skill selection (sub-agent assisted when useful) |
+| `vcf` | Alias for `vc-phase-loop` |
+| `vcg` | Alias for `vc-router` |
 | `git-dual-terminal-loop` | Parallel author/reviewer workflow |
-| `frontend-design` | Bold UI builds |
-| `web-artifacts-builder` | Multi-file React artifacts |
-| `webapp-testing` | Web application testing |
-| `docx` / `pptx` / `pdf` / `xlsx` | Document workflows |
-| `theme-factory` | Theme/styling systems |
-| `brand-guidelines` | Brand identity |
-| `algorithmic-art` | Generative art |
-| `canvas-design` | Posters and visuals |
-| `mcp-builder` | MCP server creation |
-| `skill-creator` | New skill creation |
+
+To install all bundled (optional) skills, use `--all`.
 
 ## Installation
 
@@ -189,11 +184,15 @@ Manual install:
 ```bash
 git clone https://github.com/kks0488/vibe-codex.git
 cd vibe-codex
-bash scripts/install-skills.sh          # User scope (~/.codex/skills)
-bash scripts/install-skills.sh --repo   # Repo scope (<repo>/.codex/skills)
+bash scripts/install-skills.sh                 # Core skills (default), user scope (~/.codex/skills)
+bash scripts/install-skills.sh --all           # All bundled skills
+bash scripts/install-skills.sh --repo          # Core skills, repo scope (<repo>/.codex/skills)
+bash scripts/install-skills.sh --all --repo    # All bundled skills, repo scope
 ```
 
-The installer copies skills to the selected scope with timestamped backups. Restart Codex to pick up new skills.
+The installer copies skills to the selected scope and moves any overwritten skills into a hidden `.bak-<timestamp>` folder. Restart Codex to pick up new skills.
+
+If you previously installed `--all` and want only the core vibe-codex skills, run `vc prune` (backs up removed skills).
 
 ## Philosophy
 

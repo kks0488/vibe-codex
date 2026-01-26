@@ -26,6 +26,9 @@ case "$cmd" in
   uninstall)
     sh "$repo_root/scripts/uninstall-skills.sh"
     ;;
+  prune)
+    sh "$repo_root/scripts/prune-skills.sh" "$@"
+    ;;
   prompts)
     sh "$repo_root/scripts/role-prompts.sh" "${1:-all}"
     ;;
@@ -57,12 +60,13 @@ case "$cmd" in
   help|*)
     cat <<'EOF'
 vc commands:
-  install    install skills (use --repo for .codex/skills)
-  update     pull repo + reinstall skills (supports --repo)
+  install    install skills (default: --core; add --all for everything)
+  update     pull repo + reinstall skills (default: --core; supports --repo/--all)
   doctor     check install status
   list       list installed skills
   scope      manage .vc-scope (create/add/show)
   uninstall  remove skills (backup)
+  prune      remove bundled non-core skills (backup)
   prompts    print author/reviewer prompts
   go         router mode (prints "use vcg: ...")
   finish     end-to-end mode (prints "use vcf: ...")

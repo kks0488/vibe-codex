@@ -24,8 +24,9 @@ This repo is designed to work with OpenAI Codex CLI’s current skills system (r
 
 - Keep Codex CLI current (Homebrew: `brew upgrade --cask codex`, npm: `npm i -g @openai/codex`).
 - Install skills:
-  - User scope: `bash scripts/install-skills.sh`
-  - Repo scope: `bash scripts/install-skills.sh --repo`
+  - Core skills (default): `bash scripts/install-skills.sh`
+  - All bundled skills (optional): `bash scripts/install-skills.sh --all`
+  - Repo scope: add `--repo` (e.g. `bash scripts/install-skills.sh --repo` or `bash scripts/install-skills.sh --all --repo`)
 - Sub-agents (collaboration tools):
   - Check feature flags: `codex features list` (look for `collab`)
   - vibe-codex core skills are written to be **sub-agent aware** (parallel recon/testing when available; fallback to sequential when not).
@@ -38,3 +39,5 @@ This repo is designed to work with OpenAI Codex CLI’s current skills system (r
 ## Cleanup (if you used older installers)
 
 If you see folders like `vc-router.bak-202601...` in `~/.codex/skills`, Codex may load them as duplicate skills. Move them under a hidden folder (e.g. `~/.codex/skills/.bak-*`) or delete them if you don’t need them.
+
+If you previously installed all bundled skills and want to keep only the vibe-codex core set, run `vc prune` (backs up removed skills).

@@ -4,21 +4,39 @@ set -eu
 script_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 skills_repo_root=$(cd "$script_dir/.." && pwd)
 src_dir="$skills_repo_root/skills"
+core_skills_file="$script_dir/core-skills.txt"
 
 usage() {
   cat <<'EOF'
-Usage: install-skills.sh [--user|--repo|--path <dir>]
+Usage: install-skills.sh [--core|--all] [--user|--repo|--path <dir>]
 
+  --core        Install vibe-codex core skills only (default)
+  --all         Install all bundled skills
   --user        Install to $CODEX_HOME/skills (default)
   --repo        Install to <git-root>/.codex/skills (from current directory)
   --path <dir>  Install to an explicit skills directory
 EOF
 }
 
+read_core_skills() {
+  if [ ! -f "$core_skills_file" ]; then
+    echo "Error: missing core skills list: $core_skills_file" >&2
+    exit 1
+  fi
+  awk 'NF && $1 !~ /^#/' "$core_skills_file"
+}
+
 scope="user"
 custom_dest=""
+mode="core"
 while [ "$#" -gt 0 ]; do
   case "$1" in
+    --core)
+      mode="core"
+      ;;
+    --all)
+      mode="all"
+      ;;
     --user)
       scope="user"
       ;;
@@ -66,21 +84,41 @@ mkdir -p "$dest_dir"
 
 timestamp=$(date +"%Y%m%d%H%M%S")
 backup_dir=""
-for skill in "$src_dir"/*; do
-  [ -d "$skill" ] || continue
-  name=$(basename "$skill")
-  dest="$dest_dir/$name"
-  if [ -e "$dest" ]; then
-    if [ -z "$backup_dir" ]; then
-      backup_dir="$dest_dir/.bak-$timestamp"
-      mkdir -p "$backup_dir"
+if [ "$mode" = "all" ]; then
+  for skill in "$src_dir"/*; do
+    [ -d "$skill" ] || continue
+    name=$(basename "$skill")
+    dest="$dest_dir/$name"
+    if [ -e "$dest" ]; then
+      if [ -z "$backup_dir" ]; then
+        backup_dir="$dest_dir/.bak-$timestamp"
+        mkdir -p "$backup_dir"
+      fi
+      mv "$dest" "$backup_dir/$name"
     fi
-    mv "$dest" "$backup_dir/$name"
-  fi
-  cp -R "$skill" "$dest"
-done
+    cp -R "$skill" "$dest"
+  done
+else
+  for name in $(read_core_skills); do
+    skill="$src_dir/$name"
+    if [ ! -d "$skill" ]; then
+      echo "WARN: core skill missing in repo (skipping): $name" >&2
+      continue
+    fi
+    dest="$dest_dir/$name"
+    if [ -e "$dest" ]; then
+      if [ -z "$backup_dir" ]; then
+        backup_dir="$dest_dir/.bak-$timestamp"
+        mkdir -p "$backup_dir"
+      fi
+      mv "$dest" "$backup_dir/$name"
+    fi
+    cp -R "$skill" "$dest"
+  done
+fi
 
 echo "Installed skills to $dest_dir"
+echo "Mode: $mode"
 if [ -n "$backup_dir" ]; then
   echo "Backup dir: $backup_dir"
 fi

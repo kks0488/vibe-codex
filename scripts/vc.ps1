@@ -14,6 +14,7 @@ switch ($Command.ToLower()) {
   "list" { & (Join-Path $RepoRoot "scripts/list-skills.ps1") }
   "scope" { & (Join-Path $RepoRoot "scripts/scope-init.ps1") @Args }
   "uninstall" { & (Join-Path $RepoRoot "scripts/uninstall-skills.ps1") }
+  "prune" { & (Join-Path $RepoRoot "scripts/prune-skills.ps1") @Args }
   "prompts" {
     $promptArg = if ($Args -and $Args.Length -gt 0) { $Args[0] } else { "all" }
     & (Join-Path $RepoRoot "scripts/role-prompts.ps1") $promptArg
@@ -44,12 +45,13 @@ switch ($Command.ToLower()) {
   default {
     @"
 vc commands:
-  install    install skills (use --repo for .codex/skills)
-  update     pull repo + reinstall skills (supports --repo)
+  install    install skills (default: --core; add --all for everything)
+  update     pull repo + reinstall skills (default: --core; supports --repo/--all)
   doctor     check install status
   list       list installed skills
   scope      manage .vc-scope (create/add/show)
   uninstall  remove skills (backup)
+  prune      remove bundled non-core skills (backup)
   prompts    print author/reviewer prompts
   go         router mode (prints "use vcg: ...")
   finish     end-to-end mode (prints "use vcf: ...")
