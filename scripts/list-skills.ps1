@@ -6,4 +6,7 @@ if (-not (Test-Path $SkillsDir)) {
   exit 1
 }
 
-Get-ChildItem $SkillsDir -Directory | Select-Object -ExpandProperty Name | Sort-Object
+Get-ChildItem $SkillsDir -Directory -ErrorAction SilentlyContinue |
+  Where-Object { -not $_.Name.StartsWith(".") -and (Test-Path (Join-Path $_.FullName "SKILL.md")) } |
+  Select-Object -ExpandProperty Name |
+  Sort-Object

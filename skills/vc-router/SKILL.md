@@ -60,6 +60,17 @@ Any of these activate the router:
 └─────────────────────────────────────────────────────────────┘
 ```
 
+### Step 1.5: Sub-Agent Assisted Routing (Optional)
+
+If the request is **large, ambiguous, or multi-domain**, spawn **1–2 sub-agents** to parallelize:
+- Repo scan: locate relevant code/config and constraints
+- Risk scan: identify security/ops risks and validation strategy
+
+Rules:
+- Keep it lightweight (max 2) and timeboxed.
+- Sub-agents report findings only; main agent makes routing decision.
+- If sub-agents aren’t available, continue without them.
+
 ### Step 2: Skill Matching
 
 ```

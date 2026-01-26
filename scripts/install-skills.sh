@@ -65,18 +65,25 @@ fi
 mkdir -p "$dest_dir"
 
 timestamp=$(date +"%Y%m%d%H%M%S")
+backup_dir=""
 for skill in "$src_dir"/*; do
   [ -d "$skill" ] || continue
   name=$(basename "$skill")
   dest="$dest_dir/$name"
   if [ -e "$dest" ]; then
-    mv "$dest" "$dest.bak-$timestamp"
+    if [ -z "$backup_dir" ]; then
+      backup_dir="$dest_dir/.bak-$timestamp"
+      mkdir -p "$backup_dir"
+    fi
+    mv "$dest" "$backup_dir/$name"
   fi
   cp -R "$skill" "$dest"
 done
 
 echo "Installed skills to $dest_dir"
-echo "Backup suffix (if any): .bak-$timestamp"
+if [ -n "$backup_dir" ]; then
+  echo "Backup dir: $backup_dir"
+fi
 echo "Next: copy/paste into Codex chat:"
 legacy_skills=$(find "$dest_dir" -maxdepth 1 -mindepth 1 -type d \( -name "vibe-*" -o -name "vs-*" -o -name "vf" -o -name "vg" -o -name "vsf" -o -name "vsg" \) -exec basename {} \; | tr '\n' ' ' | sed 's/ $//')
 if [ -n "$legacy_skills" ]; then

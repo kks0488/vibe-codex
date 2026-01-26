@@ -21,6 +21,16 @@ description: Short, explicit alias for vc-router. Use only when the user explici
 - Execute immediately; collect assumptions and questions for the end.
 - If the task is multi-step or open-ended, default to a finish-style workflow.
 
+## Sub-Agent Assist (Optional)
+
+If the request is **large/ambiguous** and collaboration tools are available, spawn **1–2 sub-agents** to parallelize:
+- Repo scan (within scope roots): locate relevant files/config and constraints
+- Risk/validation scan: test strategy, edge cases, safety concerns
+
+Rules:
+- Timebox and keep outputs short.
+- Sub-agents report findings only; main agent decides routing and applies changes.
+
 ## VC Quick Invoke
 
 - `use vcg: <goal>`

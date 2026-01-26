@@ -253,6 +253,50 @@ These run in background while continuing:
 
 ---
 
+## Sub-Agents (Collaboration Tools)
+
+Modern Codex can spawn sub-agents. Use them to **speed up independent work** (recon, analysis, testing), then merge results into a single execution thread.
+
+### When to Spawn Sub-Agents
+
+Use sub-agents when you have **2+ independent threads** such as:
+- Repo reconnaissance (find files, map architecture, identify owners)
+- Documentation lookup / API surface verification
+- Running tests + collecting failure analysis
+- Exploring alternative implementations in parallel
+
+### Sub-Agent Rules (Hard)
+
+- **Max 4 sub-agents** (Codex may cap at 6; stay below it).
+- Each sub-agent gets **one narrow goal** and a **strict deliverable format**.
+- Prefer **read-only** tasks for sub-agents; the main agent owns all writes/patches to avoid conflicts.
+- If a sub-agent can’t run tools (or `spawn_agent` isn’t available), **fallback to sequential**.
+- Always `close_agent` after harvesting results to avoid resource leaks.
+
+### Dispatch Protocol (Tooling)
+
+1. `spawn_agent` for each independent thread (worker role if available).
+2. Provide:
+   - Goal (1 sentence)
+   - Scope boundaries (what to touch / not touch)
+   - Required output format (bullets/table)
+   - Stop condition (when to reply)
+3. `wait` for results (with timeouts), then `send_input` follow-ups if needed.
+4. Integrate outputs into:
+   - Work doc (Phases / Assumptions / Error Log)
+   - A single consolidated plan (main agent)
+5. `close_agent` for each sub-agent.
+
+### Output Format (Required)
+
+Every sub-agent response must start with:
+- `SUMMARY:` (≤5 bullets)
+- `FINDINGS:` (facts + file paths/commands)
+- `RISKS:` (what could go wrong)
+- `RECOMMENDATION:` (next action)
+
+---
+
 ## Completion Proof (REQUIRED)
 
 **Before declaring done, you MUST provide:**

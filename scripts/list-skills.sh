@@ -9,4 +9,6 @@ if [ ! -d "$skills_dir" ]; then
   exit 1
 fi
 
-find "$skills_dir" -maxdepth 1 -mindepth 1 -type d -exec basename {} \; | sort
+find "$skills_dir" -maxdepth 2 -mindepth 2 -type f -name "SKILL.md" -exec dirname {} \; 2>/dev/null \
+  | while IFS= read -r dir; do basename "$dir"; done \
+  | sort -u

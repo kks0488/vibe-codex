@@ -23,9 +23,17 @@ if command -v git >/dev/null 2>&1; then
 fi
 
 echo "CODEX_HOME: $user_root"
+if command -v codex >/dev/null 2>&1; then
+  codex_path=$(command -v codex)
+  codex_version=$(codex --version 2>/dev/null | tr -d '\r' || true)
+  if [ -n "$codex_version" ]; then
+    echo "codex: $codex_version ($codex_path)"
+  fi
+fi
 
 count_dirs() {
-  find "$1" -maxdepth 1 -mindepth 1 -type d 2>/dev/null | wc -l | tr -d ' '
+  # Count skills by looking for <skill-dir>/SKILL.md (Codex scans SKILL.md files, not directories).
+  find "$1" -maxdepth 2 -mindepth 2 -type f -name "SKILL.md" 2>/dev/null | wc -l | tr -d ' '
 }
 
 validate_skill() {
@@ -58,12 +66,13 @@ validate_skill() {
   name_len=$(printf "%s" "$name" | wc -c | tr -d ' ')
   desc_len=$(printf "%s" "$desc" | wc -c | tr -d ' ')
 
-  if [ "$name_len" -gt 100 ]; then
-    echo "WARN: name too long ($name_len > 100): $skill_file"
+  # Match Codex CLI constraints (codex-rs/core/src/skills/loader.rs).
+  if [ "$name_len" -gt 64 ]; then
+    echo "WARN: name too long ($name_len > 64): $skill_file"
     return 1
   fi
-  if [ "$desc_len" -gt 500 ]; then
-    echo "WARN: description too long ($desc_len > 500): $skill_file"
+  if [ "$desc_len" -gt 1024 ]; then
+    echo "WARN: description too long ($desc_len > 1024): $skill_file"
     return 1
   fi
 
@@ -79,8 +88,13 @@ validate_skills_dir() {
 
   echo "Checking skill metadata ($label): $dir"
   issues=0
+  skipped=0
   for skill in "$dir"/*; do
     [ -d "$skill" ] || continue
+    if [ ! -f "$skill/SKILL.md" ]; then
+      skipped=$((skipped + 1))
+      continue
+    fi
     if ! validate_skill "$skill"; then
       issues=$((issues + 1))
     fi
@@ -91,11 +105,19 @@ validate_skills_dir() {
   else
     echo "Skill metadata issues: $issues ($label)"
   fi
+  if [ "$skipped" -ne 0 ]; then
+    echo "Skipped non-skill dirs (no SKILL.md): $skipped ($label)"
+  fi
 }
 
 if [ -d "$user_skills_dir" ]; then
   count=$(count_dirs "$user_skills_dir")
   echo "Skills dir (user): $user_skills_dir ($count installed)"
+  legacy_backups=$(find "$user_skills_dir" -maxdepth 1 -mindepth 1 -type d -name "*.bak-*" -exec basename {} \; 2>/dev/null | tr '\n' ' ' | sed 's/ $//')
+  if [ -n "$legacy_backups" ]; then
+    echo "WARN: legacy backup skill folders detected (will load as duplicate skills): $legacy_backups"
+    echo "Tip: move them under a hidden folder (e.g. $user_skills_dir/.bak-*) or delete them."
+  fi
 else
   echo "Skills dir not found: $user_skills_dir"
 fi
@@ -149,10 +171,12 @@ if [ -n "$repo_skills_dir" ] && [ "$repo_skills_dir" != "$cwd_skills_dir" ]; the
 fi
 
 echo "Next: copy/paste into Codex chat:"
-legacy_skills=$(find "$user_skills_dir" -maxdepth 1 -mindepth 1 -type d \( -name "vibe-*" -o -name "vs-*" -o -name "vf" -o -name "vg" -o -name "vsf" -o -name "vsg" \) -exec basename {} \; 2>/dev/null | tr '\n' ' ' | sed 's/ $//')
+legacy_skills=$(find "$user_skills_dir" -maxdepth 1 -mindepth 1 -type d \( -name "vibe-*" -o -name "vs-*" -o -name "vf" -o -name "vg" -o -name "vsf" -o -name "vsg" \) -exec basename {} \; 2>/dev/null || true)
+legacy_skills=$(printf "%s\n" "$legacy_skills" | tr '\n' ' ' | sed 's/ $//')
 if [ -n "$legacy_skills" ]; then
   echo "Warning: legacy vibe/vs skills detected: $legacy_skills"
   echo "Tip: remove or rename legacy skills to avoid conflicts."
 fi
 echo "use vcg: build a login page"
 echo "Tip: use \"use vcf: ...\" for end-to-end (plan/execute/test)."
+echo "Tip: install OpenAI Docs MCP: codex mcp add openaiDeveloperDocs --url https://developers.openai.com/mcp"

@@ -1,0 +1,5 @@
+[interface]
+display_name = "VC Router"
+short_description = "Auto-selects the best skill (and chains when needed)."
+brand_color = "#3B82F6"
+default_prompt = "Route this request to the best skill(s); use sub-agents for quick scans when ambiguous."

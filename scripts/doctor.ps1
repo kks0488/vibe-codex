@@ -21,9 +21,22 @@ if (Get-Command git -ErrorAction SilentlyContinue) {
 
 Write-Output "VC Skills Doctor"
 Write-Output "CODEX_HOME: $UserRoot"
+if (Get-Command codex -ErrorAction SilentlyContinue) {
+  try {
+    $codexCmd = Get-Command codex
+    $codexVersion = (& codex --version 2>$null)
+    if ($codexVersion) {
+      Write-Output ("codex: " + $codexVersion.Trim() + " (" + $codexCmd.Source + ")")
+    }
+  } catch {
+    # ignore
+  }
+}
 
 function Get-SkillCount([string]$dir) {
-  return (Get-ChildItem $dir -Directory -ErrorAction SilentlyContinue | Measure-Object).Count
+  return (Get-ChildItem $dir -Directory -ErrorAction SilentlyContinue |
+    Where-Object { -not $_.Name.StartsWith(".") -and (Test-Path (Join-Path $_.FullName "SKILL.md")) } |
+    Measure-Object).Count
 }
 
 function Test-Skill([string]$skillDir) {
@@ -76,12 +89,13 @@ function Test-Skill([string]$skillDir) {
     return $false
   }
 
-  if ($name.Length -gt 100) {
-    Write-Output "WARN: name too long ($($name.Length) > 100): $skillFile"
+  # Match Codex CLI constraints (codex-rs/core/src/skills/loader.rs).
+  if ($name.Length -gt 64) {
+    Write-Output "WARN: name too long ($($name.Length) > 64): $skillFile"
     return $false
   }
-  if ($desc.Length -gt 500) {
-    Write-Output "WARN: description too long ($($desc.Length) > 500): $skillFile"
+  if ($desc.Length -gt 1024) {
+    Write-Output "WARN: description too long ($($desc.Length) > 1024): $skillFile"
     return $false
   }
 
@@ -95,22 +109,40 @@ function Test-SkillsDir([string]$dir, [string]$label) {
 
   Write-Output "Checking skill metadata ($label): $dir"
   $issues = 0
-  Get-ChildItem $dir -Directory -ErrorAction SilentlyContinue | ForEach-Object {
-    if (-not (Test-Skill $_.FullName)) {
-      $issues++
+  $skipped = 0
+  Get-ChildItem $dir -Directory -ErrorAction SilentlyContinue |
+    Where-Object { -not $_.Name.StartsWith(".") } |
+    ForEach-Object {
+      if (-not (Test-Path (Join-Path $_.FullName "SKILL.md"))) {
+        $skipped++
+        return
+      }
+      if (-not (Test-Skill $_.FullName)) {
+        $issues++
+      }
     }
-  }
 
   if ($issues -eq 0) {
     Write-Output "Skill metadata OK ($label)"
   } else {
     Write-Output "Skill metadata issues: $issues ($label)"
   }
+  if ($skipped -ne 0) {
+    Write-Output "Skipped non-skill dirs (no SKILL.md): $skipped ($label)"
+  }
 }
 
 if (Test-Path $UserSkillsDir) {
   $count = Get-SkillCount $UserSkillsDir
   Write-Output "Skills dir (user): $UserSkillsDir ($count installed)"
+  $legacyBackups = Get-ChildItem $UserSkillsDir -Directory -ErrorAction SilentlyContinue |
+    Where-Object { $_.Name -like "*.bak-*" } |
+    Select-Object -ExpandProperty Name
+  if ($legacyBackups) {
+    $legacyList = $legacyBackups -join ", "
+    Write-Output "WARN: legacy backup skill folders detected (will load as duplicate skills): $legacyList"
+    Write-Output "Tip: move them under a hidden folder (e.g. $UserSkillsDir\\.bak-*) or delete them."
+  }
 } else {
   Write-Output "Skills dir not found: $UserSkillsDir"
 }
@@ -176,3 +208,4 @@ if ($legacySkills) {
 }
 Write-Output "use vcg: build a login page"
 Write-Output "Tip: use \"use vcf: ...\" for end-to-end (plan/execute/test)."
+Write-Output "Tip: install OpenAI Docs MCP: codex mcp add openaiDeveloperDocs --url https://developers.openai.com/mcp"

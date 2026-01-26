@@ -62,16 +62,23 @@ if ($CustomDest) {
 New-Item -ItemType Directory -Force -Path $DestDir | Out-Null
 
 $timestamp = Get-Date -Format "yyyyMMddHHmmss"
+$backupDir = $null
 Get-ChildItem $SrcDir -Directory | ForEach-Object {
   $dest = Join-Path $DestDir $_.Name
   if (Test-Path $dest) {
-    Rename-Item $dest ($dest + ".bak-" + $timestamp)
+    if (-not $backupDir) {
+      $backupDir = Join-Path $DestDir (".bak-" + $timestamp)
+      New-Item -ItemType Directory -Force -Path $backupDir | Out-Null
+    }
+    Move-Item $dest $backupDir
   }
   Copy-Item $_.FullName $dest -Recurse -Force
 }
 
 Write-Output "Installed skills to $DestDir"
-Write-Output "Backup suffix (if any): .bak-$timestamp"
+if ($backupDir) {
+  Write-Output "Backup dir: $backupDir"
+}
 Write-Output "Next: copy/paste into Codex chat:"
 $legacySkills = Get-ChildItem $DestDir -Directory -ErrorAction SilentlyContinue |
   Where-Object { $_.Name -like "vibe-*" -or $_.Name -like "vs-*" -or $_.Name -in @("vf", "vg", "vsf", "vsg") } |

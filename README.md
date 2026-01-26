@@ -46,9 +46,14 @@ Windows (PowerShell):
 irm https://raw.githubusercontent.com/kks0488/vibe-codex/main/bootstrap.ps1 | iex
 ```
 
+## Codex CLI compatibility
+
+- Tested against recent `codex-cli` (Rust releases). See `docs/codex-upgrade-check.md` for upgrade notes (skills discovery, sandbox/approvals, MCP, connectors).
+- Core flows are sub-agent aware (uses Codex collaboration tools for parallel recon/testing when available).
+
 ## Usage
 
-### Maximum Power Mode (끝판왕)
+### Maximum Power Mode
 
 **The shortest, most powerful command:**
 ```
@@ -76,14 +81,6 @@ vc go build a login page
 ```
 
 Router analyzes your request and picks the best skill automatically.
-
-### Korean Shortcuts
-
-```
-끝까지: 로그인페이지 만들어줘
-그냥해줘: 로그인페이지 만들어줘
-ㄱㄱ: 로그인페이지 만들어줘
-```
 
 ### Explicit Skill Invocation
 
@@ -131,7 +128,7 @@ vc update [--repo]   # Update skills
 vc doctor        # Check installation
 vc list          # List installed skills
 vc go <task>     # Router mode (auto-select skill)
-vcf: <task>      # Maximum power mode (끝판왕) ← RECOMMENDED
+vcf: <task>      # Maximum power mode (recommended)
 ```
 
 ## Completion Proof Format
@@ -204,8 +201,6 @@ The installer copies skills to the selected scope with timestamped backups. Rest
 ┌─────────────────────────────────────────────────────────────┐
 │                                                             │
 │   THE VIBE CODEX PROMISE                                    │
-│                                                             │
-│   You say "끝까지"                                           │
 │                                                             │
 │   We throw agents at it.                                    │
 │   We throw retries at it.                                   │
