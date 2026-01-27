@@ -5,10 +5,10 @@ $CoreSkillsFile = Join-Path $ScriptDir "core-skills.txt"
 
 function Show-Usage {
 @"
-Usage: install-skills.ps1 [--core|--all] [--user|--repo|--path <dir>]
+Usage: install-skills.ps1 [--user|--repo|--path <dir>]
 
-  --core        Install vibe-codex core skills only (default)
-  --all         Install all bundled skills
+  --core        (legacy) No-op. This repo ships only vc skills.
+  --all         (legacy) No-op. This repo ships only vc skills.
   --user        Install to `$CODEX_HOME\\skills (default)
   --repo        Install to <git-root>\\.codex\\skills (from current directory)
   --path <dir>  Install to an explicit skills directory
@@ -24,12 +24,12 @@ function Get-CoreSkills {
 }
 
 $Scope = "user"
-$Mode = "core"
+$LegacyAll = $false
 $CustomDest = $null
 for ($i = 0; $i -lt $Args.Length; $i++) {
   switch ($Args[$i]) {
-    "--core" { $Mode = "core" }
-    "--all" { $Mode = "all" }
+    "--core" { }
+    "--all" { $LegacyAll = $true }
     "--user" { $Scope = "user" }
     "--repo" { $Scope = "repo" }
     "--path" {
@@ -77,40 +77,29 @@ New-Item -ItemType Directory -Force -Path $DestDir | Out-Null
 
 $timestamp = Get-Date -Format "yyyyMMddHHmmss"
 $backupDir = $null
-if ($Mode -eq "all") {
-  Get-ChildItem $SrcDir -Directory | ForEach-Object {
-    $dest = Join-Path $DestDir $_.Name
-    if (Test-Path $dest) {
-      if (-not $backupDir) {
-        $backupDir = Join-Path $DestDir (".bak-" + $timestamp)
-        New-Item -ItemType Directory -Force -Path $backupDir | Out-Null
-      }
-      Move-Item $dest $backupDir
-    }
-    Copy-Item $_.FullName $dest -Recurse -Force
+if ($LegacyAll) {
+  Write-Output "Note: --all is deprecated; this repo ships only vc skills."
+}
+
+$coreSkills = Get-CoreSkills
+foreach ($name in $coreSkills) {
+  $skillDir = Join-Path $SrcDir $name
+  if (-not (Test-Path $skillDir)) {
+    Write-Warning "Core skill missing in repo (skipping): $name"
+    continue
   }
-} else {
-  $coreSkills = Get-CoreSkills
-  foreach ($name in $coreSkills) {
-    $skillDir = Join-Path $SrcDir $name
-    if (-not (Test-Path $skillDir)) {
-      Write-Warning "Core skill missing in repo (skipping): $name"
-      continue
+  $dest = Join-Path $DestDir $name
+  if (Test-Path $dest) {
+    if (-not $backupDir) {
+      $backupDir = Join-Path (Split-Path $DestDir -Parent) ("skills.bak-" + $timestamp)
+      New-Item -ItemType Directory -Force -Path $backupDir | Out-Null
     }
-    $dest = Join-Path $DestDir $name
-    if (Test-Path $dest) {
-      if (-not $backupDir) {
-        $backupDir = Join-Path $DestDir (".bak-" + $timestamp)
-        New-Item -ItemType Directory -Force -Path $backupDir | Out-Null
-      }
-      Move-Item $dest $backupDir
-    }
-    Copy-Item $skillDir $dest -Recurse -Force
+    Move-Item $dest $backupDir
   }
+  Copy-Item $skillDir $dest -Recurse -Force
 }
 
 Write-Output "Installed skills to $DestDir"
-Write-Output "Mode: $Mode"
 if ($backupDir) {
   Write-Output "Backup dir: $backupDir"
 }

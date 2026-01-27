@@ -59,8 +59,6 @@ Activate with any of these:
 - `vcf: <task>` - **SHORT AND POWERFUL** (recommended)
 - `use vcf: <task>` - same as above
 - "vc finish", "finish it", "take it to the end"
-- "끝까지 해줘", "끝까지", "그냥해줘", "걍해줘", "ㄱㄱ"
-- "아무것도 모르겠다", "마무리까지 해줘"
 - "plan and execute", "hands off"
 
 ---
@@ -387,7 +385,7 @@ Use these sections in order:
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                                                             │
-│   YOU SAY "끝까지"                                           │
+│   YOU SET THE GOAL.                                         │
 │                                                             │
 │   WE PLAN IT.                                               │
 │   WE EXECUTE IT.                                            │

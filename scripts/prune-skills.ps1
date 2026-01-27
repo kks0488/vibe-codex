@@ -1,14 +1,13 @@
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $RepoRoot = Resolve-Path (Join-Path $ScriptDir "..")
-$SrcDir = Join-Path $RepoRoot "skills"
-$CoreSkillsFile = Join-Path $ScriptDir "core-skills.txt"
+$LegacySkillsFile = Join-Path $ScriptDir "legacy-skills.txt"
 
 function Show-Usage {
 @"
 Usage: prune-skills.ps1 [--user|--repo|--path <dir>] [--dry-run]
 
-Removes (backs up) bundled non-core vibe-codex skills from the destination skills directory.
-Only affects skills that exist in this repo's skills/ folder.
+Removes (backs up) legacy non-vc skills from older vibe-codex installs.
+Only affects skill directories listed in scripts/legacy-skills.txt.
 
   --user        Use `$CODEX_HOME\\skills (default)
   --repo        Use <git-root>\\.codex\\skills (from current directory)
@@ -17,13 +16,13 @@ Only affects skills that exist in this repo's skills/ folder.
 "@ | Write-Output
 }
 
-if (-not (Test-Path $CoreSkillsFile)) {
-  Write-Error "Error: missing core skills list: $CoreSkillsFile"
+if (-not (Test-Path $LegacySkillsFile)) {
+  Write-Error "Error: missing legacy skills list: $LegacySkillsFile"
   exit 1
 }
 
-function Get-CoreSkills {
-  return Get-Content $CoreSkillsFile | ForEach-Object { $_.Trim() } | Where-Object { $_ -and -not $_.StartsWith("#") }
+function Get-LegacySkills {
+  return Get-Content $LegacySkillsFile | ForEach-Object { $_.Trim() } | Where-Object { $_ -and -not $_.StartsWith("#") }
 }
 
 $Scope = "user"
@@ -80,29 +79,24 @@ if (-not (Test-Path $DestDir)) {
   exit 1
 }
 
-$core = New-Object 'System.Collections.Generic.HashSet[string]'
-Get-CoreSkills | ForEach-Object { [void]$core.Add($_) }
+$legacy = Get-LegacySkills
 
 $timestamp = Get-Date -Format "yyyyMMddHHmmss"
 $backupDir = $null
 $removed = 0
 
-Get-ChildItem $SrcDir -Directory | ForEach-Object {
-  $name = $_.Name
-  if ($core.Contains($name)) {
-    return
-  }
+foreach ($name in $legacy) {
   $dest = Join-Path $DestDir $name
   if (-not (Test-Path $dest)) {
-    return
+    continue
   }
   if ($DryRun) {
     Write-Output "Would move: $dest"
     $removed++
-    return
+    continue
   }
   if (-not $backupDir) {
-    $backupDir = Join-Path $DestDir (".bak-" + $timestamp)
+    $backupDir = Join-Path (Split-Path $DestDir -Parent) ("skills.bak-" + $timestamp)
     New-Item -ItemType Directory -Force -Path $backupDir | Out-Null
   }
   Move-Item $dest $backupDir
@@ -114,8 +108,7 @@ if ($DryRun) {
   exit 0
 }
 
-Write-Output "Removed $removed skill(s) from $DestDir (non-core only)."
+Write-Output "Removed $removed legacy skill(s) from $DestDir."
 if ($backupDir) {
   Write-Output "Backup dir: $backupDir"
 }
-

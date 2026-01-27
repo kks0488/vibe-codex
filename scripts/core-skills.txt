@@ -3,5 +3,3 @@ vc-phase-loop
 vc-router
 vcf
 vcg
-git-dual-terminal-loop
-

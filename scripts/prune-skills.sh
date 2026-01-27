@@ -3,15 +3,14 @@ set -eu
 
 script_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 skills_repo_root=$(cd "$script_dir/.." && pwd)
-src_dir="$skills_repo_root/skills"
-core_skills_file="$script_dir/core-skills.txt"
+legacy_skills_file="$script_dir/legacy-skills.txt"
 
 usage() {
   cat <<'EOF'
 Usage: prune-skills.sh [--user|--repo|--path <dir>] [--dry-run]
 
-Removes (backs up) bundled non-core vibe-codex skills from the destination skills directory.
-Only affects skills that exist in this repo's skills/ folder.
+Removes (backs up) legacy non-vc skills from older vibe-codex installs.
+Only affects skill directories listed in scripts/legacy-skills.txt.
 
   --user        Use $CODEX_HOME/skills (default)
   --repo        Use <git-root>/.codex/skills (from current directory)
@@ -20,10 +19,14 @@ Only affects skills that exist in this repo's skills/ folder.
 EOF
 }
 
-if [ ! -f "$core_skills_file" ]; then
-  echo "Error: missing core skills list: $core_skills_file" >&2
+if [ ! -f "$legacy_skills_file" ]; then
+  echo "Error: missing legacy skills list: $legacy_skills_file" >&2
   exit 1
 fi
+
+read_legacy_skills() {
+  awk 'NF && $1 !~ /^#/' "$legacy_skills_file"
+}
 
 scope="user"
 custom_dest=""
@@ -85,14 +88,7 @@ timestamp=$(date +"%Y%m%d%H%M%S")
 backup_dir=""
 removed=0
 
-for skill in "$src_dir"/*; do
-  [ -d "$skill" ] || continue
-  name=$(basename "$skill")
-
-  if grep -Fxq "$name" "$core_skills_file"; then
-    continue
-  fi
-
+for name in $(read_legacy_skills); do
   dest="$dest_dir/$name"
   if [ ! -e "$dest" ]; then
     continue
@@ -105,7 +101,7 @@ for skill in "$src_dir"/*; do
   fi
 
   if [ -z "$backup_dir" ]; then
-    backup_dir="$dest_dir/.bak-$timestamp"
+    backup_dir="$(dirname "$dest_dir")/skills.bak-$timestamp"
     mkdir -p "$backup_dir"
   fi
   mv "$dest" "$backup_dir/$name"
@@ -117,8 +113,7 @@ if [ "$dry_run" = "true" ]; then
   exit 0
 fi
 
-echo "Removed $removed skill(s) from $dest_dir (non-core only)."
+echo "Removed $removed legacy skill(s) from $dest_dir."
 if [ -n "$backup_dir" ]; then
   echo "Backup dir: $backup_dir"
 fi
-

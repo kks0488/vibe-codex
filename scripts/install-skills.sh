@@ -8,10 +8,10 @@ core_skills_file="$script_dir/core-skills.txt"
 
 usage() {
   cat <<'EOF'
-Usage: install-skills.sh [--core|--all] [--user|--repo|--path <dir>]
+Usage: install-skills.sh [--user|--repo|--path <dir>]
 
-  --core        Install vibe-codex core skills only (default)
-  --all         Install all bundled skills
+  --core        (legacy) No-op. This repo ships only vc skills.
+  --all         (legacy) No-op. This repo ships only vc skills.
   --user        Install to $CODEX_HOME/skills (default)
   --repo        Install to <git-root>/.codex/skills (from current directory)
   --path <dir>  Install to an explicit skills directory
@@ -28,14 +28,14 @@ read_core_skills() {
 
 scope="user"
 custom_dest=""
-mode="core"
+legacy_all="false"
 while [ "$#" -gt 0 ]; do
   case "$1" in
     --core)
-      mode="core"
+      :
       ;;
     --all)
-      mode="all"
+      legacy_all="true"
       ;;
     --user)
       scope="user"
@@ -84,41 +84,28 @@ mkdir -p "$dest_dir"
 
 timestamp=$(date +"%Y%m%d%H%M%S")
 backup_dir=""
-if [ "$mode" = "all" ]; then
-  for skill in "$src_dir"/*; do
-    [ -d "$skill" ] || continue
-    name=$(basename "$skill")
-    dest="$dest_dir/$name"
-    if [ -e "$dest" ]; then
-      if [ -z "$backup_dir" ]; then
-        backup_dir="$dest_dir/.bak-$timestamp"
-        mkdir -p "$backup_dir"
-      fi
-      mv "$dest" "$backup_dir/$name"
-    fi
-    cp -R "$skill" "$dest"
-  done
-else
-  for name in $(read_core_skills); do
-    skill="$src_dir/$name"
-    if [ ! -d "$skill" ]; then
-      echo "WARN: core skill missing in repo (skipping): $name" >&2
-      continue
-    fi
-    dest="$dest_dir/$name"
-    if [ -e "$dest" ]; then
-      if [ -z "$backup_dir" ]; then
-        backup_dir="$dest_dir/.bak-$timestamp"
-        mkdir -p "$backup_dir"
-      fi
-      mv "$dest" "$backup_dir/$name"
-    fi
-    cp -R "$skill" "$dest"
-  done
+if [ "$legacy_all" = "true" ]; then
+  echo "Note: --all is deprecated; this repo ships only vc skills." >&2
 fi
 
+for name in $(read_core_skills); do
+  skill="$src_dir/$name"
+  if [ ! -d "$skill" ]; then
+    echo "WARN: core skill missing in repo (skipping): $name" >&2
+    continue
+  fi
+  dest="$dest_dir/$name"
+  if [ -e "$dest" ]; then
+    if [ -z "$backup_dir" ]; then
+      backup_dir="$(dirname "$dest_dir")/skills.bak-$timestamp"
+      mkdir -p "$backup_dir"
+    fi
+    mv "$dest" "$backup_dir/$name"
+  fi
+  cp -R "$skill" "$dest"
+done
+
 echo "Installed skills to $dest_dir"
-echo "Mode: $mode"
 if [ -n "$backup_dir" ]; then
   echo "Backup dir: $backup_dir"
 fi

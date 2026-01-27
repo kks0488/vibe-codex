@@ -141,7 +141,7 @@ if (Test-Path $UserSkillsDir) {
   if ($legacyBackups) {
     $legacyList = $legacyBackups -join ", "
     Write-Output "WARN: legacy backup skill folders detected (will load as duplicate skills): $legacyList"
-    Write-Output "Tip: move them under a hidden folder (e.g. $UserSkillsDir\\.bak-*) or delete them."
+    Write-Output "Tip: move them out of $UserSkillsDir (e.g. $UserRoot\\skills.bak-<timestamp>) or delete them."
   }
 } else {
   Write-Output "Skills dir not found: $UserSkillsDir"

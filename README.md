@@ -105,13 +105,6 @@ Aliases: `vcf`
 - Smart fallback (never "I don't know")
 Alias: `vcg`
 
-### git-dual-terminal-loop
-**Parallel Author/Reviewer Workflow**
-- Terminal A writes, Terminal B reviews
-- Rapid feedback via PR comments
-- Self-healing merge conflicts
-- Never wait idle
-
 ## The Iron Laws
 
 ```
@@ -125,8 +118,8 @@ Alias: `vcg`
 ## Shortcut Commands
 
 ```bash
-vc install [--repo] [--all]  # Install skills (core by default)
-vc update [--repo] [--all]   # Update repo + reinstall skills
+vc install [--repo]          # Install vc skills
+vc update [--repo]           # Update repo + reinstall skills
 vc doctor        # Check installation
 vc list          # List installed skills
 vc go <task>     # Router mode (auto-select skill)
@@ -174,9 +167,6 @@ Every task ends with proof:
 | `vc-router` | Intelligent skill selection (sub-agent assisted when useful) |
 | `vcf` | Alias for `vc-phase-loop` |
 | `vcg` | Alias for `vc-router` |
-| `git-dual-terminal-loop` | Parallel author/reviewer workflow |
-
-To install all bundled (optional) skills, use `--all`.
 
 ## Installation
 
@@ -185,14 +175,12 @@ Manual install:
 git clone https://github.com/kks0488/vibe-codex.git
 cd vibe-codex
 bash scripts/install-skills.sh                 # Core skills (default), user scope (~/.codex/skills)
-bash scripts/install-skills.sh --all           # All bundled skills
 bash scripts/install-skills.sh --repo          # Core skills, repo scope (<repo>/.codex/skills)
-bash scripts/install-skills.sh --all --repo    # All bundled skills, repo scope
 ```
 
-The installer copies skills to the selected scope and moves any overwritten skills into a hidden `.bak-<timestamp>` folder. Restart Codex to pick up new skills.
+The installer copies skills to the selected scope and moves any overwritten skills into a sibling `skills.bak-<timestamp>` folder (outside your `skills/` directory). Restart Codex to pick up new skills.
 
-If you previously installed `--all` and want only the core vibe-codex skills, run `vc prune` (backs up removed skills).
+If you previously installed older vibe-codex bundles and want a clean vc-only skills directory, run `vc prune` (backs up removed skills).
 
 ## Philosophy
 

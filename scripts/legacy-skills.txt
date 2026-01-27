@@ -1,0 +1,20 @@
+# Legacy (removed) skill directories from older vibe-codex versions.
+# Used by prune-skills.* to clean up an existing Codex skills folder.
+algorithmic-art
+brand-guidelines
+canvas-design
+doc-coauthoring
+docx
+frontend-design
+git-dual-terminal-loop
+internal-comms
+mcp-builder
+pdf
+pptx
+skill-creator
+slack-gif-creator
+theme-factory
+web-artifacts-builder
+webapp-testing
+xlsx
+

@@ -60,13 +60,13 @@ case "$cmd" in
   help|*)
     cat <<'EOF'
 vc commands:
-  install    install skills (default: --core; add --all for everything)
-  update     pull repo + reinstall skills (default: --core; supports --repo/--all)
+  install    install vc skills (supports --repo/--path)
+  update     pull repo + reinstall skills (supports --repo/--path)
   doctor     check install status
   list       list installed skills
   scope      manage .vc-scope (create/add/show)
   uninstall  remove skills (backup)
-  prune      remove bundled non-core skills (backup)
+  prune      remove legacy removed skills (backup)
   prompts    print author/reviewer prompts
   go         router mode (prints "use vcg: ...")
   finish     end-to-end mode (prints "use vcf: ...")

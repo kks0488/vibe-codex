@@ -116,7 +116,7 @@ if [ -d "$user_skills_dir" ]; then
   legacy_backups=$(find "$user_skills_dir" -maxdepth 1 -mindepth 1 -type d -name "*.bak-*" -exec basename {} \; 2>/dev/null | tr '\n' ' ' | sed 's/ $//')
   if [ -n "$legacy_backups" ]; then
     echo "WARN: legacy backup skill folders detected (will load as duplicate skills): $legacy_backups"
-    echo "Tip: move them under a hidden folder (e.g. $user_skills_dir/.bak-*) or delete them."
+    echo "Tip: move them out of $user_skills_dir (e.g. $user_root/skills.bak-<timestamp>) or delete them."
   fi
 else
   echo "Skills dir not found: $user_skills_dir"

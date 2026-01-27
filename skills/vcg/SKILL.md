@@ -48,19 +48,10 @@ Rules:
 
 ## Routing Rules
 
-- Finish-to-end requests: use a finish-style plan/execute/test workflow.
-- Planning/execution loops: use a finish-style plan/execute/test workflow.
-- Two-terminal Git workflow: git-dual-terminal-loop
-- Frontend UI build: frontend-design
-- Multi-file React artifact: web-artifacts-builder
-- Web app testing: webapp-testing
-- Docs/office files: docx, pptx, pdf, xlsx
-- Theming: theme-factory
-- Branding: brand-guidelines
-- MCP servers: mcp-builder
-- Art or posters: algorithmic-art or canvas-design
-- Internal updates/comms: internal-comms
-- New skill creation: skill-creator
+- This repo intentionally ships only `vc*` skills.
+- Finish-to-end requests: route to `vc-phase-loop`.
+- Planning/execution loops: route to `vc-phase-loop`.
+- Everything else: route to `vc-phase-loop` as the safe default.
 
 ## Execution Rules
 

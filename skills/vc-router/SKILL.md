@@ -30,9 +30,8 @@ Any of these activate the router:
 - `just do this: <goal>`
 - `vc go <goal>` (router mode)
 - `vc finish <goal>` (force end-to-end)
-- `vcf: <goal>` → routes to vc-phase-loop (끝판왕)
+- `vcf: <goal>` → routes to vc-phase-loop
 - `use vcf: <goal>` → same as above
-- Korean: "그냥해줘", "걍해줘", "ㄱㄱ", "끝까지", "아무것도 모르겠다"
 
 ---
 
@@ -78,42 +77,10 @@ Rules:
 │              SKILL MATCHING MATRIX                          │
 ├─────────────────────────────────────────────────────────────┤
 │                                                             │
-│  EXECUTION PATTERNS:                                        │
-│  ├─ "끝까지", "finish", "hands off" → vc-phase-loop       │
-│  ├─ Multi-step, open-ended → vc-phase-loop                │
-│  └─ Autonomous completion needed → vc-phase-loop          │
-│                                                             │
-│  GIT/VERSION CONTROL:                                       │
-│  ├─ PR workflow, review → git-dual-terminal-loop            │
-│  ├─ Two-terminal, author/reviewer → git-dual-terminal-loop  │
-│  └─ "gh", "glab", delta → git-dual-terminal-loop            │
-│                                                             │
-│  FRONTEND/UI:                                               │
-│  ├─ UI, component, page → frontend-design                   │
-│  ├─ React artifact, multi-file React → web-artifacts-builder│
-│  └─ Testing webapp → webapp-testing                         │
-│                                                             │
-│  DOCUMENTS:                                                 │
-│  ├─ Word, .docx → docx                                      │
-│  ├─ PowerPoint, .pptx, presentation → pptx                  │
-│  ├─ PDF, forms → pdf                                        │
-│  ├─ Excel, .xlsx, spreadsheet → xlsx                        │
-│  └─ Co-authoring, collaborative → doc-coauthoring           │
-│                                                             │
-│  CREATIVE:                                                  │
-│  ├─ Theme, colors, styling system → theme-factory           │
-│  ├─ Brand, logo, identity → brand-guidelines                │
-│  ├─ Algorithmic art, generative → algorithmic-art           │
-│  ├─ Canvas, poster, visual → canvas-design                  │
-│  └─ Slack GIF, animation → slack-gif-creator                │
-│                                                             │
-│  DEVELOPMENT:                                               │
-│  ├─ MCP server, tool creation → mcp-builder                 │
-│  ├─ New skill creation → skill-creator                      │
-│  └─ Internal comms, updates → internal-comms                │
-│                                                             │
-│  FALLBACK:                                                  │
-│  └─ Unknown/ambiguous → vc-phase-loop (safe default)      │
+│  VC-ONLY DISTRIBUTION:                                      │
+│  ├─ "finish", "hands off" → vc-phase-loop                   │
+│  ├─ Multi-step, open-ended → vc-phase-loop                  │
+│  └─ Everything else → vc-phase-loop                         │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -137,44 +104,9 @@ LOW (<50%): Weak match, unclear intent
 
 ## Skill Composition
 
-### When to Chain Skills
+This repo intentionally ships only `vc*` skills, so there are no additional bundled skills to chain.
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│              SKILL COMPOSITION RULES                        │
-├─────────────────────────────────────────────────────────────┤
-│                                                             │
-│  CHAIN these skill pairs when detected:                     │
-│                                                             │
-│  "Branded landing page"                                     │
-│  → brand-guidelines THEN frontend-design                    │
-│                                                             │
-│  "Presentation from document"                               │
-│  → docx (read) THEN pptx (create)                           │
-│                                                             │
-│  "React app with tests"                                     │
-│  → web-artifacts-builder THEN webapp-testing                │
-│                                                             │
-│  "Themed presentation"                                      │
-│  → theme-factory THEN pptx                                  │
-│                                                             │
-│  SINGLE SKILL for:                                          │
-│  - Clear single-domain requests                             │
-│  - Simple tasks                                             │
-│  - When composition adds no value                           │
-│                                                             │
-└─────────────────────────────────────────────────────────────┘
-```
-
-### Composition Execution
-
-```
-When chaining:
-1. Execute first skill
-2. Pass output as context to second skill
-3. If any skill fails, apply SELF-HEALING from vc-phase-loop
-4. Continue until all skills complete
-```
+If the request is multi-domain or open-ended, route to `vc-phase-loop` and run the full end-to-end workflow.
 
 ---
 
@@ -187,17 +119,7 @@ When chaining:
 │              FALLBACK HIERARCHY                             │
 ├─────────────────────────────────────────────────────────────┤
 │                                                             │
-│  Level 1: Check if task is code-related                     │
-│  └─ YES → vc-phase-loop (autonomous execution)            │
-│                                                             │
-│  Level 2: Check if task is document-related                 │
-│  └─ YES → docx/pptx/pdf/xlsx based on output format         │
-│                                                             │
-│  Level 3: Check if task is creative/visual                  │
-│  └─ YES → canvas-design (flexible creative tool)            │
-│                                                             │
-│  Level 4: Unknown domain                                    │
-│  └─ ALWAYS → vc-phase-loop                                │
+│  Level 1: Route to vc-phase-loop (universal fallback)       │
 │                                                             │
 │  NEVER: "I don't know which skill to use"                   │
 │  ALWAYS: Route to vc-phase-loop as universal fallback     │
@@ -251,8 +173,7 @@ When user triggers "vc finish" explicitly:
 
 Triggers:
 - "vc finish", "finish it", "take it to the end"
-- "끝까지", "끝까지 해줘", "그냥해줘", "걍해줘", "ㄱㄱ"
-- "아무것도 모르겠다", "마무리까지 해줘"
+- "plan and execute", "hands off"
 
 ---
 
@@ -281,11 +202,10 @@ Classification:
   - Scope: multi-file
 
 Candidates:
-  1. frontend-design (90% match)
-  2. web-artifacts-builder (70% match)
+  1. vc-phase-loop (100% match)
 
-Selected: frontend-design
-Reason: Direct UI build request, single component focus
+Selected: vc-phase-loop
+Reason: vc-only distribution; use the end-to-end engine as the default.
 
 Proceeding with execution...
 ```
