@@ -1,6 +1,8 @@
 ---
 name: vcg
 description: Short, explicit alias for vc-router. Use only when the user explicitly invokes `use vcg:` and wants the shortest reliable router command.
+metadata:
+  short-description: Alias for vc-router (router mode).
 ---
 
 # VCG (VC Go Alias)

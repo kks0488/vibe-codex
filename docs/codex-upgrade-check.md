@@ -8,17 +8,19 @@ This repo is designed to work with OpenAI Codex CLI’s current skills system (r
 - New sandbox/approvals guidance and commands (including `/permissions` as a shorter alias) and clearer defaults.
 - MCP + “apps/connectors” surfaces are now first-class; Codex can connect to remote/local MCP servers via config or `codex mcp`.
 - Collaboration tooling evolved (`spawn_agent` role presets, `send_input --interrupt`), and Codex now caps sub-agents (currently 6).
-- Optional `SKILL.toml` supports richer skill UI metadata (`display_name`, icons, `brand_color`, `default_prompt`).
+- Optional `SKILL.json` supports richer skill UI metadata (`interface`, icons, `brand_color`, `default_prompt`, dependencies).
 
 ## Changes applied in this repo
 
 - `scripts/install-skills.sh` and `scripts/install-skills.ps1` now place backups **outside** the skills directory (`skills.bak-<timestamp>`), preventing Codex from loading backups as duplicate skills.
+- Skills now live under repo `.codex/skills` (Codex can discover them directly in-repo; installers copy from the same canonical location).
 - `scripts/doctor.sh` and `scripts/doctor.ps1` now:
-  - Align name/description validation with Codex’s limits.
+  - Align skill validation with Codex CLI limits (matches `codex-rs/core/src/skills/loader.rs`).
   - Skip non-skill folders (no `SKILL.md`) instead of warning.
   - Detect legacy `*.bak-*` skill folders and warn that they will load as duplicates.
-  - Print a tip for the OpenAI Developer Docs MCP server.
-- Added `SKILL.toml` metadata for `vc-phase-loop`, `vc-router`, `vcf`, `vcg` to improve the Codex UI.
+  - Check whether the OpenAI Developer Docs MCP server is configured.
+- Added `SKILL.json` metadata for `vc-phase-loop`, `vc-router`, `vcf`, `vcg` to improve the Codex UI.
+- Declared the OpenAI Developer Docs MCP server as a skill dependency (Codex can auto-prompt/install missing MCP servers).
 
 ## Recommended setup
 

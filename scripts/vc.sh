@@ -32,6 +32,47 @@ case "$cmd" in
   prompts)
     sh "$repo_root/scripts/role-prompts.sh" "${1:-all}"
     ;;
+  mcp)
+    sub="${1:-help}"
+    shift 2>/dev/null || true
+
+    case "$sub" in
+      docs|devdocs)
+        if ! command -v codex >/dev/null 2>&1; then
+          echo "Error: codex not found in PATH." >&2
+          echo "Install Codex CLI, then re-run." >&2
+          echo "Docs MCP: codex mcp add openaiDeveloperDocs --url https://developers.openai.com/mcp" >&2
+          exit 1
+        fi
+        codex mcp add openaiDeveloperDocs --url https://developers.openai.com/mcp
+        ;;
+      skills|vibes|vibe)
+        if ! command -v codex >/dev/null 2>&1; then
+          echo "Error: codex not found in PATH." >&2
+          echo "Install Codex CLI, then re-run." >&2
+          echo "vibe skills MCP: codex mcp add vibeSkills -- npx -y @kyoungsookim/skills-mcp-server" >&2
+          exit 1
+        fi
+        codex mcp add vibeSkills -- npx -y @kyoungsookim/skills-mcp-server
+        ;;
+      list)
+        if ! command -v codex >/dev/null 2>&1; then
+          echo "Error: codex not found in PATH." >&2
+          echo "Install Codex CLI, then re-run." >&2
+          exit 1
+        fi
+        codex mcp list
+        ;;
+      help|*)
+        cat <<'EOF'
+vc mcp commands:
+  vc mcp docs     add OpenAI developer docs MCP server
+  vc mcp skills   add vibe skills MCP server (npx)
+  vc mcp list     list configured MCP servers
+EOF
+        ;;
+    esac
+    ;;
   go|finish)
     if [ -z "${1:-}" ]; then
       echo "Usage: vc $cmd <goal>" >&2
@@ -64,6 +105,7 @@ vc commands:
   update     pull repo + reinstall skills (supports --repo/--path)
   doctor     check install status
   list       list installed skills
+  mcp        manage Codex MCP servers (docs/skills)
   scope      manage .vc-scope (create/add/show)
   uninstall  remove skills (backup)
   prune      remove legacy removed skills (backup)

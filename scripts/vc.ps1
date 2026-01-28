@@ -19,6 +19,46 @@ switch ($Command.ToLower()) {
     $promptArg = if ($Args -and $Args.Length -gt 0) { $Args[0] } else { "all" }
     & (Join-Path $RepoRoot "scripts/role-prompts.ps1") $promptArg
   }
+  "mcp" {
+    $sub = if ($Args -and $Args.Length -gt 0) { $Args[0].ToLower() } else { "help" }
+
+    switch ($sub) {
+      { $_ -in @("docs", "devdocs") } {
+        if (-not (Get-Command codex -ErrorAction SilentlyContinue)) {
+          Write-Error "Error: codex not found in PATH."
+          Write-Error "Install Codex CLI, then re-run."
+          Write-Error "Docs MCP: codex mcp add openaiDeveloperDocs --url https://developers.openai.com/mcp"
+          exit 1
+        }
+        & codex mcp add openaiDeveloperDocs --url "https://developers.openai.com/mcp"
+      }
+      { $_ -in @("skills", "vibes", "vibe") } {
+        if (-not (Get-Command codex -ErrorAction SilentlyContinue)) {
+          Write-Error "Error: codex not found in PATH."
+          Write-Error "Install Codex CLI, then re-run."
+          Write-Error "vibe skills MCP: codex mcp add vibeSkills -- npx -y @kyoungsookim/skills-mcp-server"
+          exit 1
+        }
+        & codex mcp add vibeSkills -- npx -y "@kyoungsookim/skills-mcp-server"
+      }
+      "list" {
+        if (-not (Get-Command codex -ErrorAction SilentlyContinue)) {
+          Write-Error "Error: codex not found in PATH."
+          Write-Error "Install Codex CLI, then re-run."
+          exit 1
+        }
+        & codex mcp list
+      }
+      default {
+@"
+vc mcp commands:
+  vc mcp docs     add OpenAI developer docs MCP server
+  vc mcp skills   add vibe skills MCP server (npx)
+  vc mcp list     list configured MCP servers
+"@ | Write-Output
+      }
+    }
+  }
   { $_ -in @("go", "finish") } {
     if (-not $Args -or $Args.Length -eq 0) {
       Write-Error ("Usage: vc " + $Command.ToLower() + " <goal>")
@@ -49,6 +89,7 @@ vc commands:
   update     pull repo + reinstall skills (supports --repo/--path)
   doctor     check install status
   list       list installed skills
+  mcp        manage Codex MCP servers (docs/skills)
   scope      manage .vc-scope (create/add/show)
   uninstall  remove skills (backup)
   prune      remove legacy removed skills (backup)

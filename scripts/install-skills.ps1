@@ -1,6 +1,6 @@
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $RepoRoot = Resolve-Path (Join-Path $ScriptDir "..")
-$SrcDir = Join-Path $RepoRoot "skills"
+$SrcDir = Join-Path $RepoRoot ".codex\\skills"
 $CoreSkillsFile = Join-Path $ScriptDir "core-skills.txt"
 
 function Show-Usage {
@@ -114,3 +114,4 @@ if ($legacySkills) {
 }
 Write-Output "use vcg: build a login page"
 Write-Output "Tip: use ""use vcf: ..."" for end-to-end (plan/execute/test)."
+Write-Output "Tip: vc mcp docs  (install OpenAI developer docs MCP server)."

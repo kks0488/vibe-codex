@@ -33,6 +33,22 @@ if (Get-Command codex -ErrorAction SilentlyContinue) {
   }
 }
 
+$configFile = Join-Path $UserRoot "config.toml"
+if (Test-Path $configFile) {
+  $configText = Get-Content $configFile -Raw
+  $hasServer = $configText -match "(?m)^\\[mcp_servers\\.openaiDeveloperDocs\\]\\s*$"
+  $hasUrl = $configText -match "developers\\.openai\\.com/mcp"
+  if ($hasServer -and $hasUrl) {
+    Write-Output "OpenAI Docs MCP: configured (openaiDeveloperDocs)"
+  } else {
+    Write-Output "OpenAI Docs MCP: not configured (openaiDeveloperDocs)"
+    Write-Output "Tip: vc mcp docs  (or: codex mcp add openaiDeveloperDocs --url https://developers.openai.com/mcp)"
+  }
+} else {
+  Write-Output "Config not found: $configFile"
+  Write-Output "Tip: vc mcp docs  (or: codex mcp add openaiDeveloperDocs --url https://developers.openai.com/mcp)"
+}
+
 function Get-SkillCount([string]$dir) {
   return (Get-ChildItem $dir -Directory -ErrorAction SilentlyContinue |
     Where-Object { -not $_.Name.StartsWith(".") -and (Test-Path (Join-Path $_.FullName "SKILL.md")) } |
@@ -41,6 +57,7 @@ function Get-SkillCount([string]$dir) {
 
 function Test-Skill([string]$skillDir) {
   $skillFile = Join-Path $skillDir "SKILL.md"
+  $skillJson = Join-Path $skillDir "SKILL.json"
   if (-not (Test-Path $skillFile)) {
     Write-Output "WARN: missing SKILL.md: $skillDir"
     return $false
@@ -76,9 +93,11 @@ function Test-Skill([string]$skillDir) {
 
   $nameLine = $frontmatter | Where-Object { $_ -match '^\s*name\s*:' } | Select-Object -First 1
   $descLine = $frontmatter | Where-Object { $_ -match '^\s*description\s*:' } | Select-Object -First 1
+  $shortDescLine = $frontmatter | Where-Object { $_ -match '^\s*short-description\s*:' } | Select-Object -First 1
 
   $name = if ($nameLine) { ($nameLine -replace '^\s*name\s*:\s*', '').Trim() } else { "" }
   $desc = if ($descLine) { ($descLine -replace '^\s*description\s*:\s*', '').Trim() } else { "" }
+  $shortDesc = if ($shortDescLine) { ($shortDescLine -replace '^\s*short-description\s*:\s*', '').Trim() } else { "" }
 
   if (-not $name) {
     Write-Output "WARN: missing name: $skillFile"
@@ -97,6 +116,105 @@ function Test-Skill([string]$skillDir) {
   if ($desc.Length -gt 1024) {
     Write-Output "WARN: description too long ($($desc.Length) > 1024): $skillFile"
     return $false
+  }
+  if ($shortDesc -and $shortDesc.Length -gt 1024) {
+    Write-Output "WARN: metadata.short-description too long ($($shortDesc.Length) > 1024): $skillFile"
+    return $false
+  }
+
+  if (Test-Path $skillJson) {
+    try {
+      $json = (Get-Content $skillJson -Raw | ConvertFrom-Json -ErrorAction Stop)
+    } catch {
+      Write-Output "WARN: invalid SKILL.json ($($_.Exception.Message)): $skillJson"
+      return $false
+    }
+
+    function Normalize-SingleLine([string]$value) {
+      if (-not $value) { return "" }
+      return (($value -split "\\s+") -join " ").Trim()
+    }
+
+    function Test-OptionalField([string]$field, [object]$value, [int]$maxLen) {
+      if ($null -eq $value) { return $true }
+      if (-not ($value -is [string])) {
+        Write-Output "WARN: invalid $field (expected string): $skillJson"
+        return $false
+      }
+      $v = Normalize-SingleLine $value
+      if (-not $v) {
+        Write-Output "WARN: invalid $field (empty): $skillJson"
+        return $false
+      }
+      if ($v.Length -gt $maxLen) {
+        Write-Output "WARN: invalid $field (exceeds $maxLen chars): $skillJson"
+        return $false
+      }
+      return $true
+    }
+
+    function Test-RequiredField([string]$field, [object]$value, [int]$maxLen) {
+      if ($null -eq $value) {
+        Write-Output "WARN: invalid $field (missing): $skillJson"
+        return $false
+      }
+      return (Test-OptionalField $field $value $maxLen)
+    }
+
+    if ($json.interface) {
+      if (-not (Test-OptionalField "interface.display_name" $json.interface.display_name 64)) { return $false }
+      if (-not (Test-OptionalField "interface.short_description" $json.interface.short_description 1024)) { return $false }
+      if (-not (Test-OptionalField "interface.default_prompt" $json.interface.default_prompt 1024)) { return $false }
+
+      $brand = $json.interface.brand_color
+      if ($null -ne $brand) {
+        if (-not ($brand -is [string]) -or -not ($brand.Trim() -match '^#[0-9A-Fa-f]{6}$')) {
+          Write-Output "WARN: invalid interface.brand_color (expected #RRGGBB): $skillJson"
+          return $false
+        }
+      }
+    }
+
+    if ($json.dependencies -and $json.dependencies.tools) {
+      if (-not ($json.dependencies.tools -is [System.Collections.IEnumerable])) {
+        Write-Output "WARN: invalid dependencies.tools (expected array): $skillJson"
+        return $false
+      }
+      $i = 0
+      foreach ($tool in $json.dependencies.tools) {
+        if (-not $tool) {
+          Write-Output "WARN: invalid dependencies.tools[$i] (empty): $skillJson"
+          return $false
+        }
+        if (-not (Test-RequiredField "dependencies.tools[$i].type" $tool.type 64)) { return $false }
+        if (-not (Test-RequiredField "dependencies.tools[$i].value" $tool.value 1024)) { return $false }
+        if (-not (Test-OptionalField "dependencies.tools[$i].description" $tool.description 1024)) { return $false }
+        if (-not (Test-OptionalField "dependencies.tools[$i].transport" $tool.transport 64)) { return $false }
+        if (-not (Test-OptionalField "dependencies.tools[$i].command" $tool.command 1024)) { return $false }
+        if (-not (Test-OptionalField "dependencies.tools[$i].url" $tool.url 1024)) { return $false }
+
+        # Basic MCP dependency sanity (matches codex-rs/core/src/mcp/skill_dependencies.rs expectations).
+        $toolType = (Normalize-SingleLine ([string]$tool.type)).ToLower()
+        if ($toolType -eq "mcp") {
+          $transport = if ($tool.transport) { (Normalize-SingleLine ([string]$tool.transport)).ToLower() } else { "streamable_http" }
+          if ($transport -eq "streamable_http") {
+            if (-not $tool.url -or -not (Normalize-SingleLine ([string]$tool.url))) {
+              Write-Output "WARN: invalid dependencies.tools[$i] (mcp streamable_http requires url): $skillJson"
+              return $false
+            }
+          } elseif ($transport -eq "stdio") {
+            if (-not $tool.command -or -not (Normalize-SingleLine ([string]$tool.command))) {
+              Write-Output "WARN: invalid dependencies.tools[$i] (mcp stdio requires command): $skillJson"
+              return $false
+            }
+          } else {
+            Write-Output "WARN: invalid dependencies.tools[$i] (mcp unsupported transport): $skillJson"
+            return $false
+          }
+        }
+        $i++
+      }
+    }
   }
 
   return $true
@@ -208,4 +326,3 @@ if ($legacySkills) {
 }
 Write-Output "use vcg: build a login page"
 Write-Output "Tip: use \"use vcf: ...\" for end-to-end (plan/execute/test)."
-Write-Output "Tip: install OpenAI Docs MCP: codex mcp add openaiDeveloperDocs --url https://developers.openai.com/mcp"

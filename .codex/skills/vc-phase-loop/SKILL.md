@@ -1,6 +1,8 @@
 ---
 name: vc-phase-loop
 description: Ultimate autonomous execution engine. Plan → Execute → Test → Never Stop Until Done. Use when the user wants hands-off completion with no questions, automatic recovery from any failure, and proven results.
+metadata:
+  short-description: Plan → execute → test → prove (with retries).
 ---
 
 # VC Phase Loop - ULTIMATE EDITION

@@ -3,7 +3,7 @@ set -eu
 
 script_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 skills_repo_root=$(cd "$script_dir/.." && pwd)
-src_dir="$skills_repo_root/skills"
+src_dir="$skills_repo_root/.codex/skills"
 core_skills_file="$script_dir/core-skills.txt"
 
 usage() {
@@ -117,3 +117,4 @@ if [ -n "$legacy_skills" ]; then
 fi
 echo "use vcg: build a login page"
 echo "Tip: use \"use vcf: ...\" for end-to-end (plan/execute/test)."
+echo "Tip: vc mcp docs  (install OpenAI developer docs MCP server)."

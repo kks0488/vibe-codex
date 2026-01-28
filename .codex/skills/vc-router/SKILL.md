@@ -1,6 +1,8 @@
 ---
 name: vc-router
 description: Intelligent skill routing with automatic selection, composition, and fallback. Use when the user doesn't specify a skill, says "just do it", or wants the AI to decide the best approach.
+metadata:
+  short-description: Auto-selects the best vc* skill.
 ---
 
 # VC Router - ULTIMATE EDITION

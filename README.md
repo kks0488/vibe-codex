@@ -49,6 +49,7 @@ irm https://raw.githubusercontent.com/kks0488/vibe-codex/main/bootstrap.ps1 | ie
 ## Codex CLI compatibility
 
 - Tested against recent `codex-cli` (Rust releases). See `docs/codex-upgrade-check.md` for upgrade notes (skills discovery, sandbox/approvals, MCP, connectors).
+- Recommended setup checklist: `docs/codex-setup.md` (MCP + config).
 - Core flows are sub-agent aware (uses Codex collaboration tools for parallel recon/testing when available).
 
 ## Usage
@@ -122,6 +123,8 @@ vc install [--repo]          # Install vc skills
 vc update [--repo]           # Update repo + reinstall skills
 vc doctor        # Check installation
 vc list          # List installed skills
+vc mcp docs      # Add OpenAI dev docs MCP server
+vc mcp skills    # Add vibe skills MCP server (npx)
 vc go <task>     # Router mode (auto-select skill)
 vcf: <task>      # Maximum power mode (recommended)
 ```
