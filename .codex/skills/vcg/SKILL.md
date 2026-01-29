@@ -26,12 +26,13 @@ metadata:
 ## Sub-Agent Assist (Optional)
 
 If the request is **large/ambiguous** and collaboration tools are available, spawn **1–2 sub-agents** to parallelize:
-- Repo scan (within scope roots): locate relevant files/config and constraints
-- Risk/validation scan: test strategy, edge cases, safety concerns
+- Repo scan (recommended preset: `explorer`, within scope roots): locate relevant files/config and constraints
+- Risk/validation scan (recommended preset: `worker`): test strategy, edge cases, safety concerns
 
 Rules:
 - Timebox and keep outputs short.
 - Sub-agents report findings only; main agent decides routing and applies changes.
+- Use `send_input` with `interrupt` if an agent goes off-track; always `close_agent` when done.
 
 ## VC Quick Invoke
 

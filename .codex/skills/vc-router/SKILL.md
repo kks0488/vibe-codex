@@ -33,7 +33,7 @@ Any of these activate the router:
 - `vc go <goal>` (router mode)
 - `vc finish <goal>` (force end-to-end)
 - `vcf: <goal>` → routes to vc-phase-loop
-- `use vcf: <goal>` → same as above
+- `use vcf: <goal>` → same as above (explicit invocation; Codex may output this form)
 
 ---
 
@@ -64,13 +64,14 @@ Any of these activate the router:
 ### Step 1.5: Sub-Agent Assisted Routing (Optional)
 
 If the request is **large, ambiguous, or multi-domain**, spawn **1–2 sub-agents** to parallelize:
-- Repo scan: locate relevant code/config and constraints
-- Risk scan: identify security/ops risks and validation strategy
+- Repo scan (recommended preset: `explorer`): locate relevant code/config and constraints
+- Risk/validation scan (recommended preset: `worker`): identify security/ops risks, tests, and verification strategy
 
 Rules:
 - Keep it lightweight (max 2) and timeboxed.
 - Sub-agents report findings only; main agent makes routing decision.
 - If sub-agents aren’t available, continue without them.
+- Prefer `send_input` with `interrupt` if an agent goes off-track; always `close_agent` when done.
 
 ### Step 2: Skill Matching
 

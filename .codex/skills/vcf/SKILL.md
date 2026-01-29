@@ -1,6 +1,6 @@
 ---
 name: vcf
-description: Short alias for vc-phase-loop. Use when the user invokes "vcf:" or "use vcf:" and wants maximum hands-off completion.
+description: Short alias for vc-phase-loop. Use when the user invokes "vcf:" (or explicitly "use vcf:") and wants maximum hands-off completion.
 metadata:
   short-description: Alias for vc-phase-loop (finish mode).
 ---

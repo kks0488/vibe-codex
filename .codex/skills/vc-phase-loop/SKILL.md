@@ -59,7 +59,7 @@ Status: in_progress
 
 Activate with any of these:
 - `vcf: <task>` - **SHORT AND POWERFUL** (recommended)
-- `use vcf: <task>` - same as above
+- `use vcf: <task>` - equivalent explicit invocation (Codex may output this form)
 - "vc finish", "finish it", "take it to the end"
 - "plan and execute", "hands off"
 
@@ -270,18 +270,26 @@ Use sub-agents when you have **2+ independent threads** such as:
 - **Max 4 sub-agents** (Codex may cap at 6; stay below it).
 - Each sub-agent gets **one narrow goal** and a **strict deliverable format**.
 - Prefer **read-only** tasks for sub-agents; the main agent owns all writes/patches to avoid conflicts.
+- Keep collaboration depth at **1**: sub-agents should not spawn more agents.
 - If a sub-agent can’t run tools (or `spawn_agent` isn’t available), **fallback to sequential**.
 - Always `close_agent` after harvesting results to avoid resource leaks.
 
+### Agent Role Presets (Recommended)
+
+If supported, use role presets to make sub-agent behavior more predictable:
+- `explorer`: repo reconnaissance (file map, configs, constraints). **Read-only**.
+- `worker`: testing, repro, alternative approach sketches. Prefer **read-only** unless explicitly told to modify.
+- `default`: general-purpose.
+
 ### Dispatch Protocol (Tooling)
 
-1. `spawn_agent` for each independent thread (worker role if available).
+1. `spawn_agent` for each independent thread (use `explorer` for recon and `worker` for testing when supported).
 2. Provide:
    - Goal (1 sentence)
    - Scope boundaries (what to touch / not touch)
    - Required output format (bullets/table)
    - Stop condition (when to reply)
-3. `wait` for results (with timeouts), then `send_input` follow-ups if needed.
+3. `wait` for results (with timeouts), then `send_input` follow-ups if needed (use `interrupt` to stop/retask a long-running agent).
 4. Integrate outputs into:
    - Work doc (Phases / Assumptions / Error Log)
    - A single consolidated plan (main agent)
