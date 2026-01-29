@@ -315,8 +315,8 @@ echo "Next: copy/paste into Codex chat:"
 legacy_skills=$(find "$user_skills_dir" -maxdepth 1 -mindepth 1 -type d \( -name "vibe-*" -o -name "vs-*" -o -name "vf" -o -name "vg" -o -name "vsf" -o -name "vsg" \) -exec basename {} \; 2>/dev/null || true)
 legacy_skills=$(printf "%s\n" "$legacy_skills" | tr '\n' ' ' | sed 's/ $//')
 if [ -n "$legacy_skills" ]; then
-  echo "Warning: legacy vibe/vs skills detected: $legacy_skills"
+echo "Warning: legacy vibe/vs skills detected: $legacy_skills"
   echo "Tip: remove or rename legacy skills to avoid conflicts."
 fi
 echo "use vcg: build a login page"
-echo "Tip: use \"use vcf: ...\" for end-to-end (plan/execute/test)."
+echo "Tip: use \"vcf: ...\" for end-to-end (plan/execute/test)."

@@ -62,9 +62,8 @@ irm https://raw.githubusercontent.com/kks0488/vibe-codex/main/bootstrap.ps1 | ie
 vcf: build a login page
 ```
 
-Or longer versions:
+Or via the helper command (prints a `vcf:` prompt for Codex chat):
 ```
-use vcf: build a login page
 vc finish build a login page
 ```
 

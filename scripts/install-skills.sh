@@ -116,5 +116,5 @@ if [ -n "$legacy_skills" ]; then
   echo "Tip: remove or rename legacy skills to avoid conflicts."
 fi
 echo "use vcg: build a login page"
-echo "Tip: use \"use vcf: ...\" for end-to-end (plan/execute/test)."
+echo "Tip: use \"vcf: ...\" for end-to-end (plan/execute/test)."
 echo "Tip: vc mcp docs  (install OpenAI developer docs MCP server)."

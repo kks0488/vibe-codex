@@ -68,7 +68,7 @@ vc mcp commands:
     }
     $goal = $Args -join " "
     Write-Error "Copy/paste into Codex chat:"
-    $prefix = if ($Command.ToLower() -eq "go") { "use vcg: " } else { "use vcf: " }
+    $prefix = if ($Command.ToLower() -eq "go") { "use vcg: " } else { "vcf: " }
     Write-Output ($prefix + $goal)
   }
   "sync" {
@@ -95,7 +95,7 @@ vc commands:
   prune      remove legacy removed skills (backup)
   prompts    print author/reviewer prompts
   go         router mode (prints "use vcg: ...")
-  finish     end-to-end mode (prints "use vcf: ...")
+  finish     end-to-end mode (prints "vcf: ...")
   sync       update local + remote host(s)
 "@ | Write-Output
   }

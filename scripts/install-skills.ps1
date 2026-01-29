@@ -113,5 +113,5 @@ if ($legacySkills) {
   Write-Output "Tip: remove or rename legacy skills to avoid conflicts."
 }
 Write-Output "use vcg: build a login page"
-Write-Output "Tip: use ""use vcf: ..."" for end-to-end (plan/execute/test)."
+Write-Output "Tip: use ""vcf: ..."" for end-to-end (plan/execute/test)."
 Write-Output "Tip: vc mcp docs  (install OpenAI developer docs MCP server)."

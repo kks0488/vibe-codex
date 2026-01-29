@@ -84,7 +84,7 @@ EOF
     if [ "$cmd" = "go" ]; then
       echo "use vcg: $*"
     else
-      echo "use vcf: $*"
+      echo "vcf: $*"
     fi
     ;;
   sync)
@@ -111,7 +111,7 @@ vc commands:
   prune      remove legacy removed skills (backup)
   prompts    print author/reviewer prompts
   go         router mode (prints "use vcg: ...")
-  finish     end-to-end mode (prints "use vcf: ...")
+  finish     end-to-end mode (prints "vcf: ...")
   sync       update local + remote host(s)
 EOF
     ;;
