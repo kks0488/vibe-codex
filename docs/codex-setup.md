@@ -39,8 +39,8 @@ unified_exec = true
 apply_patch_freeform = true
 
 [mcp_servers.openaiDeveloperDocs]
-	url = "https://developers.openai.com/mcp"
-	```
+url = "https://developers.openai.com/mcp"
+```
 
 ## 5) Verify
 
