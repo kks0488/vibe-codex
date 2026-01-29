@@ -1,0 +1,20 @@
+name: doctor
+
+on:
+  pull_request:
+  push:
+
+jobs:
+  doctor-sh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run doctor.sh (strict)
+        run: bash scripts/doctor.sh --strict
+
+  doctor-ps1:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run doctor.ps1 (strict)
+        run: pwsh -NoProfile -File scripts/doctor.ps1 -Strict

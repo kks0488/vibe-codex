@@ -15,7 +15,7 @@ case "$cmd" in
     sh "$repo_root/scripts/update-skills.sh" "$@"
     ;;
   doctor)
-    sh "$repo_root/scripts/doctor.sh"
+    sh "$repo_root/scripts/doctor.sh" "$@"
     ;;
   list)
     sh "$repo_root/scripts/list-skills.sh"

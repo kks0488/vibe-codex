@@ -1,6 +1,34 @@
 #!/usr/bin/env sh
 set -eu
 
+strict="false"
+case "${VC_DOCTOR_STRICT:-}" in
+  1|true|TRUE|yes|YES) strict="true" ;;
+esac
+
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+    --strict)
+      strict="true"
+      ;;
+    -h|--help)
+      cat <<'EOF'
+Usage: doctor.sh [--strict]
+
+  --strict  Exit non-zero if skill metadata validation fails.
+
+Env:
+  VC_DOCTOR_STRICT=1  Same as --strict
+EOF
+      exit 0
+      ;;
+    *)
+      echo "WARN: unknown arg (ignored): $1" >&2
+      ;;
+  esac
+  shift
+done
+
 echo "VC Skills Doctor"
 
 script_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
@@ -49,6 +77,8 @@ count_dirs() {
   find "$1" -maxdepth 2 -mindepth 2 -type f -name "SKILL.md" 2>/dev/null | wc -l | tr -d ' '
 }
 
+total_skill_issues=0
+
 validate_skill() {
   skill_dir="$1"
   skill_file="$skill_dir/SKILL.md"
@@ -75,6 +105,13 @@ validate_skill() {
   fi
   if [ -z "$desc" ]; then
     echo "WARN: missing description: $skill_file"
+    return 1
+  fi
+
+  skill_basename=$(basename "$skill_dir")
+  name_clean=$(printf "%s" "$name" | sed 's/^"//; s/"$//' | sed "s/^'//; s/'$//" | sed 's/[[:space:]]*$//')
+  if [ "$skill_basename" != "$name_clean" ]; then
+    echo "WARN: skill dir name mismatch (dir=$skill_basename, frontmatter name=$name_clean): $skill_file"
     return 1
   fi
 
@@ -228,26 +265,28 @@ validate_skills_dir() {
   fi
 
   echo "Checking skill metadata ($label): $dir"
-  issues=0
-  skipped=0
+  dir_issues=0
+  dir_skipped=0
   for skill in "$dir"/*; do
     [ -d "$skill" ] || continue
     if [ ! -f "$skill/SKILL.md" ]; then
-      skipped=$((skipped + 1))
+      dir_skipped=$((dir_skipped + 1))
       continue
     fi
     if ! validate_skill "$skill"; then
-      issues=$((issues + 1))
+      dir_issues=$((dir_issues + 1))
     fi
   done
 
-  if [ "$issues" -eq 0 ]; then
+  total_skill_issues=$((total_skill_issues + dir_issues))
+
+  if [ "$dir_issues" -eq 0 ]; then
     echo "Skill metadata OK ($label)"
   else
-    echo "Skill metadata issues: $issues ($label)"
+    echo "Skill metadata issues: $dir_issues ($label)"
   fi
-  if [ "$skipped" -ne 0 ]; then
-    echo "Skipped non-skill dirs (no SKILL.md): $skipped ($label)"
+  if [ "$dir_skipped" -ne 0 ]; then
+    echo "Skipped non-skill dirs (no SKILL.md): $dir_skipped ($label)"
   fi
 }
 
@@ -320,3 +359,8 @@ echo "Warning: legacy vibe/vs skills detected: $legacy_skills"
 fi
 echo "use vcg: build a login page"
 echo "Tip: use \"vcf: ...\" for end-to-end (plan/execute/test)."
+
+if [ "$strict" = "true" ] && [ "$total_skill_issues" -ne 0 ]; then
+  echo "ERROR: skill metadata issues detected: $total_skill_issues" >&2
+  exit 1
+fi

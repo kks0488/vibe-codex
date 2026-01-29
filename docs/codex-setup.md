@@ -18,11 +18,11 @@ Why: lets Codex pull official OpenAI/Codex/API docs into context without general
 
 ## 3) (Optional) Project instructions (AGENTS.md)
 
-Codex loads a “project doc” (extra instructions) from common filenames like `AGENTS.md`, `.github/copilot-instructions.md`, and `AGENTS.override.md`.
+Codex loads project instructions primarily from `AGENTS.md` (and prefers `AGENTS.override.md` when present). Other filenames can be configured via `project_doc_fallback_filenames`.
 
 Notes:
-- The project doc is truncated after a size limit (default ~32KB). Keep it short, or raise `project_doc_max_bytes` in `~/.codex/config.toml` (or a repo `.codex/config.toml` if you use Team Config).
-- Prefer `AGENTS.override.md` for local, non-committed overrides.
+- The project doc is truncated after a size limit (default ~32KB). Keep it short, or raise `project_doc_max_bytes` in `~/.codex/config.toml`.
+- Prefer `AGENTS.override.md` for local, non-committed overrides (quickly switch “persona” without changing `AGENTS.md`).
 
 ## 4) (Optional) Enable useful Codex features
 

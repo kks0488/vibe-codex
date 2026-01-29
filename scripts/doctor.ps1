@@ -1,3 +1,16 @@
+param(
+  [switch]$Strict
+)
+
+if ($env:VC_DOCTOR_STRICT) {
+  $strictValue = $env:VC_DOCTOR_STRICT.Trim().ToLower()
+  if ($strictValue -in @("1", "true", "yes")) {
+    $Strict = $true
+  }
+}
+
+$script:TotalSkillIssues = 0
+
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $SkillsRepoRoot = Resolve-Path (Join-Path $ScriptDir "..")
 
@@ -105,6 +118,15 @@ function Test-Skill([string]$skillDir) {
   }
   if (-not $desc) {
     Write-Output "WARN: missing description: $skillFile"
+    return $false
+  }
+
+  $dirName = Split-Path $skillDir -Leaf
+  $nameClean = $name.Trim()
+  $nameClean = $nameClean.Trim('"')
+  $nameClean = $nameClean.Trim("'")
+  if ($dirName -ne $nameClean) {
+    Write-Output "WARN: skill dir name mismatch (dir=$dirName, frontmatter name=$nameClean): $skillFile"
     return $false
   }
 
@@ -248,6 +270,8 @@ function Test-SkillsDir([string]$dir, [string]$label) {
   if ($skipped -ne 0) {
     Write-Output "Skipped non-skill dirs (no SKILL.md): $skipped ($label)"
   }
+
+  $script:TotalSkillIssues += $issues
 }
 
 if (Test-Path $UserSkillsDir) {
@@ -326,3 +350,8 @@ if ($legacySkills) {
 }
 Write-Output "use vcg: build a login page"
 Write-Output "Tip: use ""vcf: ..."" for end-to-end (plan/execute/test)."
+
+if ($Strict -and $script:TotalSkillIssues -gt 0) {
+  Write-Error ("ERROR: skill metadata issues detected: " + $script:TotalSkillIssues)
+  exit 1
+}

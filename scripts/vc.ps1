@@ -10,7 +10,7 @@ $RepoRoot = Resolve-Path (Join-Path $ScriptDir "..")
 switch ($Command.ToLower()) {
   "install" { & (Join-Path $RepoRoot "scripts/install-skills.ps1") @Args }
   "update" { & (Join-Path $RepoRoot "scripts/update-skills.ps1") @Args }
-  "doctor" { & (Join-Path $RepoRoot "scripts/doctor.ps1") }
+  "doctor" { & (Join-Path $RepoRoot "scripts/doctor.ps1") @Args }
   "list" { & (Join-Path $RepoRoot "scripts/list-skills.ps1") }
   "scope" { & (Join-Path $RepoRoot "scripts/scope-init.ps1") @Args }
   "uninstall" { & (Join-Path $RepoRoot "scripts/uninstall-skills.ps1") }
