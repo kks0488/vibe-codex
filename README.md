@@ -50,6 +50,7 @@ irm https://raw.githubusercontent.com/kks0488/vibe-codex/main/bootstrap.ps1 | ie
 
 - Tested against recent `codex-cli` (Rust releases). See `docs/codex-upgrade-check.md` for upgrade notes (skills discovery, sandbox/approvals, MCP, connectors).
 - Recommended setup checklist: `docs/codex-setup.md` (MCP + config).
+- Recommended: skills are the core (MCP servers are helpers); skills ship in repo `.codex/skills` and use `SKILL.json` for Codex UI metadata + dependency hints (including OpenAI Docs MCP).
 - Core flows are sub-agent aware (uses Codex collaboration tools for parallel recon/testing when available).
 
 ## Usage
@@ -125,6 +126,7 @@ vc doctor        # Check installation
 vc list          # List installed skills
 vc mcp docs      # Add OpenAI dev docs MCP server
 vc mcp skills    # Add vibe skills MCP server (npx)
+vc mcp list      # List configured MCP servers
 vc go <task>     # Router mode (auto-select skill)
 vcf: <task>      # Maximum power mode (recommended)
 ```
@@ -182,6 +184,7 @@ bash scripts/install-skills.sh --repo          # Core skills, repo scope (<repo>
 ```
 
 The installer copies skills to the selected scope and moves any overwritten skills into a sibling `skills.bak-<timestamp>` folder (outside your `skills/` directory). Restart Codex to pick up new skills.
+Tip: `vc mcp docs` sets up the OpenAI Developer Docs MCP server (or Codex may prompt to install it because it is declared as a dependency in `SKILL.json`).
 
 If you previously installed older vibe-codex bundles and want a clean vc-only skills directory, run `vc prune` (backs up removed skills).
 

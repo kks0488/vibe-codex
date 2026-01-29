@@ -6,12 +6,13 @@
 - Or from this repo:
   - User scope: `bash scripts/install-skills.sh`
   - Repo scope (current git repo): `bash scripts/install-skills.sh --repo`
+- Restart Codex after installing/updating skills.
 
 ## 2) Add OpenAI Developer Docs MCP (highly recommended)
 
 - Via helper: `vc mcp docs`
 - Or directly: `codex mcp add openaiDeveloperDocs --url https://developers.openai.com/mcp`
-- Note: vibe-codex core skills declare this MCP server as a dependency, so Codex may prompt to install it automatically.
+- Note: vibe-codex core skills declare this MCP server as a dependency in `SKILL.json`, so Codex may prompt to install it automatically.
 
 Why: lets Codex pull official OpenAI/Codex/API docs into context without general web browsing.
 
