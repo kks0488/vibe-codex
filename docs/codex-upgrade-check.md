@@ -5,6 +5,8 @@ This repo is designed to work with OpenAI Codex CLI’s current skills system (r
 ## High-signal upstream changes (Codex CLI)
 
 - Skills discovery is recursive and layered (repo `.codex/skills`, user `$CODEX_HOME/skills`, system `.system`, admin), so **extra folders inside your skills root can become loadable skills**.
+- Team Config supports shared configuration via `.codex/config.toml` loaded from the current directory, parents, repo root, plus user/system config layers.
+- Codex also loads a “project doc” (extra instructions) from common filenames like `AGENTS.md`, `.github/copilot-instructions.md`, and `AGENTS.override.md` (with a default ~32KB size cap).
 - New sandbox/approvals guidance and commands (including `/permissions` as a shorter alias) and clearer defaults.
 - MCP + “apps/connectors” surfaces are now first-class; Codex can connect to remote/local MCP servers via config or `codex mcp`.
 - Collaboration tooling evolved (`spawn_agent` role presets, `send_input --interrupt`), and Codex now caps sub-agents (currently 6).

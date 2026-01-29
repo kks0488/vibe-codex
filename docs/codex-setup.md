@@ -16,7 +16,15 @@
 
 Why: lets Codex pull official OpenAI/Codex/API docs into context without general web browsing.
 
-## 3) (Optional) Enable useful Codex features
+## 3) (Optional) Project instructions (AGENTS.md)
+
+Codex loads a “project doc” (extra instructions) from common filenames like `AGENTS.md`, `.github/copilot-instructions.md`, and `AGENTS.override.md`.
+
+Notes:
+- The project doc is truncated after a size limit (default ~32KB). Keep it short, or raise `project_doc_max_bytes` in `~/.codex/config.toml` (or a repo `.codex/config.toml` if you use Team Config).
+- Prefer `AGENTS.override.md` for local, non-committed overrides.
+
+## 4) (Optional) Enable useful Codex features
 
 You can toggle features via CLI:
 
@@ -31,9 +39,9 @@ unified_exec = true
 apply_patch_freeform = true
 
 [mcp_servers.openaiDeveloperDocs]
-url = "https://developers.openai.com/mcp"
-```
+	url = "https://developers.openai.com/mcp"
+	```
 
-## 4) Verify
+## 5) Verify
 
 - `vc doctor`
