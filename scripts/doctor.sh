@@ -36,17 +36,21 @@ skills_repo_root=$(cd "$script_dir/.." && pwd)
 
 user_root="${CODEX_HOME:-$HOME/.codex}"
 user_skills_dir="$user_root/skills"
+user_agents_skills_dir="$HOME/.agents/skills"
 
 cwd=$(pwd)
 cwd_skills_dir="$cwd/.codex/skills"
+cwd_agents_skills_dir="$cwd/.agents/skills"
 repo_root=""
 repo_skills_dir=""
+repo_agents_skills_dir=""
 
 if command -v git >/dev/null 2>&1; then
   if git -C "$cwd" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
     repo_root=$(git -C "$cwd" rev-parse --show-toplevel)
     repo_root=$(printf "%s" "$repo_root" | tr -d '\r')
     repo_skills_dir="$repo_root/.codex/skills"
+    repo_agents_skills_dir="$repo_root/.agents/skills"
   fi
 fi
 
@@ -79,63 +83,41 @@ count_dirs() {
 
 total_skill_issues=0
 
-validate_skill() {
-  skill_dir="$1"
-  skill_file="$skill_dir/SKILL.md"
-  skill_json="$skill_dir/SKILL.json"
-  if [ ! -f "$skill_file" ]; then
-    echo "WARN: missing SKILL.md: $skill_dir"
+looks_like_json() {
+  f="$1"
+  if [ ! -f "$f" ]; then
     return 1
+  fi
+  first_char=$(
+    awk '{
+      gsub("\r", "");
+      sub(/^[ \t]+/, "", $0);
+      if ($0 == "" || $0 ~ /^#/) next;
+      print substr($0, 1, 1);
+      exit
+    }' "$f" 2>/dev/null || true
+  )
+  [ "$first_char" = "{" ] || [ "$first_char" = "[" ]
+}
+
+validate_skill_metadata_json_file() {
+  metadata_path="$1"
+  if [ ! -f "$metadata_path" ]; then
+    return 0
   fi
 
-  first_line=$(sed -n '1p' "$skill_file" | tr -d '\r')
-  if [ "$first_line" != "---" ]; then
-    echo "WARN: missing frontmatter: $skill_file"
-    return 1
-  fi
+  # Codex skill metadata is YAML at `agents/openai.yaml`, but JSON is a YAML subset.
+  # We validate JSON-formatted files; non-JSON YAML is skipped (Codex itself is fail-open on metadata).
+  case "$metadata_path" in
+    *.yaml|*.yml)
+      if ! looks_like_json "$metadata_path"; then
+        return 0
+      fi
+      ;;
+  esac
 
-  frontmatter=$(awk 'NR==1{next} {gsub("\r", ""); if ($0=="---") {exit} print}' "$skill_file")
-  name=$(printf "%s\n" "$frontmatter" | awk -F':' '$1 ~ /^[[:space:]]*name[[:space:]]*$/ { $1=""; sub(/^:/, "", $0); sub(/^[[:space:]]+/, "", $0); print; exit }')
-  desc=$(printf "%s\n" "$frontmatter" | awk -F':' '$1 ~ /^[[:space:]]*description[[:space:]]*$/ { $1=""; sub(/^:/, "", $0); sub(/^[[:space:]]+/, "", $0); print; exit }')
-  short_desc=$(printf "%s\n" "$frontmatter" | awk -F':' '$1 ~ /^[[:space:]]*short-description[[:space:]]*$/ { $1=""; sub(/^:/, "", $0); sub(/^[[:space:]]+/, "", $0); print; exit }')
-
-  if [ -z "$name" ]; then
-    echo "WARN: missing name: $skill_file"
-    return 1
-  fi
-  if [ -z "$desc" ]; then
-    echo "WARN: missing description: $skill_file"
-    return 1
-  fi
-
-  skill_basename=$(basename "$skill_dir")
-  name_clean=$(printf "%s" "$name" | sed 's/^"//; s/"$//' | sed "s/^'//; s/'$//" | sed 's/[[:space:]]*$//')
-  if [ "$skill_basename" != "$name_clean" ]; then
-    echo "WARN: skill dir name mismatch (dir=$skill_basename, frontmatter name=$name_clean): $skill_file"
-    return 1
-  fi
-
-  name_len=$(printf "%s" "$name" | wc -m | tr -d ' ')
-  desc_len=$(printf "%s" "$desc" | wc -m | tr -d ' ')
-  short_desc_len=$(printf "%s" "$short_desc" | wc -m | tr -d ' ')
-
-  # Match Codex CLI constraints (codex-rs/core/src/skills/loader.rs).
-  if [ "$name_len" -gt 64 ]; then
-    echo "WARN: name too long ($name_len > 64): $skill_file"
-    return 1
-  fi
-  if [ "$desc_len" -gt 1024 ]; then
-    echo "WARN: description too long ($desc_len > 1024): $skill_file"
-    return 1
-  fi
-  if [ -n "$short_desc" ] && [ "$short_desc_len" -gt 1024 ]; then
-    echo "WARN: metadata.short-description too long ($short_desc_len > 1024): $skill_file"
-    return 1
-  fi
-
-  if [ -f "$skill_json" ]; then
-    if command -v python3 >/dev/null 2>&1; then
-      if ! python3 - "$skill_json" <<'PY'
+  if command -v python3 >/dev/null 2>&1; then
+    if ! python3 - "$metadata_path" <<'PY'
 import json
 import re
 import sys
@@ -171,7 +153,7 @@ try:
     with open(path, "r", encoding="utf-8") as f:
         data = json.load(f)
 except Exception as e:
-    err(f"invalid SKILL.json ({e})")
+    err(f"invalid metadata JSON ({e})")
     sys.exit(1)
 
 interface = data.get("interface") or {}
@@ -246,11 +228,123 @@ if deps is not None:
 
 sys.exit(0 if ok else 1)
 PY
-      then
-        return 1
-      fi
-    else
-      echo "Note: python3 not found; skipping SKILL.json validation: $skill_json"
+    then
+      return 1
+    fi
+  else
+    echo "Note: python3 not found; skipping metadata validation: $metadata_path"
+  fi
+
+  return 0
+}
+
+validate_skill() {
+  skill_dir="$1"
+  skill_file="$skill_dir/SKILL.md"
+  skill_json="$skill_dir/SKILL.json"
+  skill_openai_yaml="$skill_dir/agents/openai.yaml"
+  if [ ! -f "$skill_file" ]; then
+    echo "WARN: missing SKILL.md: $skill_dir"
+    return 1
+  fi
+
+  first_line=$(sed -n '1p' "$skill_file" | tr -d '\r')
+  if [ "$first_line" != "---" ]; then
+    echo "WARN: missing frontmatter: $skill_file"
+    return 1
+  fi
+
+  frontmatter=$(awk 'NR==1{next} {gsub("\r", ""); if ($0=="---") {exit} print}' "$skill_file")
+  name=$(printf "%s\n" "$frontmatter" | awk -F':' '$1 ~ /^[[:space:]]*name[[:space:]]*$/ { $1=""; sub(/^:/, "", $0); sub(/^[[:space:]]+/, "", $0); print; exit }')
+  desc=$(printf "%s\n" "$frontmatter" | awk -F':' '$1 ~ /^[[:space:]]*description[[:space:]]*$/ { $1=""; sub(/^:/, "", $0); sub(/^[[:space:]]+/, "", $0); print; exit }')
+  short_desc=$(printf "%s\n" "$frontmatter" | awk -F':' '$1 ~ /^[[:space:]]*short-description[[:space:]]*$/ { $1=""; sub(/^:/, "", $0); sub(/^[[:space:]]+/, "", $0); print; exit }')
+
+  if [ -z "$name" ]; then
+    echo "WARN: missing name: $skill_file"
+    return 1
+  fi
+  if [ -z "$desc" ]; then
+    echo "WARN: missing description: $skill_file"
+    return 1
+  fi
+
+  skill_basename=$(basename "$skill_dir")
+  name_clean=$(printf "%s" "$name" | sed 's/^"//; s/"$//' | sed "s/^'//; s/'$//" | sed 's/[[:space:]]*$//')
+  if [ "$skill_basename" != "$name_clean" ]; then
+    echo "WARN: skill dir name mismatch (dir=$skill_basename, frontmatter name=$name_clean): $skill_file"
+    return 1
+  fi
+
+  name_len=$(printf "%s" "$name" | wc -m | tr -d ' ')
+  desc_len=$(printf "%s" "$desc" | wc -m | tr -d ' ')
+  short_desc_len=$(printf "%s" "$short_desc" | wc -m | tr -d ' ')
+
+  # Match Codex CLI constraints (codex-rs/core/src/skills/loader.rs).
+  if [ "$name_len" -gt 64 ]; then
+    echo "WARN: name too long ($name_len > 64): $skill_file"
+    return 1
+  fi
+  if [ "$desc_len" -gt 1024 ]; then
+    echo "WARN: description too long ($desc_len > 1024): $skill_file"
+    return 1
+  fi
+  if [ -n "$short_desc" ] && [ "$short_desc_len" -gt 1024 ]; then
+    echo "WARN: metadata.short-description too long ($short_desc_len > 1024): $skill_file"
+    return 1
+  fi
+
+  if ! validate_skill_metadata_json_file "$skill_openai_yaml"; then
+    return 1
+  fi
+
+  if [ -f "$skill_json" ]; then
+    if ! validate_skill_metadata_json_file "$skill_json"; then
+      return 1
+    fi
+  fi
+
+  if [ -f "$skill_openai_yaml" ] && looks_like_json "$skill_openai_yaml" && [ -f "$skill_json" ] && command -v python3 >/dev/null 2>&1; then
+    if ! python3 - "$skill_openai_yaml" "$skill_json" <<'PY'
+import json
+import sys
+
+path_yaml = sys.argv[1]
+path_json = sys.argv[2]
+
+def load(path: str) -> dict:
+    with open(path, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+def normalize(obj: dict) -> dict:
+    interface = obj.get("interface") or {}
+    deps = obj.get("dependencies") or {}
+    tools = deps.get("tools") or []
+    tools_norm = []
+    if isinstance(tools, list):
+        for t in tools:
+            if isinstance(t, dict):
+                tools_norm.append({k: t.get(k) for k in ["type", "value", "description", "transport", "command", "url"] if k in t})
+    tools_norm.sort(key=lambda t: (t.get("type") or "", t.get("value") or "", t.get("transport") or "", t.get("url") or "", t.get("command") or "", t.get("description") or ""))
+    return {
+        "interface": {k: interface.get(k) for k in ["display_name", "short_description", "brand_color", "default_prompt"] if k in interface},
+        "dependencies": {"tools": tools_norm},
+    }
+
+try:
+    a = normalize(load(path_yaml))
+    b = normalize(load(path_json))
+except Exception as e:
+    print(f"WARN: failed to compare metadata ({e}): {path_yaml} vs {path_json}")
+    sys.exit(1)
+
+if a != b:
+    print(f"WARN: metadata mismatch between agents/openai.yaml and SKILL.json: {path_yaml} vs {path_json}")
+    sys.exit(1)
+
+sys.exit(0)
+PY
+    then
+      return 1
     fi
   fi
 
@@ -290,9 +384,21 @@ validate_skills_dir() {
   fi
 }
 
+if [ -d "$user_agents_skills_dir" ]; then
+  count=$(count_dirs "$user_agents_skills_dir")
+  echo "Skills dir (user, .agents): $user_agents_skills_dir ($count installed)"
+  legacy_backups=$(find "$user_agents_skills_dir" -maxdepth 1 -mindepth 1 -type d -name "*.bak-*" -exec basename {} \; 2>/dev/null | tr '\n' ' ' | sed 's/ $//')
+  if [ -n "$legacy_backups" ]; then
+    echo "WARN: legacy backup skill folders detected (will load as duplicate skills): $legacy_backups"
+    echo "Tip: move them out of $user_agents_skills_dir (e.g. $HOME/.agents/skills.bak-<timestamp>) or delete them."
+  fi
+else
+  echo "Skills dir not found: $user_agents_skills_dir"
+fi
+
 if [ -d "$user_skills_dir" ]; then
   count=$(count_dirs "$user_skills_dir")
-  echo "Skills dir (user): $user_skills_dir ($count installed)"
+  echo "Skills dir (user, legacy): $user_skills_dir ($count installed)"
   legacy_backups=$(find "$user_skills_dir" -maxdepth 1 -mindepth 1 -type d -name "*.bak-*" -exec basename {} \; 2>/dev/null | tr '\n' ' ' | sed 's/ $//')
   if [ -n "$legacy_backups" ]; then
     echo "WARN: legacy backup skill folders detected (will load as duplicate skills): $legacy_backups"
@@ -306,10 +412,18 @@ if [ -d "$cwd_skills_dir" ]; then
   count=$(count_dirs "$cwd_skills_dir")
   echo "Skills dir (repo cwd): $cwd_skills_dir ($count installed)"
 fi
+if [ -d "$cwd_agents_skills_dir" ]; then
+  count=$(count_dirs "$cwd_agents_skills_dir")
+  echo "Skills dir (repo cwd, .agents): $cwd_agents_skills_dir ($count installed)"
+fi
 
 if [ -n "$repo_skills_dir" ] && [ "$repo_skills_dir" != "$cwd_skills_dir" ] && [ -d "$repo_skills_dir" ]; then
   count=$(count_dirs "$repo_skills_dir")
   echo "Skills dir (repo root): $repo_skills_dir ($count installed)"
+fi
+if [ -n "$repo_agents_skills_dir" ] && [ "$repo_agents_skills_dir" != "$cwd_agents_skills_dir" ] && [ -d "$repo_agents_skills_dir" ]; then
+  count=$(count_dirs "$repo_agents_skills_dir")
+  echo "Skills dir (repo root, .agents): $repo_agents_skills_dir ($count installed)"
 fi
 
 if [ -d "$skills_repo_root/.git" ]; then
@@ -330,12 +444,18 @@ else
 fi
 
 core_skill=""
-if [ -d "$user_skills_dir/vc-router" ]; then
+if [ -d "$user_agents_skills_dir/vc-router" ]; then
+  core_skill="$user_agents_skills_dir"
+elif [ -d "$user_skills_dir/vc-router" ]; then
   core_skill="$user_skills_dir"
 elif [ -d "$cwd_skills_dir/vc-router" ]; then
   core_skill="$cwd_skills_dir"
+elif [ -d "$cwd_agents_skills_dir/vc-router" ]; then
+  core_skill="$cwd_agents_skills_dir"
 elif [ -n "$repo_skills_dir" ] && [ -d "$repo_skills_dir/vc-router" ]; then
   core_skill="$repo_skills_dir"
+elif [ -n "$repo_agents_skills_dir" ] && [ -d "$repo_agents_skills_dir/vc-router" ]; then
+  core_skill="$repo_agents_skills_dir"
 fi
 
 if [ -n "$core_skill" ]; then
@@ -344,17 +464,27 @@ else
   echo "Core skill missing: vc-router"
 fi
 
-validate_skills_dir "$user_skills_dir" "user"
+validate_skills_dir "$user_agents_skills_dir" "user-agents"
+validate_skills_dir "$user_skills_dir" "user-legacy"
 validate_skills_dir "$cwd_skills_dir" "repo-cwd"
+validate_skills_dir "$cwd_agents_skills_dir" "repo-cwd-agents"
 if [ -n "$repo_skills_dir" ] && [ "$repo_skills_dir" != "$cwd_skills_dir" ]; then
   validate_skills_dir "$repo_skills_dir" "repo-root"
 fi
+if [ -n "$repo_agents_skills_dir" ] && [ "$repo_agents_skills_dir" != "$cwd_agents_skills_dir" ]; then
+  validate_skills_dir "$repo_agents_skills_dir" "repo-root-agents"
+fi
 
 echo "Next: copy/paste into Codex chat:"
-legacy_skills=$(find "$user_skills_dir" -maxdepth 1 -mindepth 1 -type d \( -name "vibe-*" -o -name "vs-*" -o -name "vf" -o -name "vg" -o -name "vsf" -o -name "vsg" \) -exec basename {} \; 2>/dev/null || true)
+legacy_skills=$(
+  {
+    find "$user_skills_dir" -maxdepth 1 -mindepth 1 -type d \( -name "vibe-*" -o -name "vs-*" -o -name "vf" -o -name "vg" -o -name "vsf" -o -name "vsg" \) -exec basename {} \; 2>/dev/null || true
+    find "$user_agents_skills_dir" -maxdepth 1 -mindepth 1 -type d \( -name "vibe-*" -o -name "vs-*" -o -name "vf" -o -name "vg" -o -name "vsf" -o -name "vsg" \) -exec basename {} \; 2>/dev/null || true
+  } | sort -u
+)
 legacy_skills=$(printf "%s\n" "$legacy_skills" | tr '\n' ' ' | sed 's/ $//')
 if [ -n "$legacy_skills" ]; then
-echo "Warning: legacy vibe/vs skills detected: $legacy_skills"
+  echo "Warning: legacy vibe/vs skills detected: $legacy_skills"
   echo "Tip: remove or rename legacy skills to avoid conflicts."
 fi
 echo "use vcg: build a login page"

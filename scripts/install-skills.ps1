@@ -5,13 +5,18 @@ $CoreSkillsFile = Join-Path $ScriptDir "core-skills.txt"
 
 function Show-Usage {
 @"
-Usage: install-skills.ps1 [--user|--repo|--path <dir>]
+Usage: install-skills.ps1 [--user|--repo|--path <dir>] [--agents]
 
   --core        (legacy) No-op. This repo ships only vc skills.
   --all         (legacy) No-op. This repo ships only vc skills.
-  --user        Install to `$CODEX_HOME\\skills (default)
-  --repo        Install to <git-root>\\.codex\\skills (from current directory)
+  --user        Install to user skills scope (default)
+                - default: `$CODEX_HOME\\skills (legacy-compatible)
+                - with --agents: ~\\.agents\\skills (Codex docs default)
+  --repo        Install to repo skills scope (from current directory)
+                - default: <git-root>\\.codex\\skills
+                - with --agents: <git-root>\\.agents\\skills
   --path <dir>  Install to an explicit skills directory
+  --agents      Use .agents\\skills locations for --user/--repo
 "@ | Write-Output
 }
 
@@ -26,12 +31,14 @@ function Get-CoreSkills {
 $Scope = "user"
 $LegacyAll = $false
 $CustomDest = $null
+$UseAgents = $false
 for ($i = 0; $i -lt $Args.Length; $i++) {
   switch ($Args[$i]) {
     "--core" { }
     "--all" { $LegacyAll = $true }
     "--user" { $Scope = "user" }
     "--repo" { $Scope = "repo" }
+    "--agents" { $UseAgents = $true }
     "--path" {
       if ($i + 1 -ge $Args.Length) {
         Write-Error "Error: --path requires a directory."
@@ -67,10 +74,18 @@ if ($CustomDest) {
     Write-Error "Error: not inside a git repo. Use --path or run inside a repo."
     exit 1
   }
-  $DestDir = Join-Path $repoRoot.Trim() ".codex\\skills"
+  if ($UseAgents) {
+    $DestDir = Join-Path $repoRoot.Trim() ".agents\\skills"
+  } else {
+    $DestDir = Join-Path $repoRoot.Trim() ".codex\\skills"
+  }
 } else {
-  $DestRoot = if ($env:CODEX_HOME) { $env:CODEX_HOME } else { Join-Path $HOME ".codex" }
-  $DestDir = Join-Path $DestRoot "skills"
+  if ($UseAgents) {
+    $DestDir = Join-Path $HOME ".agents\\skills"
+  } else {
+    $DestRoot = if ($env:CODEX_HOME) { $env:CODEX_HOME } else { Join-Path $HOME ".codex" }
+    $DestDir = Join-Path $DestRoot "skills"
+  }
 }
 
 New-Item -ItemType Directory -Force -Path $DestDir | Out-Null

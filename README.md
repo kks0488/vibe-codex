@@ -50,7 +50,7 @@ irm https://raw.githubusercontent.com/kks0488/vibe-codex/main/bootstrap.ps1 | ie
 
 - Tested against recent `codex-cli` (Rust releases). See `docs/codex-upgrade-check.md` for upgrade notes (skills discovery, sandbox/approvals, MCP, connectors).
 - Recommended setup checklist: `docs/codex-setup.md` (MCP + config).
-- Recommended: skills are the core (MCP servers are helpers); skills ship in repo `.codex/skills` and use `SKILL.json` for Codex UI metadata + dependency hints (including OpenAI Docs MCP).
+- Recommended: skills are the core (MCP servers are helpers); Codex docs now prefer `.agents/skills`, while vibe-codex keeps `.codex/skills` as canonical source and supports both install targets (`--agents` or legacy default). Skills use `agents/openai.yaml` (plus optional legacy `SKILL.json`) for Codex UI metadata + dependency hints (including OpenAI Docs MCP).
 - Core flows are sub-agent aware (uses Codex collaboration tools for parallel recon/testing when available).
 
 ## Usage
@@ -119,8 +119,8 @@ Alias: `vcg`
 ## Shortcut Commands
 
 ```bash
-vc install [--repo]          # Install vc skills
-vc update [--repo]           # Update repo + reinstall skills
+vc install [--repo|--agents|--path <dir>]  # Install vc skills
+vc update [--repo|--agents|--path <dir>]   # Update repo + reinstall skills
 vc doctor        # Check installation
 vc list          # List installed skills
 vc mcp docs      # Add OpenAI dev docs MCP server
@@ -178,12 +178,14 @@ Manual install:
 ```bash
 git clone https://github.com/kks0488/vibe-codex.git
 cd vibe-codex
-bash scripts/install-skills.sh                 # Core skills (default), user scope (~/.codex/skills)
-bash scripts/install-skills.sh --repo          # Core skills, repo scope (<repo>/.codex/skills)
+bash scripts/install-skills.sh                 # Core skills (legacy-compatible): $CODEX_HOME/skills
+bash scripts/install-skills.sh --agents        # Core skills (Codex docs default): ~/.agents/skills
+bash scripts/install-skills.sh --repo          # Repo scope: <repo>/.codex/skills
+bash scripts/install-skills.sh --repo --agents # Repo scope (docs style): <repo>/.agents/skills
 ```
 
 The installer copies skills to the selected scope and moves any overwritten skills into a sibling `skills.bak-<timestamp>` folder (outside your `skills/` directory). Restart Codex to pick up new skills.
-Tip: `vc mcp docs` sets up the OpenAI Developer Docs MCP server (or Codex may prompt to install it because it is declared as a dependency in `SKILL.json`).
+Tip: `vc mcp docs` sets up the OpenAI Developer Docs MCP server (or Codex may prompt to install it because it is declared as a dependency in `agents/openai.yaml` / `SKILL.json`).
 
 If you previously installed older vibe-codex bundles and want a clean vc-only skills directory, run `vc prune` (backs up removed skills).
 

@@ -4,14 +4,19 @@ $LegacySkillsFile = Join-Path $ScriptDir "legacy-skills.txt"
 
 function Show-Usage {
 @"
-Usage: prune-skills.ps1 [--user|--repo|--path <dir>] [--dry-run]
+Usage: prune-skills.ps1 [--user|--repo|--path <dir>] [--agents] [--dry-run]
 
 Removes (backs up) legacy non-vc skills from older vibe-codex installs.
 Only affects skill directories listed in scripts/legacy-skills.txt.
 
-  --user        Use `$CODEX_HOME\\skills (default)
-  --repo        Use <git-root>\\.codex\\skills (from current directory)
+  --user        Use user skills scope (default)
+                - default: `$CODEX_HOME\\skills (legacy-compatible)
+                - with --agents: ~\\.agents\\skills (Codex docs default)
+  --repo        Use repo skills scope (from current directory)
+                - default: <git-root>\\.codex\\skills
+                - with --agents: <git-root>\\.agents\\skills
   --path <dir>  Use an explicit skills directory
+  --agents      Use .agents\\skills locations for --user/--repo
   --dry-run     Print what would change, but don't move anything
 "@ | Write-Output
 }
@@ -27,11 +32,13 @@ function Get-LegacySkills {
 
 $Scope = "user"
 $CustomDest = $null
+$UseAgents = $false
 $DryRun = $false
 for ($i = 0; $i -lt $Args.Length; $i++) {
   switch ($Args[$i]) {
     "--user" { $Scope = "user" }
     "--repo" { $Scope = "repo" }
+    "--agents" { $UseAgents = $true }
     "--path" {
       if ($i + 1 -ge $Args.Length) {
         Write-Error "Error: --path requires a directory."
@@ -68,10 +75,18 @@ if ($CustomDest) {
     Write-Error "Error: not inside a git repo. Use --path or run inside a repo."
     exit 1
   }
-  $DestDir = Join-Path $repoRoot.Trim() ".codex\\skills"
+  if ($UseAgents) {
+    $DestDir = Join-Path $repoRoot.Trim() ".agents\\skills"
+  } else {
+    $DestDir = Join-Path $repoRoot.Trim() ".codex\\skills"
+  }
 } else {
-  $DestRoot = if ($env:CODEX_HOME) { $env:CODEX_HOME } else { Join-Path $HOME ".codex" }
-  $DestDir = Join-Path $DestRoot "skills"
+  if ($UseAgents) {
+    $DestDir = Join-Path $HOME ".agents\\skills"
+  } else {
+    $DestRoot = if ($env:CODEX_HOME) { $env:CODEX_HOME } else { Join-Path $HOME ".codex" }
+    $DestDir = Join-Path $DestRoot "skills"
+  }
 }
 
 if (-not (Test-Path $DestDir)) {

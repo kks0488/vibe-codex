@@ -18,13 +18,13 @@ case "$cmd" in
     sh "$repo_root/scripts/doctor.sh" "$@"
     ;;
   list)
-    sh "$repo_root/scripts/list-skills.sh"
+    sh "$repo_root/scripts/list-skills.sh" "$@"
     ;;
   scope)
     sh "$repo_root/scripts/scope-init.sh" "$@"
     ;;
   uninstall)
-    sh "$repo_root/scripts/uninstall-skills.sh"
+    sh "$repo_root/scripts/uninstall-skills.sh" "$@"
     ;;
   prune)
     sh "$repo_root/scripts/prune-skills.sh" "$@"
@@ -101,14 +101,14 @@ EOF
   help|*)
     cat <<'EOF'
 vc commands:
-  install    install vc skills (supports --repo/--path)
-  update     pull repo + reinstall skills (supports --repo/--path)
+  install    install vc skills (supports --repo/--path/--agents)
+  update     pull repo + reinstall skills (supports --repo/--path/--agents)
   doctor     check install status
-  list       list installed skills
+  list       list installed skills (supports --repo/--path/--agents)
   mcp        manage Codex MCP servers (docs/skills)
   scope      manage .vc-scope (create/add/show)
-  uninstall  remove skills (backup)
-  prune      remove legacy removed skills (backup)
+  uninstall  remove skills (backup; supports --repo/--path/--agents)
+  prune      remove legacy removed skills (backup; supports --repo/--path/--agents)
   prompts    print author/reviewer prompts
   go         router mode (prints "use vcg: ...")
   finish     end-to-end mode (prints "vcf: ...")

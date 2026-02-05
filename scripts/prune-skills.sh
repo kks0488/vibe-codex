@@ -7,14 +7,19 @@ legacy_skills_file="$script_dir/legacy-skills.txt"
 
 usage() {
   cat <<'EOF'
-Usage: prune-skills.sh [--user|--repo|--path <dir>] [--dry-run]
+Usage: prune-skills.sh [--user|--repo|--path <dir>] [--agents] [--dry-run]
 
 Removes (backs up) legacy non-vc skills from older vibe-codex installs.
 Only affects skill directories listed in scripts/legacy-skills.txt.
 
-  --user        Use $CODEX_HOME/skills (default)
-  --repo        Use <git-root>/.codex/skills (from current directory)
+  --user        Use user skills scope (default)
+                - default: $CODEX_HOME/skills (legacy-compatible)
+                - with --agents: ~/.agents/skills (Codex docs default)
+  --repo        Use repo skills scope (from current directory)
+                - default: <git-root>/.codex/skills
+                - with --agents: <git-root>/.agents/skills
   --path <dir>  Use an explicit skills directory
+  --agents      Use .agents/skills locations for --user/--repo
   --dry-run     Print what would change, but don't move anything
 EOF
 }
@@ -30,6 +35,7 @@ read_legacy_skills() {
 
 scope="user"
 custom_dest=""
+use_agents="false"
 dry_run="false"
 while [ "$#" -gt 0 ]; do
   case "$1" in
@@ -38,6 +44,9 @@ while [ "$#" -gt 0 ]; do
       ;;
     --repo)
       scope="repo"
+      ;;
+    --agents)
+      use_agents="true"
       ;;
     --path)
       shift
@@ -69,14 +78,22 @@ if [ -n "$custom_dest" ]; then
 elif [ "$scope" = "repo" ]; then
   if command -v git >/dev/null 2>&1 && git -C "$PWD" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
     repo_root=$(git -C "$PWD" rev-parse --show-toplevel)
-    dest_dir="$repo_root/.codex/skills"
+    if [ "$use_agents" = "true" ]; then
+      dest_dir="$repo_root/.agents/skills"
+    else
+      dest_dir="$repo_root/.codex/skills"
+    fi
   else
     echo "Error: not inside a git repo. Use --path or run inside a repo." >&2
     exit 1
   fi
 else
-  dest_root="${CODEX_HOME:-$HOME/.codex}"
-  dest_dir="$dest_root/skills"
+  if [ "$use_agents" = "true" ]; then
+    dest_dir="$HOME/.agents/skills"
+  else
+    dest_root="${CODEX_HOME:-$HOME/.codex}"
+    dest_dir="$dest_root/skills"
+  fi
 fi
 
 if [ ! -d "$dest_dir" ]; then

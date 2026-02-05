@@ -11,9 +11,9 @@ switch ($Command.ToLower()) {
   "install" { & (Join-Path $RepoRoot "scripts/install-skills.ps1") @Args }
   "update" { & (Join-Path $RepoRoot "scripts/update-skills.ps1") @Args }
   "doctor" { & (Join-Path $RepoRoot "scripts/doctor.ps1") @Args }
-  "list" { & (Join-Path $RepoRoot "scripts/list-skills.ps1") }
+  "list" { & (Join-Path $RepoRoot "scripts/list-skills.ps1") @Args }
   "scope" { & (Join-Path $RepoRoot "scripts/scope-init.ps1") @Args }
-  "uninstall" { & (Join-Path $RepoRoot "scripts/uninstall-skills.ps1") }
+  "uninstall" { & (Join-Path $RepoRoot "scripts/uninstall-skills.ps1") @Args }
   "prune" { & (Join-Path $RepoRoot "scripts/prune-skills.ps1") @Args }
   "prompts" {
     $promptArg = if ($Args -and $Args.Length -gt 0) { $Args[0] } else { "all" }
@@ -85,14 +85,14 @@ vc mcp commands:
   default {
     @"
 vc commands:
-  install    install vc skills (supports --repo/--path)
-  update     pull repo + reinstall skills (supports --repo/--path)
+  install    install vc skills (supports --repo/--path/--agents)
+  update     pull repo + reinstall skills (supports --repo/--path/--agents)
   doctor     check install status
-  list       list installed skills
+  list       list installed skills (supports --repo/--path/--agents)
   mcp        manage Codex MCP servers (docs/skills)
   scope      manage .vc-scope (create/add/show)
-  uninstall  remove skills (backup)
-  prune      remove legacy removed skills (backup)
+  uninstall  remove skills (backup; supports --repo/--path/--agents)
+  prune      remove legacy removed skills (backup; supports --repo/--path/--agents)
   prompts    print author/reviewer prompts
   go         router mode (prints "use vcg: ...")
   finish     end-to-end mode (prints "vcf: ...")
