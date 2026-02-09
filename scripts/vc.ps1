@@ -71,6 +71,14 @@ vc mcp commands:
     $prefix = if ($Command.ToLower() -eq "go") { "use vcg: " } else { "vcf: " }
     Write-Output ($prefix + $goal)
   }
+  "teams" {
+    if (-not (Get-Command node -ErrorAction SilentlyContinue)) {
+      Write-Error "Error: node not found in PATH."
+      Write-Error "Install Node.js, then re-run."
+      exit 1
+    }
+    & node (Join-Path $RepoRoot "scripts/vc-teams.js") @Args
+  }
   "sync" {
     if (-not $Args -or $Args.Length -eq 0) {
       Write-Error "Usage: vc sync <host> [host...]"
@@ -89,6 +97,7 @@ vc commands:
   update     pull repo + reinstall skills (supports --repo/--path/--agents)
   doctor     check install status
   list       list installed skills (supports --repo/--path/--agents)
+  teams      manage Agent Teams (create/send/status/prune)
   mcp        manage Codex MCP servers (docs/skills)
   scope      manage .vc-scope (create/add/show)
   uninstall  remove skills (backup; supports --repo/--path/--agents)

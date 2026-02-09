@@ -18,3 +18,14 @@ jobs:
       - uses: actions/checkout@v4
       - name: Run doctor.ps1 (strict)
         run: pwsh -NoProfile -File scripts/doctor.ps1 -Strict
+
+  teams-e2e:
+    name: teams-e2e (node)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Run vc-teams E2E tests
+        run: node --test scripts/vc-teams.test.mjs

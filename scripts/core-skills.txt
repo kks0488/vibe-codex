@@ -3,3 +3,4 @@ vc-phase-loop
 vc-router
 vcf
 vcg
+vc-agent-teams

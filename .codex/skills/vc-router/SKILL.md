@@ -81,6 +81,7 @@ Rules:
 ├─────────────────────────────────────────────────────────────┤
 │                                                             │
 │  VC-ONLY DISTRIBUTION:                                      │
+│  ├─ "team", "teammate", "swarm", "delegate" → vc-agent-teams│
 │  ├─ "finish", "hands off" → vc-phase-loop                   │
 │  ├─ Multi-step, open-ended → vc-phase-loop                  │
 │  └─ Everything else → vc-phase-loop                         │
@@ -107,9 +108,11 @@ LOW (<50%): Weak match, unclear intent
 
 ## Skill Composition
 
-This repo intentionally ships only `vc*` skills, so there are no additional bundled skills to chain.
+Primary skills in this repo are `vc-phase-loop`, `vc-router`, and `vc-agent-teams`.
 
-If the request is multi-domain or open-ended, route to `vc-phase-loop` and run the full end-to-end workflow.
+Composition defaults:
+- Team orchestration requests: start with `vc-agent-teams`, then hand execution-heavy tasks to `vc-phase-loop`.
+- Multi-domain open-ended requests: route to `vc-phase-loop` directly.
 
 ---
 

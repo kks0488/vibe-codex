@@ -253,6 +253,30 @@ These run in background while continuing:
 
 ---
 
+## Team Delegation Protocol
+
+When coordination overhead grows, use `vc-agent-teams` conventions with file mailboxes:
+
+1. Create team and members:
+   - `vc teams create --name <team>`
+   - `vc teams add-member --team <team> --name <agent>`
+2. Delegate scoped work via direct messages:
+   - `vc teams send --team <team> --type message --from team-lead --recipient <agent> --content \"<task>\"`
+3. Use broadcast only for milestone updates:
+   - `vc teams send --team <team> --type broadcast --from team-lead --content \"<status>\"`
+4. Process mailbox responses and mark them read to avoid duplicate execution.
+5. Prune old read traffic periodically:
+   - `vc teams prune --team <team> --days 7`
+
+Protocol message types:
+- `message`
+- `broadcast`
+- `shutdown_request`
+- `shutdown_response`
+- `plan_approval_response`
+
+---
+
 ## Sub-Agents (Collaboration Tools)
 
 Modern Codex can spawn sub-agents. Use them to **speed up independent work** (recon, analysis, testing), then merge results into a single execution thread.

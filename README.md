@@ -106,6 +106,13 @@ Aliases: `vcf`
 - Smart fallback (never "I don't know")
 Alias: `vcg`
 
+### vc-agent-teams
+**Codex-native Team Orchestration**
+- Team lifecycle (`create`, `delete`)
+- Member management (`add-member`, `remove-member`)
+- Mailbox protocol (`message`, `broadcast`, `shutdown`, `plan approval`)
+- File-backed runtime under `~/.vc/teams`
+
 ## The Iron Laws
 
 ```
@@ -123,6 +130,7 @@ vc install [--repo|--agents|--path <dir>]  # Install vc skills
 vc update [--repo|--agents|--path <dir>]   # Update repo + reinstall skills
 vc doctor        # Check installation
 vc list          # List installed skills
+vc teams <cmd>   # Team lifecycle + mailbox commands
 vc mcp docs      # Add OpenAI dev docs MCP server
 vc mcp skills    # Add vibe skills MCP server (npx)
 vc mcp list      # List configured MCP servers
@@ -169,8 +177,36 @@ Every task ends with proof:
 |-------|---------|
 | `vc-phase-loop` | End-to-end execution engine (sub-agent aware) |
 | `vc-router` | Intelligent skill selection (sub-agent assisted when useful) |
+| `vc-agent-teams` | Codex-native team lifecycle + mailbox coordination |
 | `vcf` | Alias for `vc-phase-loop` |
 | `vcg` | Alias for `vc-router` |
+
+## Agent Teams (Codex-native)
+
+The Claude-style Teams concept is implemented for Codex via `vc teams` commands and JSON mailboxes.
+
+```bash
+vc teams create --name my-project --description "research + implementation"
+vc teams add-member --team my-project --name researcher --agent-type researcher
+vc teams add-member --team my-project --name implementer --agent-type coder
+vc teams send --team my-project --type message --from team-lead --recipient researcher --content "Map architecture"
+vc teams watch --team my-project --interval-ms 500 --max-iterations 5
+vc teams status --team my-project
+vc teams read --team my-project --agent researcher --unread
+```
+
+Protocol notes:
+- `shutdown_request` / `plan_approval_request` auto-create `requestId` if missing.
+- `shutdown_response` / `plan_approval_response` require `--request-id` and `--approve`.
+- Use `vc teams await --team <team> --agent <agent> --request-id <id> --timeout-ms <n>` for strict request-response waits.
+
+Storage layout:
+
+```text
+~/.vc/teams/{team}/config.json
+~/.vc/teams/{team}/inboxes/{agent}.json
+~/.vc/teams/{team}/tasks/
+```
 
 ## Installation
 

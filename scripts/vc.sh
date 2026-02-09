@@ -87,6 +87,14 @@ EOF
       echo "vcf: $*"
     fi
     ;;
+  teams)
+    if ! command -v node >/dev/null 2>&1; then
+      echo "Error: node not found in PATH." >&2
+      echo "Install Node.js, then re-run." >&2
+      exit 1
+    fi
+    node "$repo_root/scripts/vc-teams.js" "$@"
+    ;;
   sync)
     if [ "$#" -lt 1 ]; then
       echo "Usage: vc sync <host> [host...]" >&2
@@ -105,6 +113,7 @@ vc commands:
   update     pull repo + reinstall skills (supports --repo/--path/--agents)
   doctor     check install status
   list       list installed skills (supports --repo/--path/--agents)
+  teams      manage Agent Teams (create/send/status/prune)
   mcp        manage Codex MCP servers (docs/skills)
   scope      manage .vc-scope (create/add/show)
   uninstall  remove skills (backup; supports --repo/--path/--agents)

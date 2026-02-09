@@ -50,3 +50,23 @@ url = "https://developers.openai.com/mcp"
 ## 5) Verify
 
 - `vc doctor`
+
+## 6) Agent Teams (optional, Codex-native)
+
+`vibe-codex` now supports Claude-style team orchestration using local JSON mailboxes:
+
+- Team root: `~/.vc/teams`
+- Config: `~/.vc/teams/<team>/config.json`
+- Inboxes: `~/.vc/teams/<team>/inboxes/*.json`
+
+Quick start:
+
+```bash
+vc teams create --name my-project --description "research + implementation"
+vc teams add-member --team my-project --name researcher --agent-type researcher
+vc teams send --team my-project --type message --from team-lead --recipient researcher --content "Analyze architecture"
+vc teams watch --team my-project --interval-ms 500 --max-iterations 5
+vc teams status --team my-project
+```
+
+Use `vc teams help` for all subcommands.
