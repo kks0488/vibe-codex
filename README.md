@@ -32,6 +32,16 @@ If you want deeper, multi-skill automation and routers, stay with vibe-codex.
 - **Skill Composition** - Chains skills intelligently when needed
 - **Smart Fallback** - Always has a path forward, no dead ends
 
+## Latest Release (v0.4.1)
+
+- Added **Codex-native Agent Teams** runtime (`vc teams`) with:
+  - team lifecycle + membership management
+  - mailbox-based protocol (`message`, `broadcast`, shutdown/plan approvals)
+  - `watch` + `await` operations for live coordination and strict request-response waits
+  - dedupe, stale-lock recovery, and events log (`~/.vc/teams/<team>/events.jsonl`)
+- Added new skill: `vc-agent-teams`
+- Added PR CI validation for teams E2E (`node --test scripts/vc-teams.test.mjs`)
+
 ## Super simple (copy/paste)
 
 One-liner install/update (recommended):
